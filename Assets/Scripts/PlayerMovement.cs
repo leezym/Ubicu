@@ -24,19 +24,19 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         // convert
-        /*float targetScale = bluetoothPairingScript.prom * maximunScale / loginScript.jsonObjectExercises.array[loginScript.idJsonObjectExercises].flujo;
+        float targetScale = bluetoothPairingScript.prom * maximunScale / loginScript.jsonObjectExercises.array[loginScript.idJsonObjectExercises].flujo;
 
         if (transform.localScale.x < minimunScale)
             transform.localScale = new Vector2(minimunScale,minimunScale);
         else if (transform.localScale.x > maximunScale)
             transform.localScale = new Vector2(maximunScale,maximunScale);
         else
-            transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(targetScale, targetScale), Time.deltaTime * speedScale);*/        
+            transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(targetScale, targetScale), Time.deltaTime * speedScale);  
     }
 
     public void StartMovement()
     {
-        StartCoroutine(MovementIn());
+        //StartCoroutine(MovementIn());
     }
 
     IEnumerator MovementIn()

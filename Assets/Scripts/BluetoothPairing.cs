@@ -9,8 +9,6 @@ using UnityEngine.UI;
 
 public class BluetoothPairing : MonoBehaviour
 {
-    public static BluetoothPairing Instance { get; private set; }
-
     AndroidJavaObject bluet;
     AndroidJavaObject alert;
     AndroidJavaClass unityPlayerClass;
@@ -21,19 +19,6 @@ public class BluetoothPairing : MonoBehaviour
     public GameObject bluetoothContent, prefabTextBluetooth;
     public GameObject loginMenu, bluetoothMenu, loadingScreen;
     object[] parameters2 = new object[2];
-
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
     
     void Start()
     {
@@ -99,29 +84,24 @@ public class BluetoothPairing : MonoBehaviour
             if(valuesDouble.Length > 0)
             {
                 prom = valuesDouble.Average();
-                Debug.LogWarningFormat("promedio: {0}", prom.ToString());
+                if(prom < 1)
+                    prom = 0;
+                //Debug.LogWarningFormat("promedio: {0}", prom.ToString());
                 timer += Time.deltaTime;
             }
     }
 
     IEnumerator LoadingScreen(){
+        bluetoothMenu.SetActive(false);
         loadingScreen.SetActive(true);
-        loginMenu.SetActive(false);
-        gameObject.SetActive(false);
-        StartCoroutine(CallBluetooth());
-        yield return new WaitForSeconds(5f);
+        bluet.Call("connectToDevice", parameters2);
+        yield return new WaitForSeconds(3f);
         loadingScreen.SetActive(false);
         loginMenu.SetActive(true);
         StopCoroutine(LoadingScreen());
     }    
 
-    IEnumerator CallBluetooth(){        
-        yield return new WaitForSeconds(1f);
-        bluet.Call("connectToDevice", parameters2);
-        StopCoroutine(CallBluetooth());
-    }
-
     public void CallOutputTime(){
-        InvokeRepeating("OutputTime", 2f, 0.002f);
+        InvokeRepeating("OutputTime", 2f, 0.002f); ///pdte detener cuando no se juega
     }
 }
