@@ -8,7 +8,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("ATTACHED")]
     public float minimunScale;
     public float maximunScale;
-    public int speedScale;
+    public int speedStandarScale;
+    public int speedExtraScale;
     public BluetoothPairing bluetoothPairingScript;
     public Login loginScript;
     public GameObject pause;
@@ -20,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
         transform.localScale = new Vector2(minimunScale,minimunScale);
     }
 
-    void Update()
+    void FixedUpdate()
     {
 
         loginScript.exerciseFlujoPrefab.text = bluetoothPairingScript.prom.ToString() +"ml";
@@ -30,10 +31,10 @@ public class PlayerMovement : MonoBehaviour
         if (targetScale < minimunScale)
             transform.localScale = new Vector2(minimunScale,minimunScale);
         else if (targetScale > maximunScale)
-            //transform.localScale = new Vector2(maximunScale,maximunScale);
-            transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(targetScale, targetScale), Time.deltaTime / 10);
+            transform.localScale = new Vector2(maximunScale,maximunScale);
+            //transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(targetScale, targetScale), Time.deltaTime / speedExtraScale);
         else
-            transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(targetScale, targetScale), Time.deltaTime * speedScale);  
+            transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(targetScale, targetScale), Time.deltaTime * speedStandarScale);  
     }
 
     // public void StartMovement()

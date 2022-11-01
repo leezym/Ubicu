@@ -16,8 +16,11 @@ public class BluetoothPairing : MonoBehaviour
     object[] parameters2 = new object[2];
 
     [Header("ATTACHED")]
-    public GameObject bluetoothContent, prefabTextBluetooth;
-    public GameObject loginMenu, bluetoothMenu, loadingScreen;
+    public GameObject bluetoothContent;
+    public GameObject prefabTextBluetooth;
+    public GameObject loginMenu;
+    public GameObject bluetoothMenu;
+    public GameObject loadingScreen;
 
     [Header("IN GAME")]
     public float prom = 0;
@@ -70,7 +73,6 @@ public class BluetoothPairing : MonoBehaviour
     }
     void OutputTime()
     {
-        
             string data = bluet.Call<string>("getData");
             
             string[] strings = Regex.Split(data, Environment.NewLine);
@@ -108,6 +110,6 @@ public class BluetoothPairing : MonoBehaviour
     }    
 
     public void CallOutputTime(){
-        InvokeRepeating("OutputTime", 2f, 0.002f); ///pdte detener cuando no se juega
+        InvokeRepeating("OutputTime", 0.5f, 0.0033f); // 1/250 datos, pdte detener cuando no se juega CancelInvoke();
     }
 }
