@@ -13,12 +13,16 @@ public class BluetoothPairing : MonoBehaviour
     AndroidJavaObject alert;
     AndroidJavaClass unityPlayerClass;
     AndroidJavaObject unityActivity;
-    public float prom = 0;
-    public float timer = 0;
+    object[] parameters2 = new object[2];
 
+    [Header("ATTACHED")]
     public GameObject bluetoothContent, prefabTextBluetooth;
     public GameObject loginMenu, bluetoothMenu, loadingScreen;
-    object[] parameters2 = new object[2];
+
+    [Header("IN GAME")]
+    public float prom = 0;
+    public float timer = 0;
+    public List<GameObject> bluetoothList;
     
     void Start()
     {
@@ -26,13 +30,15 @@ public class BluetoothPairing : MonoBehaviour
     }
 
     public void Refresh(){
+        foreach(GameObject g in bluetoothList)
+            Destroy(g);
+        bluetoothList = new List<GameObject>();
         CallNativePlugin();
     }
 
     //method that calls our native plugin.
     public void CallNativePlugin()
     {
-        Debug.Log("Pairing");
         unityPlayerClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         unityActivity = unityPlayerClass.GetStatic<AndroidJavaObject>("currentActivity");
         bluet = new AndroidJavaObject("com.millerbsv.bluetoothhc.BluetoothT");
@@ -57,6 +63,8 @@ public class BluetoothPairing : MonoBehaviour
                     parameters2[1] = go.name;
                     StartCoroutine(LoadingScreen());
                 });
+
+                bluetoothList.Add(go);
             }
         }
     }
@@ -64,7 +72,6 @@ public class BluetoothPairing : MonoBehaviour
     {
         
             string data = bluet.Call<string>("getData");
-            Debug.LogWarningFormat("data: {0}", data);
             
             string[] strings = Regex.Split(data, Environment.NewLine);
             List<float> valuesList = new List<float>();
@@ -84,8 +91,6 @@ public class BluetoothPairing : MonoBehaviour
             if(valuesDouble.Length > 0)
             {
                 prom = valuesDouble.Average();
-                if(prom < 1)
-                    prom = 0;
                 //Debug.LogWarningFormat("promedio: {0}", prom.ToString());
                 timer += Time.deltaTime;
             }
@@ -94,6 +99,7 @@ public class BluetoothPairing : MonoBehaviour
     IEnumerator LoadingScreen(){
         bluetoothMenu.SetActive(false);
         loadingScreen.SetActive(true);
+        yield return new WaitForSeconds(0.25f);
         bluet.Call("connectToDevice", parameters2);
         yield return new WaitForSeconds(3f);
         loadingScreen.SetActive(false);

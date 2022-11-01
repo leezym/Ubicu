@@ -91,7 +91,7 @@ public class Login : MonoBehaviour
 
     public void LogIn(){
         //StartCoroutine(OnLogin());
-        StartCoroutine(TestGetExercise()); // test
+        TestGetExercise(); // test
     }
 
     public IEnumerator OnLogin()
@@ -233,10 +233,8 @@ public class Login : MonoBehaviour
         }
     }
 
-    public IEnumerator TestGetExercise()
+    public void TestGetExercise()
     {
-        yield return new WaitForSeconds(0.5f);
-
         jsonObjectExercises.array = new List<Exercise>{
             new Exercise{
                 _id = "1",
@@ -248,10 +246,10 @@ public class Login : MonoBehaviour
                 repeticiones = 5,
                 series = 3,
                 periodos_descanso = 30,
-                fecha_inicio = "17/10/2022",
-                fecha_fin = "23/10/2022",
+                fecha_inicio = "07/11/2022",
+                fecha_fin = "13/11/2022",
                 apnea = 3,
-                flujo = 900
+                flujo = 600
             }, 
             new Exercise{
                 _id = "2",
@@ -263,10 +261,10 @@ public class Login : MonoBehaviour
                 repeticiones = 2,
                 series = 3,
                 periodos_descanso = 30,
-                fecha_inicio = "24/10/2022",
-                fecha_fin = "28/10/2022",
+                fecha_inicio = "31/10/2022",
+                fecha_fin = "06/11/2022",
                 apnea = 2,
-                flujo = 900
+                flujo = 600
             }
         };
 
@@ -334,16 +332,10 @@ public class Login : MonoBehaviour
                 go.GetComponent<Button>().onClick.AddListener(()=>{
                     sessionMenu.SetActive(false);
                     exerciseMenu.SetActive(true);
-                    AddExcersiseData();
-
-                    /*sessionDescriptionPrefab = go.transform.Find("DescriptionText");
-                    sessionDescriptionPrefab.GetComponent<TMP_Text>().text = e.nombreEjercicio;
-                    Handheld.PlayFullScreenMovie("StarWars.mp4", Color.black, FullScreenMovieControlMode.CancelOnInput)
-                    */                    
+                    AddExcersiseData();           
                 });
             }
         }
-        StopCoroutine(TestGetExercise());
     }
 
     int AddExercise(bool emptyExercise, bool uniqueExercise, bool currentDate, int idJsonObjectExercises)
