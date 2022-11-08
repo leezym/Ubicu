@@ -22,13 +22,6 @@ public class Obstacles : MonoBehaviour
     {
         scriptsGroup = FindObjectOfType<ScriptsGroup>();
     }
-
-    void Update()
-    {
-        if(scriptsGroup.gameData.playing)
-            StartCoroutine(ObstaclesCounter());
-    }
-
     public void InvokeApenaTest()
     {
         float time = scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].apnea + (secondsAferApnea*2);
@@ -53,7 +46,7 @@ public class Obstacles : MonoBehaviour
         yield return new WaitForSeconds(secondsAferApnea);
     }
 
-    IEnumerator ObstaclesCounter()
+    public IEnumerator ObstaclesCounter()
     {
         repGameText.text = "REPETICIÓN\n"+counter.ToString()+"/"+scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].repeticiones;
         if(counter < scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].repeticiones)
@@ -62,12 +55,16 @@ public class Obstacles : MonoBehaviour
             {
                 enabledCounter = true;
                 scriptsGroup.playerMovement.Movement();
+                scriptsGroup.playerMovement.StopApnea();
             }
+            else
+                scriptsGroup.playerMovement.StartApnea();
+
             if(apnea && enabledCounter)
             {
                 enabledCounter = false;
-                yield return new WaitForSeconds(scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].apnea + secondsAferApnea);
                 scriptsGroup.playerMovement.SaveGraphData();
+                yield return new WaitForSeconds(scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].apnea + secondsAferApnea);
                 counter++;
             }
         }

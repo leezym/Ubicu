@@ -41,7 +41,10 @@ public class GameData : MonoBehaviour
     void Update()
     {
         if(playing)
+        {
             scriptsGroup.playerMovement.MovementWhilePlaying();
+            StartCoroutine(scriptsGroup.obstacles.ObstaclesCounter());            
+        }
         //else
             //ya se acaben las series de la sesion
 

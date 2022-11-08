@@ -143,7 +143,7 @@ public class ExercisesManager : MonoBehaviour
                 fecha_inicio = "07/11/2022",
                 fecha_fin = "13/11/2022",
                 apnea = 3,
-                flujo = 600
+                flujo = 900
             }, 
             new Exercise{
                 _id = "2",
@@ -158,7 +158,7 @@ public class ExercisesManager : MonoBehaviour
                 fecha_inicio = "14/11/2022",
                 fecha_fin = "20/11/2022",
                 apnea = 2,
-                flujo = 600
+                flujo = 1200
             }
         };
 

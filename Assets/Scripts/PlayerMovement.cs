@@ -23,38 +23,43 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("IN GAME")]
     public float maxTargetScale;
+    public float maxFlow;
     public ScriptsGroup scriptsGroup;
-    public List<float> graphPointList = new List<float>();
+    public List<float> graphPointList;// = new List<float>();
     float targetScale;
     float restCount;
     float seriesCount;
+    float apneaCount;
 
     void Start()
     {
         scriptsGroup = FindObjectOfType<ScriptsGroup>();
         transform.localScale = new Vector2(minimunScale,minimunScale);
-        //graphPointList = new List<float>{800, 120, 600, 900}; //test
         restCount = scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].periodos_descanso;
+        apneaCount = scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].apnea;
+
+        //graphPointList = new List<float>{800, 120, 600, 900}; //test
     }
     
     public void MovementWhilePlaying()
     {
-        //scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = scriptsGroup.bluetoothPairing.prom.ToString() +"ml";
+        scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = scriptsGroup.bluetoothPairing.prom.ToString() +"ml";
         // convert
         targetScale = (scriptsGroup.bluetoothPairing.prom * maximunScale / scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].flujo) + minimunScale;
 
         if (targetScale < minimunScale)
-            targetScale = minimunScale;
-        if (targetScale > maximunScale)
-            targetScale = maximunScale;
-
+            targetScale = minimunScale; //transform.localScale = new Vector2(minimunScale,minimunScale);
+        else if (targetScale > maximunScale)
+            targetScale = maximunScale; //transform.localScale = new Vector2(maximunScale,maximunScale);          
     }
     
     public void Movement()
     {
         if (targetScale > maxTargetScale)
+        {
             maxTargetScale = targetScale;
-
+            maxFlow = (scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].flujo * (targetScale - minimunScale))/maximunScale;
+        }
         transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(maxTargetScale, maxTargetScale), Time.deltaTime * speedStandarScale);
     }
 
@@ -88,10 +93,28 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void StartApnea()
+    {
+        pauseText.text = ((int)apneaCount+1).ToString();
+        pause.SetActive(true);
+        if(apneaCount >= 0)
+        {
+            apneaCount -= Time.deltaTime;
+        }
+    }
+
+    public void StopApnea()
+    {
+        pause.SetActive(false);
+        apneaCount = scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].apnea;
+    }
+
     public void SaveGraphData()
     {
-        graphPointList.Add(maxTargetScale);
-        maxTargetScale = 0; 
+        //graphPointList = new List<float>{800, 120, 600, 900}; //test
+        graphPointList.Add(maxFlow);
+        maxTargetScale = 0;
+        maxFlow = 0;
     }
 
     public void CreateGraph()
