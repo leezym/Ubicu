@@ -13,8 +13,8 @@ public class PlayerMovement : MonoBehaviour
     public GameObject pause;
     public TMP_Text pauseText;
     public GameObject graphPrefab;
+    public GameObject goalGraph;
     public Transform graphStructure;
-    public Transform goalGraph;
     public TMP_Text restText;
     public TMP_Text seriesTextGame;
     public TMP_Text seriesTextGraph;
@@ -44,9 +44,10 @@ public class PlayerMovement : MonoBehaviour
         targetScale = (scriptsGroup.bluetoothPairing.prom * maximunScale / scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].flujo) + minimunScale;
 
         if (targetScale < minimunScale)
-            transform.localScale = new Vector2(minimunScale,minimunScale);
-        else if (targetScale > maximunScale)
-            transform.localScale = new Vector2(maximunScale,maximunScale);
+            targetScale = minimunScale;
+        if (targetScale > maximunScale)
+            targetScale = maximunScale;
+
     }
     
     public void Movement()
@@ -54,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
         if (targetScale > maxTargetScale)
             maxTargetScale = targetScale;
 
-        transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(targetScale, targetScale), Time.deltaTime / speedStandarScale);
+        transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(maxTargetScale, maxTargetScale), Time.deltaTime * speedStandarScale);
     }
 
     public void RestingPlayer()
@@ -68,7 +69,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void ContinueGame()
     {
-        scriptsGroup.obstacles.InvokeApenaTest();
+        scriptsGroup.obstacles.InvokeApenaTest(); //test
+        DeleteGraph();
         UI_System uI_System = FindObjectOfType<UI_System>();
         scriptsGroup.gameData.resting = false;
         restCount = scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].periodos_descanso;
@@ -94,10 +96,13 @@ public class PlayerMovement : MonoBehaviour
 
     public void CreateGraph()
     {
-        float maxValue = Mathf.Max(graphPointList.ToArray());
-        float graphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].flujo / maxValue;
-        goalGraph.localPosition = new Vector2(goalGraph.localPosition.x, graphPositionY);
-
+        float maxValue = 0;
+        if(Mathf.Max(graphPointList.ToArray()) > scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].flujo)
+            maxValue = Mathf.Max(graphPointList.ToArray());
+        else
+            maxValue = scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].flujo;
+        
+        float graphPositionY = 0;
         for(int i = 0; i < graphPointList.Count; i++)
         {
             GameObject go = Instantiate(graphPrefab, Vector3.zero, Quaternion.identity);
@@ -114,5 +119,18 @@ public class PlayerMovement : MonoBehaviour
             Image imageLinePrefab = go.transform.Find("Line").GetComponent<Image>();
             imageLinePrefab.rectTransform.sizeDelta = new Vector2(imageLinePrefab.rectTransform.sizeDelta.x, graphPositionY);
         }
+
+        graphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].flujo / maxValue;
+        goalGraph.transform.localPosition = new Vector2(0f, graphPositionY);
+    }
+
+    public void DeleteGraph()
+    {
+        graphPointList = new List<float>();
+        foreach (Transform point in graphStructure.transform)
+        {
+            if(point.gameObject.name == "GraphPrefab(Clone)")
+                Destroy(point.gameObject);
+        }        
     }
 }

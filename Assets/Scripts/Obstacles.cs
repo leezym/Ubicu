@@ -77,7 +77,7 @@ public class Obstacles : MonoBehaviour
             scriptsGroup.gameData.playing = false;
             counter = 0;
             scriptsGroup.playerMovement.CreateGraph();
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1f);
             UI_System uI_System = FindObjectOfType<UI_System>();
             uI_System.SwitchScreens(serieGraph);
             scriptsGroup.gameData.resting = true;
