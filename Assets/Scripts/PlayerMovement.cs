@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class PlayerMovement : MonoBehaviour
@@ -9,80 +10,109 @@ public class PlayerMovement : MonoBehaviour
     public float minimunScale;
     public float maximunScale;
     public int speedStandarScale;
-    public int speedExtraScale;
-    public BluetoothPairing bluetoothPairingScript;
-    public Login loginScript;
     public GameObject pause;
     public TMP_Text pauseText;
+    public GameObject graphPrefab;
+    public Transform graphStructure;
+    public Transform goalGraph;
+    public TMP_Text restText;
+    public TMP_Text seriesTextGame;
+    public TMP_Text seriesTextGraph;
+    public UI_Screen exerciseMenu_Game;
+    public UI_Screen sessionMenu;
 
-    //[Header("IN GAME")]
+    [Header("IN GAME")]
+    public float maxTargetScale;
+    public ScriptsGroup scriptsGroup;
+    public List<float> graphPointList = new List<float>();
+    float targetScale;
+    float restCount;
+    float seriesCount;
+
     void Start()
     {
+        scriptsGroup = FindObjectOfType<ScriptsGroup>();
         transform.localScale = new Vector2(minimunScale,minimunScale);
+        //graphPointList = new List<float>{800, 120, 600, 900}; //test
+        restCount = scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].periodos_descanso;
     }
-
-    void FixedUpdate()
+    
+    public void MovementWhilePlaying()
     {
-
-        loginScript.exerciseFlujoPrefab.text = bluetoothPairingScript.prom.ToString() +"ml";
+        //scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = scriptsGroup.bluetoothPairing.prom.ToString() +"ml";
         // convert
-        float targetScale = bluetoothPairingScript.prom * maximunScale / loginScript.jsonObjectExercises.array[loginScript.idJsonObjectExercises].flujo;
+        targetScale = (scriptsGroup.bluetoothPairing.prom * maximunScale / scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].flujo) + minimunScale;
 
         if (targetScale < minimunScale)
             transform.localScale = new Vector2(minimunScale,minimunScale);
         else if (targetScale > maximunScale)
             transform.localScale = new Vector2(maximunScale,maximunScale);
-            //transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(targetScale, targetScale), Time.deltaTime / speedExtraScale);
-        else
-            transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(targetScale, targetScale), Time.deltaTime * speedStandarScale);  
+    }
+    
+    public void Movement()
+    {
+        if (targetScale > maxTargetScale)
+            maxTargetScale = targetScale;
+
+        transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(targetScale, targetScale), Time.deltaTime / speedStandarScale);
     }
 
-    // public void StartMovement()
-    // {
-    //     StartCoroutine(MovementIn());
-    // }
+    public void RestingPlayer()
+    {
+        restText.text = "Descansa por " + (int)restCount + " segundos...";
+        if(restCount >= 0)
+            restCount -= Time.deltaTime;
+        else
+            ContinueGame();
+    }
 
-    // IEnumerator MovementIn()
-    // {
-    //     for (int i = 0; i < loginScript.jsonObjectExercises.array[loginScript.idJsonObjectExercises].flujo; i++)
-    //     {
-    //         float targetScale = (i * maximunScale / loginScript.jsonObjectExercises.array[loginScript.idJsonObjectExercises].flujo) + minimunScale;
-    //         if (transform.localScale.x < minimunScale)
-    //             transform.localScale = new Vector2(minimunScale,minimunScale);
-    //         else if (transform.localScale.x > maximunScale)
-    //             transform.localScale = new Vector2(maximunScale,maximunScale);
-    //         else
-    //             transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(targetScale, targetScale), Time.deltaTime * speedScale);
-            
-    //         yield return new WaitForSeconds(0.005f);
-    //     }
+    public void ContinueGame()
+    {
+        scriptsGroup.obstacles.InvokeApenaTest();
+        UI_System uI_System = FindObjectOfType<UI_System>();
+        scriptsGroup.gameData.resting = false;
+        restCount = scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].periodos_descanso;
+        if(seriesCount < scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].series)
+        {
+            uI_System.SwitchScreens(exerciseMenu_Game);
+            scriptsGroup.gameData.playing = true;
+            seriesTextGame.text = "SERIE "+ (seriesCount+1);
+            seriesTextGraph.text = "SERIE "+ (seriesCount+1);
+            seriesCount++;
+        }
+        else
+        {
+            uI_System.SwitchScreens(sessionMenu);
+        }
+    }
 
-    //     pause.SetActive(true);
-    //     for(int i = loginScript.jsonObjectExercises.array[loginScript.idJsonObjectExercises].apnea; i > 0; i--)
-    //     {
-    //         pauseText.text = i.ToString();
-    //         yield return new WaitForSeconds(1f);
-    //     }
-    //     pause.SetActive(false);
+    public void SaveGraphData()
+    {
+        graphPointList.Add(maxTargetScale);
+        maxTargetScale = 0; 
+    }
 
-    //     StopCoroutine(MovementIn());
-    //     StartCoroutine(MovementOut());
-    // }
-    // IEnumerator MovementOut()
-    // {
-    //     for (int i = loginScript.jsonObjectExercises.array[loginScript.idJsonObjectExercises].flujo; i > 0; i--)
-    //     {
-    //         float targetScale = (i * maximunScale / loginScript.jsonObjectExercises.array[loginScript.idJsonObjectExercises].flujo) + minimunScale;
-    //         if (transform.localScale.x < minimunScale)
-    //             transform.localScale = new Vector2(minimunScale,minimunScale);
-    //         else if (transform.localScale.x > maximunScale)
-    //             transform.localScale = new Vector2(maximunScale,maximunScale);
-    //         else
-    //             transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(targetScale, targetScale), Time.deltaTime * speedScale);
-            
-    //         yield return new WaitForSeconds(0.005f);
-    //     }
-    //     StopCoroutine(MovementOut());
-    //     StartCoroutine(MovementIn());
-    // }
+    public void CreateGraph()
+    {
+        float maxValue = Mathf.Max(graphPointList.ToArray());
+        float graphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].flujo / maxValue;
+        goalGraph.localPosition = new Vector2(goalGraph.localPosition.x, graphPositionY);
+
+        for(int i = 0; i < graphPointList.Count; i++)
+        {
+            GameObject go = Instantiate(graphPrefab, Vector3.zero, Quaternion.identity);
+            go.SetActive(true);
+            go.transform.parent = graphStructure.transform;
+            go.transform.localScale = new Vector3(1,1,1);
+
+            //X position
+            float graphPositionX = (i + 1) * (graphStructure.GetComponent<RectTransform>().rect.width / (graphPointList.Count + 1)); //+1 para dejar un margen visual de la gráfica
+            // Y position
+            graphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * graphPointList[i] / maxValue;
+            go.transform.localPosition = new Vector2(graphPositionX, graphPositionY);
+
+            Image imageLinePrefab = go.transform.Find("Line").GetComponent<Image>();
+            imageLinePrefab.rectTransform.sizeDelta = new Vector2(imageLinePrefab.rectTransform.sizeDelta.x, graphPositionY);
+        }
+    }
 }

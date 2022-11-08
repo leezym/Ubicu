@@ -16,11 +16,9 @@ public class BluetoothPairing : MonoBehaviour
     object[] parameters2 = new object[2];
 
     [Header("ATTACHED")]
-    public GameObject bluetoothContent;
     public GameObject prefabTextBluetooth;
-    public GameObject loginMenu;
-    public GameObject bluetoothMenu;
-    public GameObject loadingScreen;
+    public GameObject bluetoothContent;
+    public UI_Screen login;
 
     [Header("IN GAME")]
     public float prom = 0;
@@ -55,6 +53,7 @@ public class BluetoothPairing : MonoBehaviour
             foreach(string s in subs)
             {                
                 GameObject go = Instantiate(prefabTextBluetooth, Vector3.zero, Quaternion.identity);
+                go.SetActive(true);
                 go.name = s.Substring(s.Length - 17, 17);
                 go.transform.parent = bluetoothContent.transform;
                 
@@ -99,13 +98,12 @@ public class BluetoothPairing : MonoBehaviour
     }
 
     IEnumerator LoadingScreen(){
-        bluetoothMenu.SetActive(false);
-        loadingScreen.SetActive(true);
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.5f);
         bluet.Call("connectToDevice", parameters2);
         yield return new WaitForSeconds(3f);
-        loadingScreen.SetActive(false);
-        loginMenu.SetActive(true);
+        Debug.Log("SFSDFSDFSD");
+        UI_System uI_System = FindObjectOfType<UI_System>();
+        uI_System.SwitchScreens(login);
         StopCoroutine(LoadingScreen());
     }    
 

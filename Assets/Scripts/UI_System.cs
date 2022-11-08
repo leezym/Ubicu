@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class UI_System : MonoBehaviour
 {
@@ -21,6 +22,10 @@ public class UI_System : MonoBehaviour
     public UI_Screen PreviousScreen{get{return previousScreen;}}
     private UI_Screen currentScreen;
     public UI_Screen CurrentScreen{get{return currentScreen;}}
+
+    [Header("VIDEO PROPERTIES")]
+    public UnityEvent OnEndReached;
+    public VideoPlayer videoPlayer;
     #endregion
 
     #region Main Method
@@ -36,6 +41,8 @@ public class UI_System : MonoBehaviour
             m_Fader.gameObject.SetActive(true);
         }
         FadeIn();
+
+        videoPlayer.loopPointReached += VideoPlayer_loopPointReached;
     }
     #endregion
 
@@ -92,6 +99,10 @@ public class UI_System : MonoBehaviour
     IEnumerator WaitToLoadScene(int sceneIndex)
     {
         yield return null;
+    }
+    private void VideoPlayer_loopPointReached(VideoPlayer source)
+    {
+        OnEndReached.Invoke();
     }
     #endregion
 }
