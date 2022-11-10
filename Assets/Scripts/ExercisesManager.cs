@@ -19,21 +19,19 @@ public class ExercisesManager : MonoBehaviour
     public TMP_Text exerciseFlujoPrefab;
 
     [Header("IN GAME")]
-    public ScriptsGroup scriptsGroup;
     public Transform sessionTitlePrefab;
     public Exercises jsonObjectExercises;
 
     public void Start()
     {
-        scriptsGroup = FindObjectOfType<ScriptsGroup>();
         TestGetExercise();
     }
     
     public IEnumerator GetExercises()
     {
         WWWForm form = new WWWForm();
-        form.AddField("id_user", scriptsGroup.login.jsonObject.user._id);
-        form.AddField("token", scriptsGroup.login.jsonObject.token);
+        form.AddField("id_user", GameData.Instance.scriptsGroup.login.jsonObject.user._id);
+        form.AddField("token", GameData.Instance.scriptsGroup.login.jsonObject.token);
 
         UnityWebRequest www = UnityWebRequest.Post("http://d2yaaz8bde1qj3.cloudfront.net/allEjerciciosByUser", form);
 
@@ -57,7 +55,7 @@ public class ExercisesManager : MonoBehaviour
             bool emptyExercise = false; // array.Count = 0
             bool uniqueExercise = false; //  array.Count = 1
             bool currentDate = false; // fecha_inicio y fecha_fin dentro de DateTime.Today
-            scriptsGroup.gameData.idJsonObjectExercises = -1;
+            GameData.Instance.idJsonObjectExercises = -1;
 
             if(jsonObjectExercises.array.Count == 0)
             {
@@ -69,7 +67,7 @@ public class ExercisesManager : MonoBehaviour
                 if(jsonObjectExercises.array.Count == 1)
                 {
                     uniqueExercise = true;
-                    scriptsGroup.gameData.idJsonObjectExercises = 0;
+                    GameData.Instance.idJsonObjectExercises = 0;
                     if (DateTime.Today >= DateTime.Parse(jsonObjectExercises.array[0].fecha_inicio, new CultureInfo("de-DE")) && DateTime.Today <= DateTime.Parse(jsonObjectExercises.array[0].fecha_fin, new CultureInfo("de-DE")))
                         currentDate = true;
                     else
@@ -81,11 +79,11 @@ public class ExercisesManager : MonoBehaviour
                     currentDate = true;
                     if (DateTime.Today >= DateTime.Parse(jsonObjectExercises.array[jsonObjectExercises.array.Count-1].fecha_inicio, new CultureInfo("de-DE")) && DateTime.Today <= DateTime.Parse(jsonObjectExercises.array[jsonObjectExercises.array.Count-1].fecha_fin, new CultureInfo("de-DE")))
                     {
-                        scriptsGroup.gameData.idJsonObjectExercises = jsonObjectExercises.array.Count-1;
+                        GameData.Instance.idJsonObjectExercises = jsonObjectExercises.array.Count-1;
                     }
                     else if (DateTime.Today >= DateTime.Parse(jsonObjectExercises.array[jsonObjectExercises.array.Count-2].fecha_inicio, new CultureInfo("de-DE")) && DateTime.Today <= DateTime.Parse(jsonObjectExercises.array[jsonObjectExercises.array.Count-2].fecha_fin, new CultureInfo("de-DE")))
                     {
-                        scriptsGroup.gameData.idJsonObjectExercises = jsonObjectExercises.array.Count-2;
+                        GameData.Instance.idJsonObjectExercises = jsonObjectExercises.array.Count-2;
                     }
                     else
                         currentDate = false;
@@ -93,7 +91,7 @@ public class ExercisesManager : MonoBehaviour
             }
 
             // la cantidad de sesiones es de acuerdo al campo cada cuantas horas, es decir 12h/ejercicio.frecuencia_horas 
-            int sesiones = AddExercise(emptyExercise, uniqueExercise, currentDate, scriptsGroup.gameData.idJsonObjectExercises);
+            int sesiones = AddExercise(emptyExercise, uniqueExercise, currentDate, GameData.Instance.idJsonObjectExercises);
 
             if(sesiones == 0)
             {
@@ -118,7 +116,7 @@ public class ExercisesManager : MonoBehaviour
                     sessionTitlePrefab.GetComponent<TMP_Text>().text = "Sesión " + i;
 
                     go.GetComponent<Button>().onClick.AddListener(()=>{
-                        AddExcersiseData(scriptsGroup.gameData.idJsonObjectExercises);              
+                        AddExcersiseData(GameData.Instance.idJsonObjectExercises);              
                     });
                 }
             }
@@ -137,9 +135,9 @@ public class ExercisesManager : MonoBehaviour
                 duracion_total = 30,
                 frecuencia_dias = 7,
                 frecuencia_horas = 4,
-                repeticiones = 2,
-                series = 3,
-                periodos_descanso = 30,
+                repeticiones = 3,
+                series = 2,
+                periodos_descanso = 10,
                 fecha_inicio = "07/11/2022",
                 fecha_fin = "13/11/2022",
                 apnea = 3,
@@ -165,7 +163,7 @@ public class ExercisesManager : MonoBehaviour
         bool emptyExercise = false; // array.Count = 0
         bool uniqueExercise = false; //  array.Count = 1
         bool currentDate = false; // fecha_inicio y fecha_fin dentro de DateTime.Today
-        scriptsGroup.gameData.idJsonObjectExercises = -1;
+        GameData.Instance.idJsonObjectExercises = -1;
 
         if(jsonObjectExercises.array.Count == 0)
         {
@@ -177,7 +175,7 @@ public class ExercisesManager : MonoBehaviour
             if(jsonObjectExercises.array.Count == 1)
             {
                 uniqueExercise = true;
-                scriptsGroup.gameData.idJsonObjectExercises = 0;
+                GameData.Instance.idJsonObjectExercises = 0;
                 if (DateTime.Today >= DateTime.Parse(jsonObjectExercises.array[0].fecha_inicio, new CultureInfo("de-DE")) && DateTime.Today <= DateTime.Parse(jsonObjectExercises.array[0].fecha_fin, new CultureInfo("de-DE")))
                     currentDate = true;
                 else
@@ -189,11 +187,11 @@ public class ExercisesManager : MonoBehaviour
                 currentDate = true;
                 if (DateTime.Today >= DateTime.Parse(jsonObjectExercises.array[jsonObjectExercises.array.Count-1].fecha_inicio, new CultureInfo("de-DE")) && DateTime.Today <= DateTime.Parse(jsonObjectExercises.array[jsonObjectExercises.array.Count-1].fecha_fin, new CultureInfo("de-DE")))
                 { 
-                    scriptsGroup.gameData.idJsonObjectExercises = jsonObjectExercises.array.Count-1;
+                    GameData.Instance.idJsonObjectExercises = jsonObjectExercises.array.Count-1;
                 }
                 else if (DateTime.Today >= DateTime.Parse(jsonObjectExercises.array[jsonObjectExercises.array.Count-2].fecha_inicio, new CultureInfo("de-DE")) && DateTime.Today <= DateTime.Parse(jsonObjectExercises.array[jsonObjectExercises.array.Count-2].fecha_fin, new CultureInfo("de-DE")))
                 {
-                    scriptsGroup.gameData.idJsonObjectExercises = jsonObjectExercises.array.Count-2;
+                    GameData.Instance.idJsonObjectExercises = jsonObjectExercises.array.Count-2;
                 }
                 else
                 {
@@ -203,7 +201,7 @@ public class ExercisesManager : MonoBehaviour
         }
 
         // la cantidad de sesiones es de acuerdo al campo cada cuantas horas, es decir 12h/ejercicio.frecuencia_horas 
-        int sesiones = AddExercise(emptyExercise, uniqueExercise, currentDate, scriptsGroup.gameData.idJsonObjectExercises);
+        int sesiones = AddExercise(emptyExercise, uniqueExercise, currentDate, GameData.Instance.idJsonObjectExercises);
 
         if(sesiones == 0)
         {
@@ -229,7 +227,7 @@ public class ExercisesManager : MonoBehaviour
                 sessionTitlePrefab.GetComponent<TMP_Text>().text = "Sesión " + i;
 
                 go.GetComponent<Button>().onClick.AddListener(()=>{
-                    AddExcersiseData(scriptsGroup.gameData.idJsonObjectExercises);           
+                    AddExcersiseData(GameData.Instance.idJsonObjectExercises);           
                 });
             }
         }

@@ -47,14 +47,14 @@ public class BluetoothPairing : MonoBehaviour
 
         if (data != null)
         {
-            string[] subs = data.Split(';');
+            string[] devices = data.Split(';');
             Debug.LogWarningFormat("Devices: {0}", data);
 
-            foreach(string s in subs)
+            foreach(string s in devices)
             {                
                 GameObject go = Instantiate(prefabTextBluetooth, Vector3.zero, Quaternion.identity);
                 go.SetActive(true);
-                go.name = s.Substring(s.Length - 17, 17);
+                go.name = s.Substring(s.Length - 17, 17); //MAC
                 go.transform.parent = bluetoothContent.transform;
                 
                 TextMeshProUGUI text = go.GetComponentInChildren<TextMeshProUGUI>();
@@ -62,7 +62,7 @@ public class BluetoothPairing : MonoBehaviour
 
                 go.GetComponent<Button>().onClick.AddListener(()=>{
                     parameters2[0] = 4;
-                    parameters2[1] = go.name;
+                    parameters2[1] = go.name; //MAC
                     StartCoroutine(LoadingScreen());
                 });
 
@@ -74,19 +74,44 @@ public class BluetoothPairing : MonoBehaviour
     {
             string data = bluet.Call<string>("getData");
             
-            string[] strings = Regex.Split(data, Environment.NewLine);
+            string[] info = Regex.Split(data, Environment.NewLine);
             List<float> valuesList = new List<float>();
             float tempValue;
-            for (int i = 1; i < strings.Length-1; i++)
+            int apneaValue;
+            bool apnea;
+
+            for (int i = 1; i < info.Length-1; i++)
             {
-                if(float.TryParse(strings[i], out tempValue))
+                string[] patientData = Regex.Split(info[i], ",");
+                // patientData[0] -> flujo
+                // patientData[1] -> apnea
+                // patientData[2] -> frecuencia respiratoria
+                if(float.TryParse(patientData[0], out tempValue))
                 {
                     valuesList.Add(tempValue);
-                } else
+                    if(tempValue == 0)
+                        GameData.Instance.inspiration = false;
+                    else
+                        GameData.Instance.inspiration = true;
+                }
+                else
                 {
-                    Console.WriteLine("error parse data {0}", strings[i]);
+                    Console.WriteLine("error parse data {0}", patientData[0]);
+                }
+
+                if(int.TryParse(patientData[1], out apneaValue))
+                {
+                    if(apneaValue == 1)
+                        GameData.Instance.apnea = true;
+                    else 
+                        GameData.Instance.apnea = false;
+                } 
+                else
+                {
+                    Console.WriteLine("error parse data {1}", patientData[1]);
                 }
             }
+
             float[] valuesDouble = valuesList.ToArray();
 
             if(valuesDouble.Length > 0)
@@ -101,7 +126,6 @@ public class BluetoothPairing : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         bluet.Call("connectToDevice", parameters2);
         yield return new WaitForSeconds(3f);
-        Debug.Log("SFSDFSDFSD");
         UI_System uI_System = FindObjectOfType<UI_System>();
         uI_System.SwitchScreens(login);
         StopCoroutine(LoadingScreen());

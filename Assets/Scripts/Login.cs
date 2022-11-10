@@ -14,12 +14,10 @@ public class Login : MonoBehaviour
     public UI_Screen sessionMenu;
 
     [Header("IN GAME")]
-    public ScriptsGroup scriptsGroup;
     public Data jsonObject;
 
     public void Start()
     {
-        scriptsGroup = FindObjectOfType<ScriptsGroup>();
     }
 
     public void LogIn(){
@@ -63,7 +61,7 @@ public class Login : MonoBehaviour
             uI_System.SwitchScreens(sessionMenu);
 
             StopCoroutine(OnLogin());
-            StartCoroutine(scriptsGroup.exercisesManager.GetExercises());
+            StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.GetExercises());
         }
     }
 }

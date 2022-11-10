@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ScriptsGroup : MonoBehaviour
 {
-    public GameData gameData;
     public BluetoothPairing bluetoothPairing;
     public ExercisesManager exercisesManager;
     public Login login;

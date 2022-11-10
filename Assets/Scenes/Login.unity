@@ -1105,7 +1105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdc4acca75eee1449bd97d927037258b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptsGroup: {fileID: 0}
+  scriptsGroup: {fileID: 801132551}
 --- !u!4 &164669504
 Transform:
   m_ObjectHideFlags: 0
@@ -1670,7 +1670,6 @@ MonoBehaviour:
   userInputField: {fileID: 1997993793}
   passInputField: {fileID: 175539327}
   sessionMenu: {fileID: 643810922}
-  scriptsGroup: {fileID: 0}
   jsonObject:
     token: 
     user:
@@ -1704,7 +1703,6 @@ MonoBehaviour:
   exerciseApneaPrefab: {fileID: 533224204}
   exerciseDescansoPrefab: {fileID: 1616352157}
   exerciseFlujoPrefab: {fileID: 1991717223}
-  scriptsGroup: {fileID: 0}
   sessionTitlePrefab: {fileID: 0}
   jsonObjectExercises:
     array: []
@@ -1720,15 +1718,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a90fe93983976c245883b26bba2066cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secondsAferApnea: 8
+  secondsAferApnea: 1.5
   enabledCounter: 1
   limit: {fileID: 1323048253}
   serieGraph: {fileID: 1043462109}
   serieGameText: {fileID: 857755605}
   repGameText: {fileID: 1089974107}
-  scriptsGroup: {fileID: 0}
-  counter: 0
-  apnea: 0
+  repCounter: 0
 --- !u!1 &309271656
 GameObject:
   m_ObjectHideFlags: 0
@@ -3642,7 +3638,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77c9b65285898e84196000b2f1779778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_StartScreen: {fileID: 309271660}
+  m_StartScreen: {fileID: 403161336}
   onSwitchedScreen:
     m_PersistentCalls:
       m_Calls: []
@@ -3695,7 +3691,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 338fa25dcebb6de44bc8c736b9fb3fce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameData: {fileID: 164669503}
   bluetoothPairing: {fileID: 271504638}
   exercisesManager: {fileID: 271504640}
   login: {fileID: 271504639}
@@ -6528,7 +6523,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minimunScale: 0.1
   maximunScale: 1.13
-  speedStandarScale: 2
+  speedStandarScale: 3
   pause: {fileID: 1622353318}
   pauseText: {fileID: 110329460}
   graphPrefab: {fileID: 1006487865}
@@ -6541,7 +6536,6 @@ MonoBehaviour:
   sessionMenu: {fileID: 643810922}
   maxTargetScale: 0
   maxFlow: 0
-  scriptsGroup: {fileID: 0}
   graphPointList: []
 --- !u!114 &1393575487
 MonoBehaviour:

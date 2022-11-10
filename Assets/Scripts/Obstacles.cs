@@ -14,71 +14,42 @@ public class Obstacles : MonoBehaviour
     public TMP_Text repGameText;
 
     [Header("IN GAME")]
-    public ScriptsGroup scriptsGroup;
-    public int counter;
-    public bool apnea;
-    
-    void Start()
-    {
-        scriptsGroup = FindObjectOfType<ScriptsGroup>();
-    }
-    public void InvokeApenaTest()
-    {
-        float time = scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].apnea + (secondsAferApnea*2);
-        InvokeRepeating("CallApenaTest", 0.25f, time);
-    }
-    
-    public void CallApenaTest()
-    {
-        StartCoroutine(ApenaTest());
-    }
+    public int repCounter;
 
-    IEnumerator ApenaTest()
+    public void ObstaclesCounter()
     {
-        apnea = false;
-        limit.SetActive(true);
-        yield return new WaitForSeconds(secondsAferApnea);
-        apnea = true;
-        limit.SetActive(false);
-        yield return new WaitForSeconds(scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].apnea);
-        apnea = false;
-        limit.SetActive(false);
-        yield return new WaitForSeconds(secondsAferApnea);
-    }
-
-    public IEnumerator ObstaclesCounter()
-    {
-        repGameText.text = "REPETICIÓN\n"+counter.ToString()+"/"+scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].repeticiones;
-        if(counter < scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].repeticiones)
+        repGameText.text = "REPETICIÓN\n"+repCounter.ToString()+"/"+GameData.Instance.scriptsGroup.exercisesManager.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].repeticiones;
+        if(repCounter < GameData.Instance.scriptsGroup.exercisesManager.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].repeticiones)
         {
-            if (!apnea)
+            if (!GameData.Instance.apnea) //manejador de estados if 0 -> 0 inspiracion if 1 -> 0 expiracion
             {
                 enabledCounter = true;
-                scriptsGroup.playerMovement.Movement();
-                scriptsGroup.playerMovement.StopApnea();
+                GameData.Instance.scriptsGroup.playerMovement.StopApnea();
+                GameData.Instance.scriptsGroup.playerMovement.Movement();
+
             }
             else
-                scriptsGroup.playerMovement.StartApnea();
-
-            if(apnea && enabledCounter)
             {
-                enabledCounter = false;
-                scriptsGroup.playerMovement.SaveGraphData();
-                yield return new WaitForSeconds(scriptsGroup.exercisesManager.jsonObjectExercises.array[scriptsGroup.gameData.idJsonObjectExercises].apnea + secondsAferApnea);
-                counter++;
+                GameData.Instance.scriptsGroup.playerMovement.StartApnea();
+                if(enabledCounter)
+                {
+                    enabledCounter = false;
+                    GameData.Instance.scriptsGroup.playerMovement.SaveGraphData();
+                    repCounter ++;
+                }
             }
         }
         else
         {
-            CancelInvoke(); //apneatest
-            scriptsGroup.gameData.playing = false;
-            counter = 0;
-            scriptsGroup.playerMovement.CreateGraph();
-            yield return new WaitForSeconds(1f);
-            UI_System uI_System = FindObjectOfType<UI_System>();
-            uI_System.SwitchScreens(serieGraph);
-            scriptsGroup.gameData.resting = true;
+            if(!GameData.Instance.apnea)
+            {
+                GameData.Instance.playing = false;
+                repCounter = 0;
+                GameData.Instance.scriptsGroup.playerMovement.CreateGraph();
+                UI_System uI_System = FindObjectOfType<UI_System>();
+                uI_System.SwitchScreens(serieGraph);
+                GameData.Instance.resting = true;
+            }
         }
-        StopCoroutine(ObstaclesCounter());
     }
 }
