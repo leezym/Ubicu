@@ -79,9 +79,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void ContinueGame()
     {
-        //GameData.Instance.scriptsGroup.obstacles.InvokeApenaTest(); //test
-        //GameData.Instance.inspiration = true;
-        //GameData.Instance.expiration = false;
         DeleteGraph();
         UI_System uI_System = FindObjectOfType<UI_System>();
         GameData.Instance.resting = false;
@@ -96,7 +93,9 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            seriesCount = 0;
             uI_System.SwitchScreens(sessionMenu);
+            GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards();
         }
     }
 

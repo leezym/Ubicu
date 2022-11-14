@@ -21,6 +21,7 @@ public class ExercisesManager : MonoBehaviour
     [Header("IN GAME")]
     public Transform sessionTitlePrefab;
     public Exercises jsonObjectExercises;
+    public int sesiones;
 
     public void Start()
     {
@@ -133,13 +134,13 @@ public class ExercisesManager : MonoBehaviour
                 id_user = "1",
                 nombre = "Elizabeth Moncada",
                 duracion_total = 30,
-                frecuencia_dias = 7,
-                frecuencia_horas = 4,
+                frecuencia_dias = 1,
+                frecuencia_horas = 6,
                 repeticiones = 3,
                 series = 2,
                 periodos_descanso = 10,
-                fecha_inicio = "07/11/2022",
-                fecha_fin = "13/11/2022",
+                fecha_inicio = "21/11/2022",
+                fecha_fin = "27/11/2022",
                 apnea = 3,
                 flujo = 900
             }, 
@@ -148,13 +149,13 @@ public class ExercisesManager : MonoBehaviour
                 id_user = "1",
                 nombre = "Elizabeth Moncada",
                 duracion_total = 30,
-                frecuencia_dias = 7,
-                frecuencia_horas = 2,
+                frecuencia_dias = 1,
+                frecuencia_horas = 6,
                 repeticiones = 2,
                 series = 3,
-                periodos_descanso = 30,
+                periodos_descanso = 10,
                 fecha_inicio = "14/11/2022",
-                fecha_fin = "20/11/2022",
+                fecha_fin = "15/11/2022",
                 apnea = 2,
                 flujo = 1200
             }
@@ -201,7 +202,7 @@ public class ExercisesManager : MonoBehaviour
         }
 
         // la cantidad de sesiones es de acuerdo al campo cada cuantas horas, es decir 12h/ejercicio.frecuencia_horas 
-        int sesiones = AddExercise(emptyExercise, uniqueExercise, currentDate, GameData.Instance.idJsonObjectExercises);
+        sesiones = AddExercise(emptyExercise, uniqueExercise, currentDate, GameData.Instance.idJsonObjectExercises);
 
         if(sesiones == 0)
         {

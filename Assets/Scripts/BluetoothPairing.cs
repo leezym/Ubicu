@@ -89,10 +89,7 @@ public class BluetoothPairing : MonoBehaviour
                 if(float.TryParse(patientData[0], out tempValue))
                 {
                     valuesList.Add(tempValue);
-                    if(tempValue == 0)
-                        GameData.Instance.inspiration = false;
-                    else
-                        GameData.Instance.inspiration = true;
+                    GameData.Instance.inspiration = (tempValue == 0 ? false : true);
                 }
                 else
                 {
@@ -101,10 +98,7 @@ public class BluetoothPairing : MonoBehaviour
 
                 if(int.TryParse(patientData[1], out apneaValue))
                 {
-                    if(apneaValue == 1)
-                        GameData.Instance.apnea = true;
-                    else 
-                        GameData.Instance.apnea = false;
+                    GameData.Instance.apnea = (apneaValue == 1 ? true : false);
                 } 
                 else
                 {

@@ -70,4 +70,10 @@ public class GameData : MonoBehaviour
         if(resting)
             GameData.Instance.scriptsGroup.playerMovement.RestingPlayer();
     }
+
+    void OnApplicationQuit()
+    {
+        Debug.Log("OnApplicationQuit");
+        scriptsGroup.rewardsManager.SaveReward();
+    }
 }

@@ -9,4 +9,5 @@ public class ScriptsGroup : MonoBehaviour
     public Login login;
     public Obstacles obstacles;
     public PlayerMovement playerMovement;
+    public RewardsManager rewardsManager;
 }
