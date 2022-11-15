@@ -94,8 +94,11 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             seriesCount = 0;
-            uI_System.SwitchScreens(sessionMenu);
             GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards();
+            GameData.Instance.scriptsGroup.exercisesManager.sesionesList[GameData.Instance.idListHourExercises].GetComponent<Button>().interactable = false;
+            GameData.Instance.scriptsGroup.exercisesManager.exerciseHour[GameData.Instance.idListHourExercises] = 0;
+            GameData.Instance.idListHourExercises = -1;
+            uI_System.SwitchScreens(sessionMenu);
         }
     }
 

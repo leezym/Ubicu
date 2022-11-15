@@ -9,6 +9,8 @@ using System.Globalization;
 
 public class ExercisesManager : MonoBehaviour
 {
+    public static int START_HOUR_EXERCISE = 9;
+
     [Header("ATTACHED")]
     public GameObject sessionPrefab;
     public GameObject sessionContent;
@@ -22,6 +24,9 @@ public class ExercisesManager : MonoBehaviour
     public Transform sessionTitlePrefab;
     public Exercises jsonObjectExercises;
     public int sesiones;
+    public List<GameObject> sesionesList = new List<GameObject>();
+    public int[] exerciseHour = new int[0];
+    public float extraHourToWaitForExercise;
 
     public void Start()
     {
@@ -116,9 +121,13 @@ public class ExercisesManager : MonoBehaviour
                     sessionTitlePrefab = go.transform.Find("TitleText");
                     sessionTitlePrefab.GetComponent<TMP_Text>().text = "Sesión " + i;
 
-                    go.GetComponent<Button>().onClick.AddListener(()=>{
-                        AddExcersiseData(GameData.Instance.idJsonObjectExercises);              
-                    });
+                    sesionesList.Add(go);
+
+                    go.GetComponent<Button>().interactable = false;
+                    AddExcersiseData(GameData.Instance.idJsonObjectExercises);
+                    /*go.GetComponent<Button>().onClick.AddListener(()=>{
+                        AddExcersiseData(GameData.Instance.idJsonObjectExercises);
+                    });*/
                 }
             }
             StopCoroutine(GetExercises());
@@ -150,7 +159,7 @@ public class ExercisesManager : MonoBehaviour
                 nombre = "Elizabeth Moncada",
                 duracion_total = 30,
                 frecuencia_dias = 1,
-                frecuencia_horas = 6,
+                frecuencia_horas = 1,
                 repeticiones = 2,
                 series = 3,
                 periodos_descanso = 10,
@@ -227,9 +236,13 @@ public class ExercisesManager : MonoBehaviour
                 sessionTitlePrefab = go.transform.Find("TitleText");
                 sessionTitlePrefab.GetComponent<TMP_Text>().text = "Sesión " + i;
 
-                go.GetComponent<Button>().onClick.AddListener(()=>{
-                    AddExcersiseData(GameData.Instance.idJsonObjectExercises);           
-                });
+                sesionesList.Add(go);
+
+                go.GetComponent<Button>().interactable = false;
+                AddExcersiseData(GameData.Instance.idJsonObjectExercises);
+                /*go.GetComponent<Button>().onClick.AddListener(()=>{
+                    AddExcersiseData(GameData.Instance.idJsonObjectExercises);
+                });*/
             }
         }
     }
@@ -253,5 +266,15 @@ public class ExercisesManager : MonoBehaviour
         exerciseApneaPrefab.text = jsonObjectExercises.array[idJsonObjectExercises].apnea.ToString();
         exerciseDescansoPrefab.text = jsonObjectExercises.array[idJsonObjectExercises].periodos_descanso.ToString();
         exerciseFlujoPrefab.text = jsonObjectExercises.array[idJsonObjectExercises].flujo.ToString()+"ml";
+        
+        int hours = START_HOUR_EXERCISE;
+        exerciseHour = new int[sesiones];
+        for(int i = 0; i < sesiones; i++)
+        {
+            exerciseHour[i] = hours;
+            hours += jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas;
+        }
+
+        extraHourToWaitForExercise = (jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas == 1 ? 0.5f : 1f);
     }
 }

@@ -1707,6 +1707,9 @@ MonoBehaviour:
   jsonObjectExercises:
     array: []
   sesiones: 0
+  sesionesList: []
+  exerciseHour: 
+  extraHourToWaitForExercise: 0
 --- !u!114 &271504641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3775,7 +3778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77c9b65285898e84196000b2f1779778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_StartScreen: {fileID: 309271660}
+  m_StartScreen: {fileID: 403161336}
   onSwitchedScreen:
     m_PersistentCalls:
       m_Calls: []

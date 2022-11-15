@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System.Globalization;
 
 public class GameData : MonoBehaviour
 {
@@ -49,6 +52,13 @@ public class GameData : MonoBehaviour
         set { m_jsonObjectExercises = value; }
     }*/
 
+    private int m_idListHourExercises;
+    public int idListHourExercises
+    {
+        get { return m_idListHourExercises; }
+        set { m_idListHourExercises = value; }
+    }
+
     private void Awake()
     {
         if(Instance != null && Instance != this)
@@ -56,19 +66,41 @@ public class GameData : MonoBehaviour
         else
             Instance = this;
     }
+
+    void Start()
+    {
+        idListHourExercises = -1;
+    }
     
     void Update()
     {
         if(playing)
         {
-            GameData.Instance.scriptsGroup.playerMovement.DetectFlow();
-            GameData.Instance.scriptsGroup.obstacles.ObstaclesCounter();            
+            scriptsGroup.playerMovement.DetectFlow();
+            scriptsGroup.obstacles.ObstaclesCounter();            
         }
         //else
             //ya se acaben las series de la sesion
 
         if(resting)
-            GameData.Instance.scriptsGroup.playerMovement.RestingPlayer();
+            scriptsGroup.playerMovement.RestingPlayer();
+
+        
+        // select available session
+        if(scriptsGroup.login.sessionMenu.gameObject.activeSelf)
+        {
+            for(int i  = 0; i < scriptsGroup.exercisesManager.exerciseHour.Length; i++)
+            {
+                // detectar que ejercicio se debe activar
+                if(DateTime.Now.Hour >= scriptsGroup.exercisesManager.exerciseHour[i] 
+                    && DateTime.Now.Hour <= (scriptsGroup.exercisesManager.exerciseHour[i] + scriptsGroup.exercisesManager.extraHourToWaitForExercise))
+                    scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable = true;
+
+                // almacenar el id del ejercicio activado
+                if(scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable)
+                    idListHourExercises = i;
+            }
+        }
     }
 
     void OnApplicationQuit()
