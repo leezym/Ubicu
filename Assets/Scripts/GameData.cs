@@ -76,8 +76,7 @@ public class GameData : MonoBehaviour
     {
         if(playing)
         {
-            scriptsGroup.playerMovement.DetectFlow();
-            scriptsGroup.obstacles.ObstaclesCounter();            
+            StartCoroutine(scriptsGroup.obstacles.ObstaclesCounter());
         }
         //else
             //ya se acaben las series de la sesion
@@ -89,11 +88,11 @@ public class GameData : MonoBehaviour
         // select available session
         if(scriptsGroup.login.sessionMenu.gameObject.activeSelf)
         {
-            for(int i  = 0; i < scriptsGroup.exercisesManager.exerciseHour.Length; i++)
+            for(int i  = 0; i < scriptsGroup.exercisesManager.exerciseHourArray.Length; i++)
             {
                 // detectar que ejercicio se debe activar
-                if(DateTime.Now.Hour >= scriptsGroup.exercisesManager.exerciseHour[i] 
-                    && DateTime.Now.Hour <= (scriptsGroup.exercisesManager.exerciseHour[i] + scriptsGroup.exercisesManager.extraHourToWaitForExercise))
+                if(DateTime.Now.Hour >= scriptsGroup.exercisesManager.exerciseHourArray[i] 
+                    && DateTime.Now.Hour <= (scriptsGroup.exercisesManager.exerciseHourArray[i] + scriptsGroup.exercisesManager.extraHourToWaitForExercise))
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable = true;
 
                 // almacenar el id del ejercicio activado

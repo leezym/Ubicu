@@ -25,7 +25,7 @@ public class ExercisesManager : MonoBehaviour
     public Exercises jsonObjectExercises;
     public int sesiones;
     public List<GameObject> sesionesList = new List<GameObject>();
-    public int[] exerciseHour = new int[0];
+    public int[] exerciseHourArray = new int[0];
     public float extraHourToWaitForExercise;
 
     public void Start()
@@ -151,7 +151,7 @@ public class ExercisesManager : MonoBehaviour
                 fecha_inicio = "21/11/2022",
                 fecha_fin = "27/11/2022",
                 apnea = 3,
-                flujo = 900
+                flujo = 1200
             }, 
             new Exercise{
                 _id = "2",
@@ -268,13 +268,14 @@ public class ExercisesManager : MonoBehaviour
         exerciseFlujoPrefab.text = jsonObjectExercises.array[idJsonObjectExercises].flujo.ToString()+"ml";
         
         int hours = START_HOUR_EXERCISE;
-        exerciseHour = new int[sesiones];
+        exerciseHourArray = new int[sesiones];
         for(int i = 0; i < sesiones; i++)
         {
-            exerciseHour[i] = hours;
+            exerciseHourArray[i] = hours;
             hours += jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas;
         }
 
-        extraHourToWaitForExercise = (jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas == 1 ? 0.5f : 1f);
+        //extraHourToWaitForExercise = (jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas == 1 ? 0.5f : 1f);
+        extraHourToWaitForExercise = 1f; //test
     }
 }

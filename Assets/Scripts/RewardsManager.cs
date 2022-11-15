@@ -31,12 +31,16 @@ public class RewardsManager : MonoBehaviour
     {
         sessionReward = PlayerPrefs.GetInt("sessionReward");
         dayReward = PlayerPrefs.GetInt("dayReward");
+        totalReward = PlayerPrefs.GetInt("totalReward"); //test
+        GameData.Instance.scriptsGroup.exercisesManager.exerciseHourArray = Array.ConvertAll(PlayerPrefs.GetString("exerciseHourArray").Split("/n"), int.Parse);
     }
     
-    public void SaveReward()
+    public void SaveReward() //pdte
     {
         PlayerPrefs.SetInt("sessionReward", sessionReward);
         PlayerPrefs.SetInt("dayReward", dayReward);
+        PlayerPrefs.SetInt("totalReward", totalReward); //test
+        PlayerPrefs.SetString("exerciseHourArray", string.Join("/n", GameData.Instance.scriptsGroup.exercisesManager.exerciseHourArray));
         PlayerPrefs.Save();
     }
 
