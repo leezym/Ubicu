@@ -16,10 +16,6 @@ public class Login : MonoBehaviour
     [Header("IN GAME")]
     public Data jsonObject;
 
-    public void Start()
-    {
-    }
-
     public void LogIn(){
         StartCoroutine(OnLogin());
     }

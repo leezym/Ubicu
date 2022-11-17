@@ -22,17 +22,11 @@ public class RewardsManager : MonoBehaviour
     public int weekReward;
     public int totalReward;
 
-    void Start()
-    {
-        LoadReward();
-    }
-
     public void LoadReward()
     {
         sessionReward = PlayerPrefs.GetInt("sessionReward");
         dayReward = PlayerPrefs.GetInt("dayReward");
         totalReward = PlayerPrefs.GetInt("totalReward"); //test
-        GameData.Instance.scriptsGroup.exercisesManager.exerciseHourArray = Array.ConvertAll(PlayerPrefs.GetString("exerciseHourArray").Split("/n"), int.Parse);
     }
     
     public void SaveReward() //pdte
@@ -40,8 +34,6 @@ public class RewardsManager : MonoBehaviour
         PlayerPrefs.SetInt("sessionReward", sessionReward);
         PlayerPrefs.SetInt("dayReward", dayReward);
         PlayerPrefs.SetInt("totalReward", totalReward); //test
-        PlayerPrefs.SetString("exerciseHourArray", string.Join("/n", GameData.Instance.scriptsGroup.exercisesManager.exerciseHourArray));
-        PlayerPrefs.Save();
     }
 
     public void CalculateRewards()

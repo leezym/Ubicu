@@ -69,6 +69,8 @@ public class GameData : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("Start");
+        scriptsGroup.rewardsManager.LoadReward();
         idListHourExercises = -1;
     }
     
@@ -88,16 +90,28 @@ public class GameData : MonoBehaviour
         // select available session
         if(scriptsGroup.login.sessionMenu.gameObject.activeSelf)
         {
-            for(int i  = 0; i < scriptsGroup.exercisesManager.exerciseHourArray.Length; i++)
+            for(int i = 0; i < scriptsGroup.exercisesManager.exerciseHourArray.Length; i++)
             {
                 // detectar que ejercicio se debe activar
                 if(DateTime.Now.Hour >= scriptsGroup.exercisesManager.exerciseHourArray[i] 
                     && DateTime.Now.Hour <= (scriptsGroup.exercisesManager.exerciseHourArray[i] + scriptsGroup.exercisesManager.extraHourToWaitForExercise))
+                {
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable = true;
-
+                    scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.currentSessionSprite;
+                }        
                 // almacenar el id del ejercicio activado
                 if(scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable)
                     idListHourExercises = i;
+
+                // si no se hizo poner -1
+                if(i < idListHourExercises && scriptsGroup.exercisesManager.exerciseHourArray[i] != 0)
+                    scriptsGroup.exercisesManager.exerciseHourArray[i] = -1;
+                // detectar si los anteriores al actual se hicieron o no
+                if(scriptsGroup.exercisesManager.exerciseHourArray[i] == -1)
+                    scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.notFinishedSessionSprite; 
+                // detectar los que ya se han hecho
+                if (scriptsGroup.exercisesManager.exerciseHourArray[i] == 0)
+                    scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.finishedSessionSprite;
             }
         }
     }
@@ -106,5 +120,7 @@ public class GameData : MonoBehaviour
     {
         Debug.Log("OnApplicationQuit");
         scriptsGroup.rewardsManager.SaveReward();
+        scriptsGroup.exercisesManager.SaveExercise();
+        PlayerPrefs.Save();
     }
 }

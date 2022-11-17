@@ -30,13 +30,11 @@ public class PlayerMovement : MonoBehaviour
     float seriesCount;
     float apneaCount;
 
-    void Start()
+    public void InitializeLevel()
     {
         transform.localScale = new Vector2(minimunScale,minimunScale);
         restCount = GameData.Instance.scriptsGroup.exercisesManager.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso;
         apneaCount = GameData.Instance.scriptsGroup.exercisesManager.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea;
-
-        //graphPointList = new List<float>{800, 120, 600, 900}; //test
     }
     
     public void Movement()
@@ -95,6 +93,7 @@ public class PlayerMovement : MonoBehaviour
             seriesCount = 0;
             GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards();
             GameData.Instance.scriptsGroup.exercisesManager.sesionesList[GameData.Instance.idListHourExercises].GetComponent<Button>().interactable = false;
+            GameData.Instance.scriptsGroup.exercisesManager.sesionesList[GameData.Instance.idListHourExercises].GetComponent<Image>().sprite = GameData.Instance.scriptsGroup.exercisesManager.finishedSessionSprite;
             GameData.Instance.scriptsGroup.exercisesManager.exerciseHourArray[GameData.Instance.idListHourExercises] = 0;
             GameData.Instance.idListHourExercises = -1;
             uI_System.SwitchScreens(sessionMenu);

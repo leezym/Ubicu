@@ -19,6 +19,10 @@ public class ExercisesManager : MonoBehaviour
     public TMP_Text exerciseApneaPrefab;
     public TMP_Text exerciseDescansoPrefab;
     public TMP_Text exerciseFlujoPrefab;
+    public Sprite unavailableSessionSprite;
+    public Sprite currentSessionSprite;
+    public Sprite finishedSessionSprite;
+    public Sprite notFinishedSessionSprite;
 
     [Header("IN GAME")]
     public Transform sessionTitlePrefab;
@@ -27,11 +31,6 @@ public class ExercisesManager : MonoBehaviour
     public List<GameObject> sesionesList = new List<GameObject>();
     public int[] exerciseHourArray = new int[0];
     public float extraHourToWaitForExercise;
-
-    public void Start()
-    {
-        TestGetExercise();
-    }
     
     public IEnumerator GetExercises()
     {
@@ -125,9 +124,6 @@ public class ExercisesManager : MonoBehaviour
 
                     go.GetComponent<Button>().interactable = false;
                     AddExcersiseData(GameData.Instance.idJsonObjectExercises);
-                    /*go.GetComponent<Button>().onClick.AddListener(()=>{
-                        AddExcersiseData(GameData.Instance.idJsonObjectExercises);
-                    });*/
                 }
             }
             StopCoroutine(GetExercises());
@@ -159,12 +155,12 @@ public class ExercisesManager : MonoBehaviour
                 nombre = "Elizabeth Moncada",
                 duracion_total = 30,
                 frecuencia_dias = 1,
-                frecuencia_horas = 1,
+                frecuencia_horas = 6,
                 repeticiones = 2,
                 series = 3,
                 periodos_descanso = 10,
                 fecha_inicio = "14/11/2022",
-                fecha_fin = "15/11/2022",
+                fecha_fin = "16/11/2022",
                 apnea = 2,
                 flujo = 1200
             }
@@ -240,9 +236,6 @@ public class ExercisesManager : MonoBehaviour
 
                 go.GetComponent<Button>().interactable = false;
                 AddExcersiseData(GameData.Instance.idJsonObjectExercises);
-                /*go.GetComponent<Button>().onClick.AddListener(()=>{
-                    AddExcersiseData(GameData.Instance.idJsonObjectExercises);
-                });*/
             }
         }
     }
@@ -267,15 +260,33 @@ public class ExercisesManager : MonoBehaviour
         exerciseDescansoPrefab.text = jsonObjectExercises.array[idJsonObjectExercises].periodos_descanso.ToString();
         exerciseFlujoPrefab.text = jsonObjectExercises.array[idJsonObjectExercises].flujo.ToString()+"ml";
         
-        int hours = START_HOUR_EXERCISE;
-        exerciseHourArray = new int[sesiones];
-        for(int i = 0; i < sesiones; i++)
+        //actualizar de acuerdo a la DB local
+        exerciseHourArray = Array.ConvertAll(PlayerPrefs.GetString("exerciseHourArray").Split(","), int.Parse);
+        // verificar que no hayan ejercicios pendientes
+        for(int i = 0; i < exerciseHourArray.Length; i++)
         {
-            exerciseHourArray[i] = hours;
-            hours += jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas;
+            if(exerciseHourArray[i] == -1 || exerciseHourArray[i] == 0)
+                exerciseHourArray = new int[0];
+        } 
+        
+        // inicializar si esta vacio
+        if(exerciseHourArray.Length == 0)
+        {
+            int hours = START_HOUR_EXERCISE;
+            exerciseHourArray = new int[sesiones];
+            for(int i = 0; i < sesiones; i++)
+            {
+                exerciseHourArray[i] = hours;
+                hours += jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas;
+            }
         }
 
-        //extraHourToWaitForExercise = (jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas == 1 ? 0.5f : 1f);
-        extraHourToWaitForExercise = 1f; //test
+        extraHourToWaitForExercise = (jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas == 1 ? 0.5f : 1f);
+        //extraHourToWaitForExercise = 1f; //test
+    }
+
+    public void SaveExercise()
+    {
+        PlayerPrefs.SetString("exerciseHourArray", string.Join(",", GameData.Instance.scriptsGroup.exercisesManager.exerciseHourArray));
     }
 }
