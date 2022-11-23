@@ -120,8 +120,7 @@ public class BluetoothPairing : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         bluet.Call("connectToDevice", parameters2);
         yield return new WaitForSeconds(3f);
-        UI_System uI_System = FindObjectOfType<UI_System>();
-        uI_System.SwitchScreens(login);
+        UI_System.Instance.SwitchScreens(GameData.Instance.loginMenu);
         StopCoroutine(LoadingScreen());
     }    
 

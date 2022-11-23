@@ -8,6 +8,8 @@ using UnityEngine.Video;
 public class UI_System : MonoBehaviour
 {
     #region Variables
+    public static UI_System Instance{get; private set;}
+
     [Header("MAIN PROPERTIES")]
     public UI_Screen m_StartScreen;
 
@@ -29,6 +31,13 @@ public class UI_System : MonoBehaviour
     #endregion
 
     #region Main Method
+    private void Awake()
+    {
+        if(Instance != null && Instance != this)
+            Destroy(this);
+        else
+            Instance = this;
+    }
     void Start()
     {
         screens = GetComponentsInChildren<UI_Screen>(true);

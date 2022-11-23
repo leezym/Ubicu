@@ -11,7 +11,6 @@ public class Login : MonoBehaviour
     [Header("ATTACHED")]
     public TMP_InputField userInputField;
     public TMP_InputField passInputField;
-    public UI_Screen sessionMenu;
 
     [Header("IN GAME")]
     public Data jsonObject;
@@ -53,8 +52,7 @@ public class Login : MonoBehaviour
             Debug.Log("Response token:" + jsonObject.token);
             Debug.Log("Response name:" + jsonObject.user.nombre);
 
-            UI_System uI_System = FindObjectOfType<UI_System>();
-            uI_System.SwitchScreens(sessionMenu);
+            UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
 
             StopCoroutine(OnLogin());
             StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.GetExercises());

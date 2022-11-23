@@ -9,6 +9,11 @@ public class GameData : MonoBehaviour
 {
     public static GameData Instance{get; private set;}
     public ScriptsGroup scriptsGroup;
+    public UI_Screen loginMenu;
+    public UI_Screen sessionMenu;
+    public UI_Screen exerciseMenu_Game;
+    public UI_Screen serieGraphMenu;
+
     private bool m_playing = false;
     public bool playing
     {
@@ -37,7 +42,6 @@ public class GameData : MonoBehaviour
         set { m_apnea = value; }
     }
 
-
     private bool m_inspiration = false;
     public bool inspiration
     {
@@ -45,19 +49,26 @@ public class GameData : MonoBehaviour
         set { m_inspiration = value; }
     }
 
-    /*public Exercises m_jsonObjectExercises;
-    public bool jsonObjectExercises
+    public Exercises m_jsonObjectExercises;
+    public Exercises jsonObjectExercises
     {
         get { return m_jsonObjectExercises; }
         set { m_jsonObjectExercises = value; }
-    }*/
+    }
 
-    private int m_idListHourExercises;
+    public int m_idListHourExercises;
     public int idListHourExercises
     {
         get { return m_idListHourExercises; }
         set { m_idListHourExercises = value; }
     }
+
+    /*private int m_exerciseDate;
+    public int exerciseDate
+    {
+        get { return m_exerciseDate; }
+        set { m_exerciseDate = value; }
+    }*/
 
     private void Awake()
     {
@@ -69,7 +80,18 @@ public class GameData : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("Start");
+        //PlayerPrefs.DeleteAll();
+
+        if(PlayerPrefs.GetString("currentExerciseDate") == "")
+            PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString());
+        
+        if(PlayerPrefs.GetString("idItemFondosArray") == "")
+            PlayerPrefs.SetString("idItemFondosArray", string.Join(",", "0,-1,-1,-1,-1")); // 0 es default abstract
+        
+        if(PlayerPrefs.GetString("idItemFigurasArray") == "")
+            PlayerPrefs.SetString("idItemFigurasArray", string.Join(",", "0,-1,-1,-1,-1")); // 0 es default abstract
+            
+
         scriptsGroup.rewardsManager.LoadReward();
         idListHourExercises = -1;
     }
@@ -79,6 +101,8 @@ public class GameData : MonoBehaviour
         if(playing)
         {
             StartCoroutine(scriptsGroup.obstacles.ObstaclesCounter());
+            // contador de inactividad
+            scriptsGroup.obstacles.DetectInactivity();
         }
         //else
             //ya se acaben las series de la sesion
@@ -88,17 +112,22 @@ public class GameData : MonoBehaviour
 
         
         // select available session
-        if(scriptsGroup.login.sessionMenu.gameObject.activeSelf)
+        if(sessionMenu.gameObject.activeSelf)
         {
             for(int i = 0; i < scriptsGroup.exercisesManager.exerciseHourArray.Length; i++)
             {
                 // detectar que ejercicio se debe activar
-                if(DateTime.Now.Hour >= scriptsGroup.exercisesManager.exerciseHourArray[i] 
-                    && DateTime.Now.Hour <= (scriptsGroup.exercisesManager.exerciseHourArray[i] + scriptsGroup.exercisesManager.extraHourToWaitForExercise))
+                if(DateTime.Now.Hour == scriptsGroup.exercisesManager.exerciseHourArray[i]
+                    && DateTime.Now.Minute <= scriptsGroup.exercisesManager.extraHourToWaitForExercise)
                 {
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable = true;
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.currentSessionSprite;
-                }        
+                }
+                else
+                {
+                    //idListHourExercises = i+1;
+                }
+                    
                 // almacenar el id del ejercicio activado
                 if(scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable)
                     idListHourExercises = i;
@@ -114,6 +143,16 @@ public class GameData : MonoBehaviour
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.finishedSessionSprite;
             }
         }
+
+        // customize game
+        scriptsGroup.customizationManager.SetIdCustomization(PlayerPrefs.GetInt("idCustomization"));
+        
+        scriptsGroup.customizationManager.idItemFondosArray = Array.ConvertAll(PlayerPrefs.GetString("idItemFondosArray").Split(","), int.Parse);
+        scriptsGroup.customizationManager.idItemFigurasArray = Array.ConvertAll(PlayerPrefs.GetString("idItemFigurasArray").Split(","), int.Parse);
+
+        scriptsGroup.customizationManager.SetIdFondosItem(scriptsGroup.customizationManager.idItemFondosArray[PlayerPrefs.GetInt("idCustomization")]);
+        scriptsGroup.customizationManager.SetIdFigurasItem(scriptsGroup.customizationManager.idItemFigurasArray[PlayerPrefs.GetInt("idCustomization")]);
+
     }
 
     void OnApplicationQuit()

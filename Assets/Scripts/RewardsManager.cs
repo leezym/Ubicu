@@ -29,7 +29,7 @@ public class RewardsManager : MonoBehaviour
         totalReward = PlayerPrefs.GetInt("totalReward"); //test
     }
     
-    public void SaveReward() //pdte
+    public void SaveReward()
     {
         PlayerPrefs.SetInt("sessionReward", sessionReward);
         PlayerPrefs.SetInt("dayReward", dayReward);
@@ -38,7 +38,7 @@ public class RewardsManager : MonoBehaviour
 
     public void CalculateRewards()
     {
-        serieReward = (GameData.Instance.scriptsGroup.exercisesManager.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series * RewardsManager.SERIE_REWARD);
+        serieReward = (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series * RewardsManager.SERIE_REWARD);
         sessionReward += RewardsManager.SESSION_REWARD;
         totalReward += (serieReward + RewardsManager.SESSION_REWARD);
         
@@ -49,17 +49,17 @@ public class RewardsManager : MonoBehaviour
             sessionReward = 0;
         }
 
-        if(dayReward == (GameData.Instance.scriptsGroup.exercisesManager.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_dias * RewardsManager.DAY_REWARD) && DateTime.Today == DateTime.Parse(GameData.Instance.scriptsGroup.exercisesManager.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].fecha_fin, new CultureInfo("de-DE")))
+        if(dayReward == (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_dias * RewardsManager.DAY_REWARD) && DateTime.Today == DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].fecha_fin, new CultureInfo("de-DE")))
         {
             weekReward = RewardsManager.WEEK_REWARD;
             totalReward += weekReward;
             dayReward = 0;
-            //subir total reward a la DB
         }
+        //subir total reward a la DB
     }
 
     void Update()
     {
-        textReward.text = "REWARDS:\nTotal: "+totalReward;
+        textReward.text = totalReward.ToString();
     }
 }

@@ -18,8 +18,6 @@ public class PlayerMovement : MonoBehaviour
     public TMP_Text restText;
     public TMP_Text seriesTextGame;
     public TMP_Text seriesTextGraph;
-    public UI_Screen exerciseMenu_Game;
-    public UI_Screen sessionMenu;
 
     [Header("IN GAME")]
     public float targetScale;
@@ -33,24 +31,25 @@ public class PlayerMovement : MonoBehaviour
     public void InitializeLevel()
     {
         transform.localScale = new Vector2(minimunScale,minimunScale);
-        restCount = GameData.Instance.scriptsGroup.exercisesManager.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso;
-        apneaCount = GameData.Instance.scriptsGroup.exercisesManager.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea;
+        restCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso;
+        apneaCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea;
     }
     
     public void Movement()
     {
-        GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = "prom: "+GameData.Instance.scriptsGroup.bluetoothPairing.prom+"\nmaxFlow: " +maxFlow+"\ninsp: "+GameData.Instance.inspiration;
+        //test
+        //GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = "prom: "+GameData.Instance.scriptsGroup.bluetoothPairing.prom+"\nmaxFlow: " +maxFlow+"\ninsp: "+GameData.Instance.inspiration;
 
         if(GameData.Instance.inspiration)
         {
             // convert scale
-            if(GameData.Instance.scriptsGroup.bluetoothPairing.prom <= GameData.Instance.scriptsGroup.exercisesManager.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
+            if(GameData.Instance.scriptsGroup.bluetoothPairing.prom <= GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
             {
-                targetScale = (GameData.Instance.scriptsGroup.bluetoothPairing.prom * maximunScale / GameData.Instance.scriptsGroup.exercisesManager.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo) + minimunScale;
+                targetScale = (GameData.Instance.scriptsGroup.bluetoothPairing.prom * maximunScale / GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo) + minimunScale;
                 if (targetScale > maxTargetScale)
                 {
                     maxTargetScale = targetScale;
-                    maxFlow = (GameData.Instance.scriptsGroup.exercisesManager.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo * (maxTargetScale - minimunScale))/maximunScale;
+                    maxFlow = (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo * (maxTargetScale - minimunScale))/maximunScale;
                 }
             }
             else
@@ -61,8 +60,13 @@ public class PlayerMovement : MonoBehaviour
         }
         else
             maxTargetScale = 0;
-            
-        transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(maxTargetScale, maxTargetScale), Time.deltaTime * speedStandarScale);
+        
+        if (targetScale < minimunScale)
+            transform.localScale = new Vector2(minimunScale,minimunScale);
+        else if (transform.localScale.x > maximunScale)
+            transform.localScale = new Vector2(maximunScale,maximunScale);
+        else
+            transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(maxTargetScale, maxTargetScale), Time.deltaTime * speedStandarScale);
     }
 
     public void RestingPlayer()
@@ -77,12 +81,11 @@ public class PlayerMovement : MonoBehaviour
     public void ContinueGame()
     {
         DeleteGraph();
-        UI_System uI_System = FindObjectOfType<UI_System>();
         GameData.Instance.resting = false;
-        restCount = GameData.Instance.scriptsGroup.exercisesManager.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso;
-        if(seriesCount < GameData.Instance.scriptsGroup.exercisesManager.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series)
+        restCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso;
+        if(seriesCount < GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series)
         {
-            uI_System.SwitchScreens(exerciseMenu_Game);
+            UI_System.Instance.SwitchScreens(GameData.Instance.exerciseMenu_Game);
             GameData.Instance.playing = true;
             seriesTextGame.text = "SERIE "+ (seriesCount+1);
             seriesTextGraph.text = "SERIE "+ (seriesCount+1);
@@ -96,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
             GameData.Instance.scriptsGroup.exercisesManager.sesionesList[GameData.Instance.idListHourExercises].GetComponent<Image>().sprite = GameData.Instance.scriptsGroup.exercisesManager.finishedSessionSprite;
             GameData.Instance.scriptsGroup.exercisesManager.exerciseHourArray[GameData.Instance.idListHourExercises] = 0;
             GameData.Instance.idListHourExercises = -1;
-            uI_System.SwitchScreens(sessionMenu);
+            UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
         }
     }
 
@@ -113,12 +116,11 @@ public class PlayerMovement : MonoBehaviour
     public void StopApnea()
     {
         pause.SetActive(false);
-        apneaCount = GameData.Instance.scriptsGroup.exercisesManager.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea;
+        apneaCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea;
     }
 
     public void SaveGraphData()
     {
-        //graphPointList = new List<float>{800, 120, 600, 900}; //test
         graphPointList.Add(maxFlow);
         maxTargetScale = 0;
         maxFlow = 0;
@@ -127,12 +129,14 @@ public class PlayerMovement : MonoBehaviour
     public void CreateGraph()
     {
         float maxValue = 0;
-        if(Mathf.Max(graphPointList.ToArray()) > GameData.Instance.scriptsGroup.exercisesManager.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
+        if(Mathf.Max(graphPointList.ToArray()) > GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
             maxValue = Mathf.Max(graphPointList.ToArray());
         else
-            maxValue = GameData.Instance.scriptsGroup.exercisesManager.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo;
+            maxValue = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo;
         
-        float graphPositionY = 0;
+        float goalGraphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo / maxValue;
+        goalGraph.transform.localPosition = new Vector2(0f, goalGraphPositionY);
+
         for(int i = 0; i < graphPointList.Count; i++)
         {
             GameObject go = Instantiate(graphPrefab, Vector3.zero, Quaternion.identity);
@@ -141,17 +145,21 @@ public class PlayerMovement : MonoBehaviour
             go.transform.localScale = new Vector3(1,1,1);
 
             //X position
-            float graphPositionX = (i + 1) * (graphStructure.GetComponent<RectTransform>().rect.width / (graphPointList.Count + 1)); //+1 para dejar un margen visual de la gráfica
+            float pointGraphPositionX = (i + 1) * (graphStructure.GetComponent<RectTransform>().rect.width / (graphPointList.Count + 1)); //+1 para dejar un margen visual de la gráfica
             // Y position
-            graphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * graphPointList[i] / maxValue;
-            go.transform.localPosition = new Vector2(graphPositionX, graphPositionY);
+            float pointGraphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * graphPointList[i] / maxValue;
+            go.transform.localPosition = new Vector2(pointGraphPositionX, pointGraphPositionY);
+
+            if(pointGraphPositionY >= goalGraphPositionY)
+            {
+                Transform checkPrefab = go.transform.Find("Check");
+                checkPrefab.gameObject.SetActive(true);
+            }
 
             Image imageLinePrefab = go.transform.Find("Line").GetComponent<Image>();
-            imageLinePrefab.rectTransform.sizeDelta = new Vector2(imageLinePrefab.rectTransform.sizeDelta.x, graphPositionY);
+            imageLinePrefab.rectTransform.sizeDelta = new Vector2(imageLinePrefab.rectTransform.sizeDelta.x, pointGraphPositionY);
         }
 
-        graphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * GameData.Instance.scriptsGroup.exercisesManager.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo / maxValue;
-        goalGraph.transform.localPosition = new Vector2(0f, graphPositionY);
     }
 
     public void DeleteGraph()
