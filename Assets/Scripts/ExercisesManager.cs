@@ -143,8 +143,8 @@ public class ExercisesManager : MonoBehaviour
                 repeticiones = 3,
                 series = 2,
                 periodos_descanso = 10,
-                fecha_inicio = "21/11/2022",
-                fecha_fin = "27/11/2022",
+                fecha_inicio = "12/12/2022",
+                fecha_fin = "18/12/2022",
                 apnea = 3,
                 flujo = 1200
             }, 
@@ -154,12 +154,12 @@ public class ExercisesManager : MonoBehaviour
                 nombre = "Elizabeth Moncada",
                 duracion_total = 30,
                 frecuencia_dias = 1,
-                frecuencia_horas = 6,
+                frecuencia_horas = 1,
                 repeticiones = 2,
                 series = 3,
                 periodos_descanso = 10,
-                fecha_inicio = "28/11/2022",
-                fecha_fin = "04/12/2022",
+                fecha_inicio = "05/12/2022",
+                fecha_fin = "11/12/2022",
                 apnea = 2,
                 flujo = 1200
             }

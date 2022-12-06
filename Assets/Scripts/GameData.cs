@@ -13,6 +13,7 @@ public class GameData : MonoBehaviour
     public UI_Screen sessionMenu;
     public UI_Screen exerciseMenu_Game;
     public UI_Screen serieGraphMenu;
+    public UI_Screen customizeMenu_Select;
 
     private bool m_playing = false;
     public bool playing
@@ -80,9 +81,9 @@ public class GameData : MonoBehaviour
 
     void Start()
     {
-        //PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteAll();
 
-        if(PlayerPrefs.GetString("currentExerciseDate") == "")
+        if(PlayerPrefs.GetString("currentExerciseDate") == "") // fecha actual
             PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString());
         
         if(PlayerPrefs.GetString("idItemFondosArray") == "")
@@ -90,9 +91,35 @@ public class GameData : MonoBehaviour
         
         if(PlayerPrefs.GetString("idItemFigurasArray") == "")
             PlayerPrefs.SetString("idItemFigurasArray", string.Join(",", "0,-1,-1,-1,-1")); // 0 es default abstract
-            
+        
+        if(PlayerPrefs.GetString("allFondosItemsArray") == "")
+        {
+            string s = "";
+            for(int i = 0; i < 5; i++)
+            {
+                if(i == 0)
+                    s += string.Join(",", "1,1,1")+";"; // 1 activado
+                else
+                    s += string.Join(",", "0,0,0")+";"; // 0 desactivado
+            }
+            PlayerPrefs.SetString("allFondosItemsArray", s);
+        }
+
+        if(PlayerPrefs.GetString("allFigurasItemsArray") == "")
+        {
+            string s = "";
+            for(int i = 0; i < 5; i++)
+            {
+                if(i == 0)
+                    s += string.Join(",", "1,1,1")+";"; // 1 activado
+                else
+                    s += string.Join(",", "0,0,0")+";"; // 0 desactivado
+            }
+            PlayerPrefs.SetString("allFigurasItemsArray", s);
+        }
 
         scriptsGroup.rewardsManager.LoadReward();
+        scriptsGroup.customizationManager.LoadCustomization();
         idListHourExercises = -1;
     }
     
@@ -125,7 +152,7 @@ public class GameData : MonoBehaviour
                 }
                 else
                 {
-                    //idListHourExercises = i+1;
+                    //idListHourExercises = i+1; // si la app esta abierta no cambia a inactivar el ejercicio si la hora pasa
                 }
                     
                 // almacenar el id del ejercicio activado
@@ -143,16 +170,6 @@ public class GameData : MonoBehaviour
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.finishedSessionSprite;
             }
         }
-
-        // customize game
-        scriptsGroup.customizationManager.SetIdCustomization(PlayerPrefs.GetInt("idCustomization"));
-        
-        scriptsGroup.customizationManager.idItemFondosArray = Array.ConvertAll(PlayerPrefs.GetString("idItemFondosArray").Split(","), int.Parse);
-        scriptsGroup.customizationManager.idItemFigurasArray = Array.ConvertAll(PlayerPrefs.GetString("idItemFigurasArray").Split(","), int.Parse);
-
-        scriptsGroup.customizationManager.SetIdFondosItem(scriptsGroup.customizationManager.idItemFondosArray[PlayerPrefs.GetInt("idCustomization")]);
-        scriptsGroup.customizationManager.SetIdFigurasItem(scriptsGroup.customizationManager.idItemFigurasArray[PlayerPrefs.GetInt("idCustomization")]);
-
     }
 
     void OnApplicationQuit()
@@ -160,6 +177,7 @@ public class GameData : MonoBehaviour
         Debug.Log("OnApplicationQuit");
         scriptsGroup.rewardsManager.SaveReward();
         scriptsGroup.exercisesManager.SaveExercise();
+        scriptsGroup.customizationManager.SaveCustomization();
         PlayerPrefs.Save();
     }
 }

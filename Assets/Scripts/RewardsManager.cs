@@ -55,7 +55,7 @@ public class RewardsManager : MonoBehaviour
             totalReward += weekReward;
             dayReward = 0;
         }
-        //subir total reward a la DB
+        //pdte subir total reward a la DB
     }
 
     void Update()
