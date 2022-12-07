@@ -145,20 +145,20 @@ public class GameData : MonoBehaviour
             {
                 // detectar que ejercicio se debe activar
                 if(DateTime.Now.Hour == scriptsGroup.exercisesManager.exerciseHourArray[i]
-                    && DateTime.Now.Minute <= scriptsGroup.exercisesManager.extraHourToWaitForExercise)
+                    && DateTime.Now.Minute <= scriptsGroup.exercisesManager.extraMinuteToWaitForExercise)
                 {
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable = true;
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.currentSessionSprite;
+                    
+                    // almacenar el id del ejercicio activado
+                    idListHourExercises = i;
                 }
                 else
                 {
-                    //idListHourExercises = i+1; // si la app esta abierta no cambia a inactivar el ejercicio si la hora pasa
+                    // si la app esta abierta no cambia a inactivar el ejercicio si la hora pasa
+                    //idListHourExercises = -1;
                 }
                     
-                // almacenar el id del ejercicio activado
-                if(scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable)
-                    idListHourExercises = i;
-
                 // si no se hizo poner -1
                 if(i < idListHourExercises && scriptsGroup.exercisesManager.exerciseHourArray[i] != 0)
                     scriptsGroup.exercisesManager.exerciseHourArray[i] = -1;
@@ -178,6 +178,6 @@ public class GameData : MonoBehaviour
         scriptsGroup.rewardsManager.SaveReward();
         scriptsGroup.exercisesManager.SaveExercise();
         scriptsGroup.customizationManager.SaveCustomization();
-        PlayerPrefs.Save();
+        //PlayerPrefs.Save();
     }
 }

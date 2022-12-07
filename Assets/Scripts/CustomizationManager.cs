@@ -30,12 +30,16 @@ public class CustomizationManager : MonoBehaviour
     [Header("DATA")]
     public ButtonsItems[] buttonsFondosItemsArray;
     public ButtonsItems[] buttonsFigurasItemsArray;
+    public ButtonsItems[] buttonsFondosItemsPreviewArray;
+    public ButtonsItems[] buttonsFigurasItemsPreviewArray;
     public AllItems[] allFondosItemsArray = new AllItems[5]; // cuales fondos se tienen comprados
     public AllItems[] allFigurasItemsArray = new AllItems[5]; // cuales figuras se tienen compradas
     public int[] idItemFondosArray; // cual fondo se tiene seleccionado actualmente
     public int[] idItemFigurasArray; // cual figura se tiene seleccionada actualmente
     public int tempIdFondosItem;
     public int tempIdFigurasItem;
+    public int tempIdFondosItemBuy;
+    public int tempIdFigurasItemBuy;
     public int idCustomization;
     public int tempIdCustomization;
     public TMP_Text[] priceTextItemFondosArray = new TMP_Text[3]; // textos de los precios de los items Fondos
@@ -146,19 +150,48 @@ public class CustomizationManager : MonoBehaviour
     public string[] descriptionsFondosAnatomia = new string[0];
     public string[] descriptionsFigurasAnatomia = new string[0];
 
-
     public void SetTempIdFondosItem(int id)
     {
         tempIdFondosItem = id;
         backgroundPreviewFondos.sprite = fondosSprites[id];
-        playerPreviewFondos.sprite = circuloPreviewSprites[PlayerPrefs.GetInt("idItemFiguras")];
+
+        if(idItemFigurasArray[idCustomization] < 0) // si no ha comprado nada debe salir la combinacion con el item 0
+            playerPreviewFondos.sprite = circuloPreviewSprites[idItemFigurasArray[0]];
+        else
+            playerPreviewFondos.sprite = circuloPreviewSprites[idItemFigurasArray[idCustomization]];
+
+        if(allFondosItemsArray[idCustomization].item[id] == 0)
+        {
+            buttonsFondosItemsPreviewArray[0].useButton.SetActive(false);
+            buttonsFondosItemsPreviewArray[0].buyButton.SetActive(true);
+        }
+        else
+        {
+            buttonsFondosItemsPreviewArray[0].useButton.SetActive(true);
+            buttonsFondosItemsPreviewArray[0].buyButton.SetActive(false);
+        }
         // descripcion
     }
     public void SetTempIdFigurasItem(int id)
     {
         tempIdFigurasItem = id;
-        backgroundPreviewFiguras.sprite = fondosSprites[PlayerPrefs.GetInt("idItemFondos")];
         playerPreviewFiguras.sprite = circuloPreviewSprites[id];
+
+        if(idItemFondosArray[idCustomization] < 0) // si no ha comprado nada debe salir la combinacion con el item 0
+            backgroundPreviewFiguras.sprite = fondosSprites[idItemFondosArray[0]];
+        else
+            backgroundPreviewFiguras.sprite = fondosSprites[idItemFondosArray[idCustomization]];
+
+        if(allFigurasItemsArray[idCustomization].item[id] == 0)
+        {     
+            buttonsFigurasItemsPreviewArray[0].useButton.SetActive(false);
+            buttonsFigurasItemsPreviewArray[0].buyButton.SetActive(true);
+        }
+        else
+        {
+            buttonsFigurasItemsPreviewArray[0].useButton.SetActive(true);
+            buttonsFigurasItemsPreviewArray[0].buyButton.SetActive(false);
+        }
         // descripcion
     }
 
@@ -324,6 +357,22 @@ public class CustomizationManager : MonoBehaviour
         PlayerPrefs.SetString("allFigurasItemsArray", s);
     }   
     
+    public void BuyTempIdFondosItem(int id)
+    {
+        tempIdFigurasItem = id;
+        backgroundPreviewFiguras.sprite = fondosSprites[idItemFondosArray[idCustomization]];
+        playerPreviewFiguras.sprite = circuloPreviewSprites[id];
+        // descripcion
+    }
+    public void BuyTempIdFigurasItem(int id)
+    {
+        tempIdFigurasItem = id;
+        backgroundPreviewFiguras.sprite = fondosSprites[idItemFondosArray[idCustomization]];
+        playerPreviewFiguras.sprite = circuloPreviewSprites[id];
+        // descripcion
+    }
+
+    public void BuyFondo() { BuyFondo(tempIdFondosItemBuy); }
     public void BuyFondo(int id)
     {
         if(priceItemFondosArray[idCustomization , id] <= GameData.Instance.scriptsGroup.rewardsManager.totalReward)
@@ -336,12 +385,13 @@ public class CustomizationManager : MonoBehaviour
         else
         {
             //notificacion de que no alcanza
-            NotificationsManager.Instance.WarningNotifications("No tienes dinero suficiente para comprar el fondo.\n¡Sigue haciendo tus terapias!");
+            NotificationsManager.Instance.WarningNotifications("No tienes UbiCoins suficientes para comprar el fondo.\n¡Sigue haciendo tu fisioterapia!");
             NotificationsManager.Instance.SetCloseFunction(null);
         }
         ValidateFullItems(idCustomization);
     }
 
+    public void BuyFigura() { BuyFigura(tempIdFigurasItemBuy); }
     public void BuyFigura(int id)
     {
         if(priceItemFigurasArray[idCustomization , id] <= GameData.Instance.scriptsGroup.rewardsManager.totalReward)
@@ -354,7 +404,7 @@ public class CustomizationManager : MonoBehaviour
         else
         {
             //notificacion de que no alcanza
-            NotificationsManager.Instance.WarningNotifications("No tienes dinero suficiente para comprar la figura.\n¡Sigue haciendo tus terapias!");
+            NotificationsManager.Instance.WarningNotifications("No tienes UbiCoins suficientes para comprar la figura.\n¡Sigue haciendo tu fisioterapia!");
             NotificationsManager.Instance.SetCloseFunction(null);
         }
         ValidateFullItems(idCustomization);
@@ -385,19 +435,21 @@ public class CustomizationManager : MonoBehaviour
     {
         if (allFondosItemsArray[idCustomization].item.Sum() == 0 || allFigurasItemsArray[idCustomization].item.Sum() == 0)
         {
-            // notificacion de no poder colocar el tema por dinero
-            NotificationsManager.Instance.WarningNotifications("No tienes dinero suficiente para completar el tema.\n¡Sigue haciendo tus terapias!");
+            // notificacion de no poder colocar el tema por UbiCoins
+            NotificationsManager.Instance.WarningNotifications("No tienes UbiCoins suficientes para completar el tema.\n¡Sigue haciendo tu fisioterapia!");
             NotificationsManager.Instance.SetCloseFunction(GameData.Instance.customizeMenu_Select);
             idCustomization = tempIdCustomization;
         }
         else if (idItemFondosArray[idCustomization] >= 0 && idItemFigurasArray [idCustomization] >= 0)
         {
-            UI_System.Instance.SwitchScreens(GameData.Instance.customizeMenu_Select);
+            //notificacion de tema seleccionado
+            NotificationsManager.Instance.WarningNotifications("¡Tema seleccionado!");
+            NotificationsManager.Instance.SetCloseFunction(GameData.Instance.customizeMenu_Select);
         }
         else
         {
             // notificacion de no poder colocar el tema porque no ha seleccionado un item
-            NotificationsManager.Instance.WarningNotifications("Selecciona un fondo y una figura.");
+            NotificationsManager.Instance.WarningNotifications("Por favor selecciona un fondo y una figura para usar el tema.");
             NotificationsManager.Instance.SetCloseFunction(null);
             idCustomization = tempIdCustomization;
         }

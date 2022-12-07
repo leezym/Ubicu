@@ -29,7 +29,7 @@ public class ExercisesManager : MonoBehaviour
     public int sesiones;
     public List<GameObject> sesionesList = new List<GameObject>();
     public int[] exerciseHourArray = new int[0];
-    public float extraHourToWaitForExercise;
+    public float extraMinuteToWaitForExercise;
 
     public IEnumerator GetExercises()
     {
@@ -72,7 +72,7 @@ public class ExercisesManager : MonoBehaviour
                 {
                     uniqueExercise = true;
                     GameData.Instance.idJsonObjectExercises = 0;
-                    if (DateTime.Today >= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[0].fecha_inicio, new CultureInfo("de-DE")) && DateTime.Today <= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[0].fecha_fin, new CultureInfo("de-DE")))
+                    if (DateTime.Today >= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[0].fecha_inicio, new CultureInfo("es-ES")) && DateTime.Today <= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[0].fecha_fin, new CultureInfo("es-ES")))
                         currentDate = true;
                     else
                         currentDate = false;
@@ -81,11 +81,11 @@ public class ExercisesManager : MonoBehaviour
                 {
                     uniqueExercise = false;
                     currentDate = true;
-                    if (DateTime.Today >= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-1].fecha_inicio, new CultureInfo("de-DE")) && DateTime.Today <= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-1].fecha_fin, new CultureInfo("de-DE")))
+                    if (DateTime.Today >= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-1].fecha_inicio, new CultureInfo("es-ES")) && DateTime.Today <= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-1].fecha_fin, new CultureInfo("es-ES")))
                     {
                         GameData.Instance.idJsonObjectExercises = GameData.Instance.jsonObjectExercises.array.Count-1;
                     }
-                    else if (DateTime.Today >= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-2].fecha_inicio, new CultureInfo("de-DE")) && DateTime.Today <= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-2].fecha_fin, new CultureInfo("de-DE")))
+                    else if (DateTime.Today >= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-2].fecha_inicio, new CultureInfo("es-ES")) && DateTime.Today <= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-2].fecha_fin, new CultureInfo("es-ES")))
                     {
                         GameData.Instance.idJsonObjectExercises = GameData.Instance.jsonObjectExercises.array.Count-2;
                     }
@@ -181,7 +181,7 @@ public class ExercisesManager : MonoBehaviour
             {
                 uniqueExercise = true;
                 GameData.Instance.idJsonObjectExercises = 0;
-                if (DateTime.Today >= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[0].fecha_inicio, new CultureInfo("de-DE")) && DateTime.Today <= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[0].fecha_fin, new CultureInfo("de-DE")))
+                if (DateTime.Today >= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[0].fecha_inicio, new CultureInfo("es-ES")) && DateTime.Today <= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[0].fecha_fin, new CultureInfo("es-ES")))
                     currentDate = true;
                 else
                     currentDate = false;
@@ -190,11 +190,11 @@ public class ExercisesManager : MonoBehaviour
             {
                 uniqueExercise = false;
                 currentDate = true;
-                if (DateTime.Today >= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-1].fecha_inicio, new CultureInfo("de-DE")) && DateTime.Today <= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-1].fecha_fin, new CultureInfo("de-DE")))
+                if (DateTime.Today >= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-1].fecha_inicio, new CultureInfo("es-ES")) && DateTime.Today <= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-1].fecha_fin, new CultureInfo("es-ES")))
                 { 
                     GameData.Instance.idJsonObjectExercises = GameData.Instance.jsonObjectExercises.array.Count-1;
                 }
-                else if (DateTime.Today >= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-2].fecha_inicio, new CultureInfo("de-DE")) && DateTime.Today <= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-2].fecha_fin, new CultureInfo("de-DE")))
+                else if (DateTime.Today >= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-2].fecha_inicio, new CultureInfo("es-ES")) && DateTime.Today <= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-2].fecha_fin, new CultureInfo("es-ES")))
                 {
                     GameData.Instance.idJsonObjectExercises = GameData.Instance.jsonObjectExercises.array.Count-2;
                 }
@@ -258,8 +258,8 @@ public class ExercisesManager : MonoBehaviour
         exerciseApneaPrefab.text = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea.ToString();
         exerciseDescansoPrefab.text = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso.ToString();
         exerciseFlujoPrefab.text = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo.ToString()+"ml";
-        
-        if(DateTime.Today == DateTime.Parse(PlayerPrefs.GetString("currentExerciseDate"), new CultureInfo("de-DE")) && PlayerPrefs.GetString("exerciseHourArray") != "")
+           
+        if(DateTime.Today == DateTime.Parse(PlayerPrefs.GetString("currentExerciseDate"), new CultureInfo("es-ES")) && PlayerPrefs.GetString("exerciseHourArray") != "")
         {
             // actualizar de acuerdo a la DB local
             exerciseHourArray = Array.ConvertAll(PlayerPrefs.GetString("exerciseHourArray").Split(","), int.Parse);
@@ -276,8 +276,8 @@ public class ExercisesManager : MonoBehaviour
             }
         }
 
-        //extraHourToWaitForExercise = (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas == 1 ? 30f : 59f); //minutos
-        extraHourToWaitForExercise = 59f; //test
+        //extraMinuteToWaitForExercise = (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas == 1 ? 30f : 59f); //minutos
+        extraMinuteToWaitForExercise = 59f; //test
     }
 
     public void SaveExercise()
