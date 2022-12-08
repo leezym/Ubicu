@@ -6,6 +6,10 @@ using TMPro;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public static float CIRCLE_MINIMUM_SCALE = 0.08f;
+    public static float CIRCLE_MAXIMUM_SCALE = 0.8f;
+    public static float LUNG_MINIMUM_SCALE = 0.78f;
+    public static float LUNG_MAXIMUM_SCALE = 2.6f;
     [Header("ATTACHED")]
     public float minimunScale;
     public float maximunScale;

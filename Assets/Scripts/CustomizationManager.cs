@@ -60,7 +60,7 @@ public class CustomizationManager : MonoBehaviour
                                                     };
     
     [Header("CUSTOMIZABLE OBJECTS")]
-    public GameObject[] playerImage = new GameObject[2]; // jugadores
+    public GameObject[] playerGameObject = new GameObject[2]; // jugadores
     public Image backgroundImage; // fondo del juego
     public Image settingsImage; // boton configuracion
     public TMP_Text[] textsArray = new TMP_Text[0]; // textos del juego
@@ -154,6 +154,7 @@ public class CustomizationManager : MonoBehaviour
     {
         tempIdFondosItem = id;
         backgroundPreviewFondos.sprite = fondosSprites[id];
+        buttonsFondosItemsPreviewArray[0].buyButton.transform.Find("Price").GetComponent<TMP_Text>().text = priceItemFondosArray[idCustomization , id].ToString();
 
         if(idItemFigurasArray[idCustomization] < 0) // si no ha comprado nada debe salir la combinacion con el item 0
             playerPreviewFondos.sprite = circuloPreviewSprites[idItemFigurasArray[0]];
@@ -176,6 +177,7 @@ public class CustomizationManager : MonoBehaviour
     {
         tempIdFigurasItem = id;
         playerPreviewFiguras.sprite = circuloPreviewSprites[id];
+        buttonsFigurasItemsPreviewArray[0].buyButton.transform.Find("Price").GetComponent<TMP_Text>().text = priceItemFondosArray[idCustomization , id].ToString();
 
         if(idItemFondosArray[idCustomization] < 0) // si no ha comprado nada debe salir la combinacion con el item 0
             backgroundPreviewFiguras.sprite = fondosSprites[idItemFondosArray[0]];
@@ -220,8 +222,8 @@ public class CustomizationManager : MonoBehaviour
     {
         if(id >= 0)
         {
-            playerImage[0].transform.Find("Player").GetComponent<Image>().sprite = circuloSprites[id];
-            playerImage[1].transform.Find("Player").GetComponent<Image>().sprite = circuloSprites[id];
+            playerGameObject[0].transform.Find("Circle").GetComponent<Image>().sprite = circuloSprites[id]; //circle
+            playerGameObject[1].transform.Find("Lung").GetComponent<Image>().sprite = circuloSprites[id]; //lung
             checkFigurasSprite.SetActive(true);
             checkFigurasSprite.transform.parent = figurasItemTransform[id];
             checkFigurasSprite.transform.localPosition = new Vector2(0,0);
@@ -266,13 +268,17 @@ public class CustomizationManager : MonoBehaviour
     {
         if(subtitleHeaderText == "Anatomía")
         {
-            playerImage[0].SetActive(false); //circle
-            playerImage[1].SetActive(true); //lung
+            playerGameObject[0].SetActive(false); //circle
+            playerGameObject[1].SetActive(true); //lung
+            GameData.Instance.scriptsGroup.playerMovement.minimunScale = PlayerMovement.LUNG_MINIMUM_SCALE;
+            GameData.Instance.scriptsGroup.playerMovement.maximunScale = PlayerMovement.LUNG_MAXIMUM_SCALE;
         }
         else
         {
-            playerImage[0].SetActive(true); //circle
-            playerImage[1].SetActive(false); //lung
+            playerGameObject[0].SetActive(true); //circle
+            playerGameObject[1].SetActive(false); //lung
+            GameData.Instance.scriptsGroup.playerMovement.minimunScale = PlayerMovement.CIRCLE_MINIMUM_SCALE;
+            GameData.Instance.scriptsGroup.playerMovement.maximunScale = PlayerMovement.CIRCLE_MAXIMUM_SCALE;
         }
         this.fondosSprites = fondosSprites.Clone() as Sprite[];
         this.circuloSprites = circuloSprites.Clone() as Sprite[];
@@ -355,24 +361,9 @@ public class CustomizationManager : MonoBehaviour
             s += string.Join(",", allFigurasItemsArray[i].item)+";";
         }
         PlayerPrefs.SetString("allFigurasItemsArray", s);
-    }   
-    
-    public void BuyTempIdFondosItem(int id)
-    {
-        tempIdFigurasItem = id;
-        backgroundPreviewFiguras.sprite = fondosSprites[idItemFondosArray[idCustomization]];
-        playerPreviewFiguras.sprite = circuloPreviewSprites[id];
-        // descripcion
-    }
-    public void BuyTempIdFigurasItem(int id)
-    {
-        tempIdFigurasItem = id;
-        backgroundPreviewFiguras.sprite = fondosSprites[idItemFondosArray[idCustomization]];
-        playerPreviewFiguras.sprite = circuloPreviewSprites[id];
-        // descripcion
     }
 
-    public void BuyFondo() { BuyFondo(tempIdFondosItemBuy); }
+    public void BuyFondo() { BuyFondo(tempIdFondosItem); }
     public void BuyFondo(int id)
     {
         if(priceItemFondosArray[idCustomization , id] <= GameData.Instance.scriptsGroup.rewardsManager.totalReward)
@@ -381,6 +372,8 @@ public class CustomizationManager : MonoBehaviour
                 // si
                 allFondosItemsArray[idCustomization].item[id] = 1;
                 GameData.Instance.scriptsGroup.rewardsManager.totalReward -= priceItemFondosArray[idCustomization , id];
+                buttonsFondosItemsPreviewArray[0].useButton.SetActive(true);
+                buttonsFondosItemsPreviewArray[0].buyButton.SetActive(false);
         }
         else
         {
@@ -391,7 +384,7 @@ public class CustomizationManager : MonoBehaviour
         ValidateFullItems(idCustomization);
     }
 
-    public void BuyFigura() { BuyFigura(tempIdFigurasItemBuy); }
+    public void BuyFigura() { BuyFigura(tempIdFigurasItem); }
     public void BuyFigura(int id)
     {
         if(priceItemFigurasArray[idCustomization , id] <= GameData.Instance.scriptsGroup.rewardsManager.totalReward)
@@ -400,6 +393,8 @@ public class CustomizationManager : MonoBehaviour
                 // si
                 allFigurasItemsArray[idCustomization].item[id] = 1;
                 GameData.Instance.scriptsGroup.rewardsManager.totalReward -= priceItemFigurasArray[idCustomization , id];
+                buttonsFigurasItemsPreviewArray[0].useButton.SetActive(true);
+                buttonsFigurasItemsPreviewArray[0].buyButton.SetActive(false);
         }
         else
         {
