@@ -81,7 +81,7 @@ public class GameData : MonoBehaviour
 
     void Start()
     {
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
 
         if(PlayerPrefs.GetString("currentExerciseDate") == "") // fecha actual
             PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString());
@@ -174,10 +174,9 @@ public class GameData : MonoBehaviour
 
     void OnApplicationQuit()
     {
-        Debug.Log("OnApplicationQuit");
         scriptsGroup.rewardsManager.SaveReward();
-        scriptsGroup.exercisesManager.SaveExercise();
+        //scriptsGroup.exercisesManager.SaveExercise(); // test
         scriptsGroup.customizationManager.SaveCustomization();
-        //PlayerPrefs.Save();
+        PlayerPrefs.Save();
     }
 }
