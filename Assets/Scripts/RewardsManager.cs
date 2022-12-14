@@ -49,7 +49,7 @@ public class RewardsManager : MonoBehaviour
             sessionReward = 0;
         }
 
-        if(dayReward == (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_dias * RewardsManager.DAY_REWARD) && DateTime.Today == DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].fecha_fin, new CultureInfo("es-ES")))
+        if(dayReward == (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_dias * RewardsManager.DAY_REWARD) && DateTime.Today == Convert.ToDateTime(GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].fecha_fin))
         {
             weekReward = RewardsManager.WEEK_REWARD;
             totalReward += weekReward;

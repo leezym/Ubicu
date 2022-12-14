@@ -72,7 +72,7 @@ public class ExercisesManager : MonoBehaviour
                 {
                     uniqueExercise = true;
                     GameData.Instance.idJsonObjectExercises = 0;
-                    if (DateTime.Today >= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[0].fecha_inicio, new CultureInfo("es-ES")) && DateTime.Today <= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[0].fecha_fin, new CultureInfo("es-ES")))
+                    if (DateTime.Today >= Convert.ToDateTime(GameData.Instance.jsonObjectExercises.array[0].fecha_inicio) && DateTime.Today <= Convert.ToDateTime(GameData.Instance.jsonObjectExercises.array[0].fecha_fin))
                         currentDate = true;
                     else
                         currentDate = false;
@@ -81,11 +81,11 @@ public class ExercisesManager : MonoBehaviour
                 {
                     uniqueExercise = false;
                     currentDate = true;
-                    if (DateTime.Today >= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-1].fecha_inicio, new CultureInfo("es-ES")) && DateTime.Today <= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-1].fecha_fin, new CultureInfo("es-ES")))
+                    if (DateTime.Today >= Convert.ToDateTime(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-1].fecha_inicio) && DateTime.Today <= Convert.ToDateTime(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-1].fecha_fin))
                     {
                         GameData.Instance.idJsonObjectExercises = GameData.Instance.jsonObjectExercises.array.Count-1;
                     }
-                    else if (DateTime.Today >= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-2].fecha_inicio, new CultureInfo("es-ES")) && DateTime.Today <= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-2].fecha_fin, new CultureInfo("es-ES")))
+                    else if (DateTime.Today >= Convert.ToDateTime(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-2].fecha_inicio) && DateTime.Today <= Convert.ToDateTime(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-2].fecha_fin))
                     {
                         GameData.Instance.idJsonObjectExercises = GameData.Instance.jsonObjectExercises.array.Count-2;
                     }
@@ -181,7 +181,7 @@ public class ExercisesManager : MonoBehaviour
             {
                 uniqueExercise = true;
                 GameData.Instance.idJsonObjectExercises = 0;
-                if (DateTime.Today >= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[0].fecha_inicio, new CultureInfo("es-ES")) && DateTime.Today <= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[0].fecha_fin, new CultureInfo("es-ES")))
+                if (DateTime.Today >= Convert.ToDateTime(GameData.Instance.jsonObjectExercises.array[0].fecha_inicio) && DateTime.Today <= Convert.ToDateTime(GameData.Instance.jsonObjectExercises.array[0].fecha_fin))
                     currentDate = true;
                 else
                     currentDate = false;
@@ -190,11 +190,11 @@ public class ExercisesManager : MonoBehaviour
             {
                 uniqueExercise = false;
                 currentDate = true;
-                if (DateTime.Today >= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-1].fecha_inicio, new CultureInfo("es-ES")) && DateTime.Today <= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-1].fecha_fin, new CultureInfo("es-ES")))
+                if (DateTime.Today >= Convert.ToDateTime(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-1].fecha_inicio) && DateTime.Today <= Convert.ToDateTime(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-1].fecha_fin))
                 { 
                     GameData.Instance.idJsonObjectExercises = GameData.Instance.jsonObjectExercises.array.Count-1;
                 }
-                else if (DateTime.Today >= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-2].fecha_inicio, new CultureInfo("es-ES")) && DateTime.Today <= DateTime.Parse(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-2].fecha_fin, new CultureInfo("es-ES")))
+                else if (DateTime.Today >= Convert.ToDateTime(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-2].fecha_inicio) && DateTime.Today <= Convert.ToDateTime(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-2].fecha_fin))
                 {
                     GameData.Instance.idJsonObjectExercises = GameData.Instance.jsonObjectExercises.array.Count-2;
                 }
@@ -259,7 +259,7 @@ public class ExercisesManager : MonoBehaviour
         exerciseDescansoPrefab.text = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso.ToString();
         exerciseFlujoPrefab.text = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo.ToString()+"ml";
            
-        if(DateTime.Today == DateTime.Parse(PlayerPrefs.GetString("currentExerciseDate"), new CultureInfo("es-ES")) && PlayerPrefs.GetString("exerciseHourArray") != "")
+        if(DateTime.Today == Convert.ToDateTime(PlayerPrefs.GetString("currentExerciseDate")) && PlayerPrefs.GetString("exerciseHourArray") != "")
         {
             // actualizar de acuerdo a la DB local
             exerciseHourArray = Array.ConvertAll(PlayerPrefs.GetString("exerciseHourArray").Split(","), int.Parse);
