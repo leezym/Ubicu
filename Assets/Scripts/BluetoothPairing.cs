@@ -125,11 +125,6 @@ public class BluetoothPairing : MonoBehaviour
     }    
 
     public void CallOutputTime(){
-        InvokeRepeating("OutputTime", 0.5f, 0.0033f); // 1/250 datos
-    }
-
-    public void StopOutputTime()
-    {
-        CancelInvoke();
+        InvokeRepeating("OutputTime", 0.5f, 0.0033f); // 1/250 datos, pdte detener cuando no se juega CancelInvoke();
     }
 }

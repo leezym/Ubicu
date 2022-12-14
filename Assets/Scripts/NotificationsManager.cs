@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,14 +43,6 @@ public class NotificationsManager : MonoBehaviour
         notificationsCloseButton.onClick.RemoveAllListeners();
         notificationsCloseButton.onClick.AddListener(()=>{
             UI_System.Instance.SwitchScreens(screen);
-        });
-    }
-
-    public void SetYesButton(Action function)
-    {
-        notificationsYesButton.onClick.RemoveAllListeners();
-        notificationsYesButton.onClick.AddListener(()=>{
-            function();
         });
     }
 }

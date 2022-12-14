@@ -49,14 +49,14 @@ public class CustomizationManager : MonoBehaviour
                                                         { 700, 900, 900 }, // astral
                                                         { 900, 900, 1050 }, // naturaleza
                                                         { 1050, 1050, 1050 }, // mar
-                                                        { 1200, 1200, 1500 }, // anatomia
+                                                        { 0, 0, 0 }, // anatomia
                                                     };
     public int[,] priceItemFigurasArray = new int[5, 3] { 
                                                         { 0, 0, 0 }, // abstracto
                                                         { 800, 1000, 1000 }, // astral
                                                         { 1000, 1000, 1150 }, // naturaleza
                                                         { 1150, 1150, 1150 }, // mar
-                                                        { 1300, 1300, 1600 }, // anatomia
+                                                        { 0, 0, 0 }, // anatomia
                                                     };
     
     [Header("CUSTOMIZABLE OBJECTS")]
@@ -177,7 +177,7 @@ public class CustomizationManager : MonoBehaviour
     {
         tempIdFigurasItem = id;
         playerPreviewFiguras.sprite = circuloPreviewSprites[id];
-        buttonsFigurasItemsPreviewArray[0].buyButton.transform.Find("Price").GetComponent<TMP_Text>().text = priceItemFigurasArray[idCustomization , id].ToString();
+        buttonsFigurasItemsPreviewArray[0].buyButton.transform.Find("Price").GetComponent<TMP_Text>().text = priceItemFondosArray[idCustomization , id].ToString();
 
         if(idItemFondosArray[idCustomization] < 0) // si no ha comprado nada debe salir la combinacion con el item 0
             backgroundPreviewFiguras.sprite = fondosSprites[idItemFondosArray[0]];
@@ -272,7 +272,6 @@ public class CustomizationManager : MonoBehaviour
             playerGameObject[1].SetActive(true); //lung
             GameData.Instance.scriptsGroup.playerMovement.minimunScale = PlayerMovement.LUNG_MINIMUM_SCALE;
             GameData.Instance.scriptsGroup.playerMovement.maximunScale = PlayerMovement.LUNG_MAXIMUM_SCALE;
-            GameData.Instance.scriptsGroup.playerMovement.player = playerGameObject[1].transform.Find("Lung").gameObject;
         }
         else
         {
@@ -280,7 +279,6 @@ public class CustomizationManager : MonoBehaviour
             playerGameObject[1].SetActive(false); //lung
             GameData.Instance.scriptsGroup.playerMovement.minimunScale = PlayerMovement.CIRCLE_MINIMUM_SCALE;
             GameData.Instance.scriptsGroup.playerMovement.maximunScale = PlayerMovement.CIRCLE_MAXIMUM_SCALE;
-            GameData.Instance.scriptsGroup.playerMovement.player = playerGameObject[0].transform.Find("Circle").gameObject;
         }
         this.fondosSprites = fondosSprites.Clone() as Sprite[];
         this.circuloSprites = circuloSprites.Clone() as Sprite[];
@@ -371,15 +369,11 @@ public class CustomizationManager : MonoBehaviour
         if(priceItemFondosArray[idCustomization , id] <= GameData.Instance.scriptsGroup.rewardsManager.totalReward)
         {
             // notificacion de preguntar pdte
-            NotificationsManager.Instance.QuestionNotifications("¿Seguro que quieres obtener este fondo?");
-            // si
-            NotificationsManager.Instance.SetYesButton(()=>{
+                // si
                 allFondosItemsArray[idCustomization].item[id] = 1;
                 GameData.Instance.scriptsGroup.rewardsManager.totalReward -= priceItemFondosArray[idCustomization , id];
                 buttonsFondosItemsPreviewArray[0].useButton.SetActive(true);
                 buttonsFondosItemsPreviewArray[0].buyButton.SetActive(false);
-                ValidateFullItems(idCustomization);
-            });
         }
         else
         {
@@ -387,6 +381,7 @@ public class CustomizationManager : MonoBehaviour
             NotificationsManager.Instance.WarningNotifications("No tienes UbiCoins suficientes para comprar el fondo.\n¡Sigue haciendo tu fisioterapia!");
             NotificationsManager.Instance.SetCloseFunction(null);
         }
+        ValidateFullItems(idCustomization);
     }
 
     public void BuyFigura() { BuyFigura(tempIdFigurasItem); }
@@ -395,15 +390,11 @@ public class CustomizationManager : MonoBehaviour
         if(priceItemFigurasArray[idCustomization , id] <= GameData.Instance.scriptsGroup.rewardsManager.totalReward)
         {
             // notificacion de preguntar
-            NotificationsManager.Instance.QuestionNotifications("¿Seguro que quieres obtener esta figura?");
-            // si
-            NotificationsManager.Instance.SetYesButton(()=>{
+                // si
                 allFigurasItemsArray[idCustomization].item[id] = 1;
                 GameData.Instance.scriptsGroup.rewardsManager.totalReward -= priceItemFigurasArray[idCustomization , id];
                 buttonsFigurasItemsPreviewArray[0].useButton.SetActive(true);
                 buttonsFigurasItemsPreviewArray[0].buyButton.SetActive(false);
-                ValidateFullItems(idCustomization);
-            });
         }
         else
         {
@@ -411,6 +402,7 @@ public class CustomizationManager : MonoBehaviour
             NotificationsManager.Instance.WarningNotifications("No tienes UbiCoins suficientes para comprar la figura.\n¡Sigue haciendo tu fisioterapia!");
             NotificationsManager.Instance.SetCloseFunction(null);
         }
+        ValidateFullItems(idCustomization);
     }
 
     public void SaveCustomization()

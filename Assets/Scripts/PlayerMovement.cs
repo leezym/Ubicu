@@ -8,8 +8,8 @@ public class PlayerMovement : MonoBehaviour
 {
     public static float CIRCLE_MINIMUM_SCALE = 0.08f;
     public static float CIRCLE_MAXIMUM_SCALE = 0.8f;
-    public static float LUNG_MINIMUM_SCALE = 0.23f;
-    public static float LUNG_MAXIMUM_SCALE = 0.75f;
+    public static float LUNG_MINIMUM_SCALE = 0.78f;
+    public static float LUNG_MAXIMUM_SCALE = 2.6f;
     [Header("ATTACHED")]
     public float minimunScale;
     public float maximunScale;
@@ -24,7 +24,6 @@ public class PlayerMovement : MonoBehaviour
     public TMP_Text seriesTextGraph;
 
     [Header("IN GAME")]
-    public GameObject player;
     public float targetScale;
     public float maxTargetScale;
     public float maxFlow;
@@ -35,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void InitializeLevel()
     {
-        player.transform.localScale = new Vector2(minimunScale,minimunScale);
+        transform.localScale = new Vector2(minimunScale,minimunScale);
         restCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso;
         apneaCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea;
     }
@@ -66,12 +65,12 @@ public class PlayerMovement : MonoBehaviour
         else
             maxTargetScale = 0;
         
-        if (player.transform.localScale.x < minimunScale)
-            player.transform.localScale = new Vector2(minimunScale,minimunScale);
-        else if (player.transform.localScale.x > maximunScale)
-            player.transform.localScale = new Vector2(maximunScale,maximunScale);
+        if (targetScale < minimunScale)
+            transform.localScale = new Vector2(minimunScale,minimunScale);
+        else if (transform.localScale.x > maximunScale)
+            transform.localScale = new Vector2(maximunScale,maximunScale);
         else
-            player.transform.localScale = Vector2.Lerp(player.transform.localScale, new Vector2(maxTargetScale, maxTargetScale), Time.deltaTime * speedStandarScale);
+            transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(maxTargetScale, maxTargetScale), Time.deltaTime * speedStandarScale);
     }
 
     public void RestingPlayer()
@@ -104,7 +103,6 @@ public class PlayerMovement : MonoBehaviour
             GameData.Instance.scriptsGroup.exercisesManager.sesionesList[GameData.Instance.idListHourExercises].GetComponent<Image>().sprite = GameData.Instance.scriptsGroup.exercisesManager.finishedSessionSprite;
             GameData.Instance.scriptsGroup.exercisesManager.exerciseHourArray[GameData.Instance.idListHourExercises] = 0;
             GameData.Instance.idListHourExercises = -1;
-            GameData.Instance.scriptsGroup.bluetoothPairing.StopOutputTime();
             UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
         }
     }

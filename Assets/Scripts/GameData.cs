@@ -81,10 +81,10 @@ public class GameData : MonoBehaviour
 
     void Start()
     {
-        //PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteAll();
 
         if(PlayerPrefs.GetString("currentExerciseDate") == "") // fecha actual
-            PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString());
+            PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString("dd/MM/yyyy"));
         
         if(PlayerPrefs.GetString("idItemFondosArray") == "")
             PlayerPrefs.SetString("idItemFondosArray", string.Join(",", "0,-1,-1,-1,-1")); // 0 es default abstract
@@ -174,9 +174,10 @@ public class GameData : MonoBehaviour
 
     void OnApplicationQuit()
     {
+        Debug.Log("OnApplicationQuit");
         scriptsGroup.rewardsManager.SaveReward();
-        //scriptsGroup.exercisesManager.SaveExercise(); // test
+        scriptsGroup.exercisesManager.SaveExercise();
         scriptsGroup.customizationManager.SaveCustomization();
-        PlayerPrefs.Save();
+        //PlayerPrefs.Save();
     }
 }
