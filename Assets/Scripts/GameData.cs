@@ -84,7 +84,7 @@ public class GameData : MonoBehaviour
         //PlayerPrefs.DeleteAll();
 
         if(PlayerPrefs.GetString("currentExerciseDate") == "") // fecha actual
-            PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString());
+            PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString("dd/MM/yyyy"));
         
         if(PlayerPrefs.GetString("idItemFondosArray") == "")
             PlayerPrefs.SetString("idItemFondosArray", string.Join(",", "0,-1,-1,-1,-1")); // 0 es default abstract
