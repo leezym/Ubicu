@@ -125,6 +125,9 @@ public class GameData : MonoBehaviour
     
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape)) 
+            Application.Quit(); 
+            
         if(playing)
         {
             StartCoroutine(scriptsGroup.obstacles.ObstaclesCounter());

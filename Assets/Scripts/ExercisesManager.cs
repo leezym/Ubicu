@@ -138,16 +138,16 @@ public class ExercisesManager : MonoBehaviour
                 id_user = "1",
                 nombre = "Elizabeth Moncada",
                 duracion_total = 30,
-                frecuencia_dias = 1,
+                frecuencia_dias = 7,
                 frecuencia_horas = 1,
-                repeticiones = 3,
+                repeticiones = 8,
                 series = 2,
-                periodos_descanso = 10,
+                periodos_descanso = 3,
                 fecha_inicio = "12/12/2022",
                 fecha_fin = "18/12/2022",
-                apnea = 3,
+                apnea = 2,
                 flujo = 1200
-            }, 
+            }/*, 
             new Exercise{
                 _id = "2",
                 id_user = "1",
@@ -162,7 +162,7 @@ public class ExercisesManager : MonoBehaviour
                 fecha_fin = "11/12/2022",
                 apnea = 2,
                 flujo = 1200
-            }
+            }*/
         };
 
         bool emptyExercise = false; // array.Count = 0
