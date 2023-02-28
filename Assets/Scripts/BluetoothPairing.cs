@@ -96,14 +96,15 @@ public class BluetoothPairing : MonoBehaviour
                     Console.WriteLine("error parse data {0}", patientData[0]);
                 }
 
-                if(int.TryParse(patientData[1], out apneaValue))
+                GameData.Instance.apnea = false;
+                /*if(int.TryParse(patientData[1], out apneaValue))
                 {
                     GameData.Instance.apnea = (apneaValue == 1 ? true : false);
-                } 
+                }
                 else
                 {
                     Console.WriteLine("error parse data {1}", patientData[1]);
-                }
+                }*/
             }
 
             float[] valuesDouble = valuesList.ToArray();

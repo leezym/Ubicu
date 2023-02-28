@@ -37,7 +37,8 @@ public class ExercisesManager : MonoBehaviour
         form.AddField("id_user", GameData.Instance.scriptsGroup.login.jsonObject.user._id);
         form.AddField("token", GameData.Instance.scriptsGroup.login.jsonObject.token);
 
-        UnityWebRequest www = UnityWebRequest.Post("http://d2yaaz8bde1qj3.cloudfront.net/allEjerciciosByUser", form);
+        //UnityWebRequest www = UnityWebRequest.Post("https://server.ubicu.co/allEjerciciosByUser", form);
+        UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/allEjerciciosByUser", form);
 
         www.downloadHandler = new DownloadHandlerBuffer();
 
@@ -143,8 +144,8 @@ public class ExercisesManager : MonoBehaviour
                 repeticiones = 8,
                 series = 2,
                 periodos_descanso = 3,
-                fecha_inicio = "12/12/2022",
-                fecha_fin = "18/12/2022",
+                fecha_inicio = "13/02/2023",
+                fecha_fin = "19/02/2023",
                 apnea = 2,
                 flujo = 1200
             }/*, 
