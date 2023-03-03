@@ -138,22 +138,39 @@ public class ExercisesManager : MonoBehaviour
                 id_user = "1",
                 nombre = "Elizabeth Moncada",
                 duracion_total = 30,
-                frecuencia_dias = 1,
+                frecuencia_dias = 7,
                 frecuencia_horas = 1,
-                repeticiones = 3,
+                repeticiones = 8,
                 series = 2,
-                periodos_descanso = 10,
-                fecha_inicio = "12/12/2022",
-                fecha_fin = "18/12/2022",
-                apnea = 3,
-                flujo = 1200
+                periodos_descanso = 3,
+                fecha_inicio = "16/01/2023",
+                fecha_fin = "22/01/2023",
+                apnea = 2,
+                flujo = 1200,
+                hora_inicio = 9
             }, 
+            /*
+            { "id_user" : "1",
+                "nombre" : "Elizabeth Moncada",
+                "duracion_total" : 30,
+                "frecuencia_dias" : 7,
+                "frecuencia_horas" : 1,
+                "repeticiones" : 8,
+                "series" : 2,
+                "periodos_descanso" : 3,
+                "fecha_inicio" : "12/12/2022",
+                "fecha_fin" : "18/12/2022",
+                "apnea" : 2,
+                "flujo" : 1200,
+                "hora_inicio" : 9
+            }
+              */
             new Exercise{
                 _id = "2",
                 id_user = "1",
                 nombre = "Elizabeth Moncada",
                 duracion_total = 30,
-                frecuencia_dias = 1,
+                frecuencia_dias = 7,
                 frecuencia_horas = 1,
                 repeticiones = 2,
                 series = 3,
@@ -161,7 +178,8 @@ public class ExercisesManager : MonoBehaviour
                 fecha_inicio = "05/12/2022",
                 fecha_fin = "11/12/2022",
                 apnea = 2,
-                flujo = 1200
+                flujo = 1200,
+                hora_inicio = 9
             }
         };
 

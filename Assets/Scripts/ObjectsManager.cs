@@ -16,13 +16,22 @@ public class User
     public string _id;
     public string nombre;
     public string cedula;
-    public string tel;
+    public string telefono;
     public string email;
+    public string id_patient;
+    public string __v;
+}
+
+[Serializable]
+public class Patient
+{
+    public string _id;
     public int edad;
+    public int sexo;
     public float peso;
     public float altura;
-    public string ciudad;
     public string direccion;
+    public string ciudad;
     public string __v;
 }
 
@@ -42,6 +51,7 @@ public class Exercise
     public string fecha_fin;
     public int apnea;
     public int flujo;
+    public int hora_inicio;
     public string __v;
 }
 
