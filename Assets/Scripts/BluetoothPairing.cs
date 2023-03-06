@@ -20,6 +20,9 @@ public class BluetoothPairing : MonoBehaviour
     public GameObject bluetoothContent;
     public UI_Screen login;
 
+    //test
+    public TMP_Text stringConnection;
+
     [Header("IN GAME")]
     public float prom = 0;
     public float timer = 0;
@@ -96,10 +99,11 @@ public class BluetoothPairing : MonoBehaviour
                     Console.WriteLine("error parse data {0}", patientData[0]);
                 }
 
+                GameData.Instance.apnea = false;
                 if(int.TryParse(patientData[1], out apneaValue))
                 {
                     GameData.Instance.apnea = (apneaValue == 1 ? true : false);
-                } 
+                }
                 else
                 {
                     Console.WriteLine("error parse data {1}", patientData[1]);
@@ -111,17 +115,23 @@ public class BluetoothPairing : MonoBehaviour
             if(valuesDouble.Length > 0)
             {
                 prom = valuesDouble.Average();
-                //Debug.LogWarningFormat("promedio: {0}", prom.ToString());
                 timer += Time.deltaTime;
             }
     }
 
     IEnumerator LoadingScreen(){
+        string connectionStatus = "non";
         yield return new WaitForSeconds(0.5f);
-        bluet.Call("connectToDevice", parameters2);
+        bluet.Call("connectToDevice", parameters2, connectionStatus);
+        stringConnection.text = connectionStatus;
+        //Debug.Log(connectionStatus);
+        /*BluetoothConnector.Call("PrintOnScreen", context, connectionStatus);
+            if (connectionStatus == "Connected") return true;
+            else return false;*/
         yield return new WaitForSeconds(3f);
         UI_System.Instance.SwitchScreens(GameData.Instance.loginMenu);
         StopCoroutine(LoadingScreen());
+        
     }    
 
     public void CallOutputTime(){

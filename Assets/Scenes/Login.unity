@@ -2368,9 +2368,30 @@ MonoBehaviour:
   exerciseMenu_Game: {fileID: 618448814}
   serieGraphMenu: {fileID: 1043462109}
   customizeMenu_Select: {fileID: 20110026}
+  m_jsonObjectUser:
+    token: 
+    user:
+      _id: 
+      nombre: 
+      cedula: 
+      telefono: 
+      email: 
+      edad: 0
+      sexo: 
+      peso: 0
+      altura: 0
+      direccion: 
+      ciudad: 
+      __v: 
   m_jsonObjectExercises:
     array: []
   m_idListHourExercises: 0
+  m_exerciseSeries:
+    series: []
+  m_exerciseData:
+    tiempo: []
+    flujo: []
+  m_exerciseHourArray: 
 --- !u!4 &164669504
 Transform:
   m_ObjectHideFlags: 0
@@ -2424,7 +2445,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -111}
-  m_SizeDelta: {x: 527, y: 80}
+  m_SizeDelta: {x: 615, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &175539327
 MonoBehaviour:
@@ -2474,17 +2495,17 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 7
+  m_ContentType: 8
   m_InputType: 2
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 1
   m_RegexValue: 
   m_GlobalPointSize: 40
-  m_CharacterLimit: 0
+  m_CharacterLimit: 4
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -2546,7 +2567,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 5d93b1f1e522e364b8059c894c2bdbdc, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -3189,6 +3210,7 @@ MonoBehaviour:
   prefabTextBluetooth: {fileID: 2007905116}
   bluetoothContent: {fileID: 267838245}
   login: {fileID: 403161336}
+  stringConnection: {fileID: 1683141486}
   prom: 0
   timer: 0
   bluetoothList: []
@@ -3206,16 +3228,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   userInputField: {fileID: 1997993793}
   passInputField: {fileID: 175539327}
-  jsonObject:
-    token: 
-    user:
-      _id: 
-      nombre: 
-      cedula: 
-      telefono: 
-      email: 
-      id_patient: 
-      __v: 
 --- !u!114 &271504640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3242,7 +3254,6 @@ MonoBehaviour:
   sessionTitlePrefab: {fileID: 0}
   sesiones: 0
   sesionesList: []
-  exerciseHourArray: 
   extraMinuteToWaitForExercise: 0
 --- !u!114 &271504641
 MonoBehaviour:
@@ -7239,7 +7250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77c9b65285898e84196000b2f1779778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_StartScreen: {fileID: 309271660}
+  m_StartScreen: {fileID: 403161336}
   onSwitchedScreen:
     m_PersistentCalls:
       m_Calls: []
@@ -10029,7 +10040,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: "\xDAltimos 4 d\xEDgitos del celular"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -10056,8 +10067,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -10324,13 +10335,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 793086686}
-        m_TargetAssemblyTypeName: UI_System, Assembly-CSharp
-        m_MethodName: SwitchScreens
-        m_Mode: 2
+      - m_Target: {fileID: 271504640}
+        m_TargetAssemblyTypeName: ExercisesManager, Assembly-CSharp
+        m_MethodName: SendExercise2
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 403161336}
-          m_ObjectArgumentAssemblyTypeName: UI_Screen, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -13487,7 +13498,8 @@ MonoBehaviour:
   targetScale: 0
   maxTargetScale: 0
   maxFlow: 0
-  graphPointList: []
+  exerciseData: []
+  timeDuringGame: 0
 --- !u!1 &1368785284
 GameObject:
   m_ObjectHideFlags: 0
@@ -17543,7 +17555,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: "C\xE9dula"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -17570,8 +17582,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -17874,30 +17886,6 @@ MonoBehaviour:
       - m_Target: {fileID: 271504639}
         m_TargetAssemblyTypeName: Login, Assembly-CSharp
         m_MethodName: LogIn
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 0
-      - m_Target: {fileID: 793086686}
-        m_TargetAssemblyTypeName: UI_System, Assembly-CSharp
-        m_MethodName: SwitchScreens
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 643810922}
-          m_ObjectArgumentAssemblyTypeName: UI_Screen, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 271504640}
-        m_TargetAssemblyTypeName: ExercisesManager, Assembly-CSharp
-        m_MethodName: TestGetExercise
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19983,7 +19971,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -111}
-  m_SizeDelta: {x: 527, y: 80}
+  m_SizeDelta: {x: 615, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1997993793
 MonoBehaviour:
@@ -20105,7 +20093,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 5d93b1f1e522e364b8059c894c2bdbdc, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1

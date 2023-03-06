@@ -5,7 +5,7 @@ using TMPro;
 
 public class Obstacles : MonoBehaviour
 {
-    public static int INACTIVITY = 60 * 3; //60 segs x 3 min
+    public static int INACTIVITY = 60 * 2; //60 segs x 2 min
 
     [Header("ATTACHED")]
     public float secondsAferApnea;
@@ -48,7 +48,7 @@ public class Obstacles : MonoBehaviour
                 repCounter ++;
                 inactivityCounter = 0;
             }
-        }
+        }        
     }
 
     public void DetectInactivity()

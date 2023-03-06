@@ -50,6 +50,13 @@ public class GameData : MonoBehaviour
         set { m_inspiration = value; }
     }
 
+    public Data m_jsonObjectUser;
+    public Data jsonObjectUser
+    {
+        get { return m_jsonObjectUser; }
+        set { m_jsonObjectUser = value; }
+    }
+
     public Exercises m_jsonObjectExercises;
     public Exercises jsonObjectExercises
     {
@@ -64,12 +71,26 @@ public class GameData : MonoBehaviour
         set { m_idListHourExercises = value; }
     }
 
-    /*private int m_exerciseDate;
-    public int exerciseDate
+    public ExerciseSeries m_exerciseSeries;
+    public ExerciseSeries exerciseSeries
     {
-        get { return m_exerciseDate; }
-        set { m_exerciseDate = value; }
-    }*/
+        get { return m_exerciseSeries; }
+        set { m_exerciseSeries = value; }
+    }
+
+    public ExerciseData m_exerciseData;
+    public ExerciseData exerciseData
+    {
+        get { return m_exerciseData; }
+        set { m_exerciseData = value; }
+    }
+
+    public int[] m_exerciseHourArray;
+    public int[] exerciseHourArray
+    {
+        get { return m_exerciseHourArray; }
+        set { m_exerciseHourArray = value; }
+    }
 
     private void Awake()
     {
@@ -81,7 +102,7 @@ public class GameData : MonoBehaviour
 
     void Start()
     {
-        //PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteAll();
 
         if(PlayerPrefs.GetString("currentExerciseDate") == "") // fecha actual
             PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString("dd/MM/yyyy"));
@@ -125,6 +146,11 @@ public class GameData : MonoBehaviour
     
     void Update()
     {
+        // Calcular tiempo durante el juego
+
+        if (Input.GetKeyDown(KeyCode.Escape)) 
+            Application.Quit(); 
+            
         if(playing)
         {
             StartCoroutine(scriptsGroup.obstacles.ObstaclesCounter());
@@ -135,39 +161,41 @@ public class GameData : MonoBehaviour
             //ya se acaben las series de la sesion
 
         if(resting)
+        {
             scriptsGroup.playerMovement.RestingPlayer();
+            exerciseSeries.series.Add(exerciseData);
+        }
 
         
         // select available session
         if(sessionMenu.gameObject.activeSelf)
         {
-            for(int i = 0; i < scriptsGroup.exercisesManager.exerciseHourArray.Length; i++)
+            for(int i = 0; i < GameData.Instance.exerciseHourArray.Length; i++)
             {
-                // detectar que ejercicio se debe activar
-                if(DateTime.Now.Hour == scriptsGroup.exercisesManager.exerciseHourArray[i]
+                // detectar cual ejercicio se debe activar
+                if(DateTime.Now.Hour == GameData.Instance.exerciseHourArray[i]
                     && DateTime.Now.Minute <= scriptsGroup.exercisesManager.extraMinuteToWaitForExercise)
                 {
+                    Debug.Log("activo");
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable = true;
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.currentSessionSprite;
-                    
                     // almacenar el id del ejercicio activado
                     idListHourExercises = i;
                 }
-                else
-                {
-                    // si la app esta abierta no cambia a inactivar el ejercicio si la hora pasa
-                    //idListHourExercises = -1;
-                }
-                    
-                // si no se hizo poner -1
-                if(i < idListHourExercises && scriptsGroup.exercisesManager.exerciseHourArray[i] != 0)
-                    scriptsGroup.exercisesManager.exerciseHourArray[i] = -1;
-                // detectar si los anteriores al actual se hicieron o no
-                if(scriptsGroup.exercisesManager.exerciseHourArray[i] == -1)
-                    scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.notFinishedSessionSprite; 
-                // detectar los que ya se han hecho
-                if (scriptsGroup.exercisesManager.exerciseHourArray[i] == 0)
-                    scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.finishedSessionSprite;
+                else if(DateTime.Now.Hour > GameData.Instance.exerciseHourArray[i])
+                {   
+                    Debug.Log("inactivo: "+DateTime.Now.Hour+"<"+GameData.Instance.exerciseHourArray[i]);
+                    scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable = false;
+                    // pregunta si esta disponible los viejos ejercicios y coloca que no se finalizó
+                    if(GameData.Instance.exerciseHourArray[i] > 0)
+                    {
+                        GameData.Instance.exerciseHourArray[i] = -1;                        
+                        scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.notFinishedSessionSprite;
+                    }
+                    // pregunta si ya finalizó
+                    else if (GameData.Instance.exerciseHourArray[i] == 0)
+                        scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.finishedSessionSprite;
+                }         
             }
         }
     }
@@ -175,8 +203,8 @@ public class GameData : MonoBehaviour
     void OnApplicationQuit()
     {
         scriptsGroup.rewardsManager.SaveReward();
-        //scriptsGroup.exercisesManager.SaveExercise(); // test
+        scriptsGroup.exercisesManager.SaveExercise();
         scriptsGroup.customizationManager.SaveCustomization();
-        PlayerPrefs.Save();
+        //PlayerPrefs.Save();
     }
 }

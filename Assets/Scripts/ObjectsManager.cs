@@ -18,22 +18,31 @@ public class User
     public string cedula;
     public string telefono;
     public string email;
-    public string id_patient;
-    public string __v;
-}
-
-[Serializable]
-public class Patient
-{
-    public string _id;
     public int edad;
-    public int sexo;
+    public string sexo;
     public float peso;
     public float altura;
     public string direccion;
     public string ciudad;
     public string __v;
 }
+
+/*[Serializable]
+public class Patient
+{
+    public string _id;
+    public string nombre;
+    public string cedula;
+    public string telefono;
+    public string email;
+    public int edad;
+    public string sexo;
+    public float peso;
+    public float altura;
+    public string direccion;
+    public string ciudad;
+    public string __v;
+}*/
 
 [Serializable]
 public class Exercise
@@ -62,16 +71,16 @@ public class Exercises
 }
 
 [Serializable]
-public class ExerciseValue
+public class ExerciseSeries
 {
-    public List<ExerciseItem> array = new List<ExerciseItem>();
+    public List<ExerciseData> series = new List<ExerciseData>();
 }
 
 [Serializable]
-public class ExerciseItem
+public class ExerciseData
 {
-    public string time;
-    public float volume;
+    public List<float> tiempo;
+    public List<float> flujo;
 }
 
 public class ObjectsManager : MonoBehaviour
