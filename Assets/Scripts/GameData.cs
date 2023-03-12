@@ -163,7 +163,6 @@ public class GameData : MonoBehaviour
         if(resting)
         {
             scriptsGroup.playerMovement.RestingPlayer();
-            exerciseSeries.series.Add(exerciseData);
         }
 
         
@@ -176,15 +175,13 @@ public class GameData : MonoBehaviour
                 if(DateTime.Now.Hour == GameData.Instance.exerciseHourArray[i]
                     && DateTime.Now.Minute <= scriptsGroup.exercisesManager.extraMinuteToWaitForExercise)
                 {
-                    Debug.Log("activo");
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable = true;
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.currentSessionSprite;
                     // almacenar el id del ejercicio activado
                     idListHourExercises = i;
                 }
                 else if(DateTime.Now.Hour > GameData.Instance.exerciseHourArray[i])
-                {   
-                    Debug.Log("inactivo: "+DateTime.Now.Hour+"<"+GameData.Instance.exerciseHourArray[i]);
+                {
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable = false;
                     // pregunta si esta disponible los viejos ejercicios y coloca que no se finalizó
                     if(GameData.Instance.exerciseHourArray[i] > 0)

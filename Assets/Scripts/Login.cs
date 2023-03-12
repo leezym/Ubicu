@@ -10,7 +10,7 @@ public class Login : MonoBehaviour
 {
     [Header("ATTACHED")]
     public TMP_InputField userInputField;
-    public TMP_InputField passInputField;    
+    public TMP_InputField passInputField;
 
     public void LogIn(){
         StartCoroutine(OnLogin());
@@ -24,8 +24,8 @@ public class Login : MonoBehaviour
             form.AddField("cedula", userInputField.text);
             form.AddField("password", passInputField.text);
 
-            UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/authenticatePatient", form);
-            //UnityWebRequest www = UnityWebRequest.Post("https://server.ubicu.co/authenticatePatient", form);
+            //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/authenticatePatient", form);
+            UnityWebRequest www = UnityWebRequest.Post("https://server.ubicu.co/authenticatePatient", form);
 
             www.downloadHandler = new DownloadHandlerBuffer();
 
@@ -36,7 +36,7 @@ public class Login : MonoBehaviour
             {
                 Debug.Log(www.error);
                 Debug.Log(form.data);
-
+                
                 userInputField.text = responseText;
                 passInputField.text = "";
             }

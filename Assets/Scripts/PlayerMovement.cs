@@ -102,16 +102,12 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             seriesCount = 0;
+            StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.SendExercise());
             GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards();
-            //GameData.Instance.scriptsGroup.exercisesManager.sesionesList[GameData.Instance.idListHourExercises].GetComponent<Button>().interactable = false;
-            //GameData.Instance.scriptsGroup.exercisesManager.sesionesList[GameData.Instance.idListHourExercises].GetComponent<Image>().sprite = GameData.Instance.scriptsGroup.exercisesManager.finishedSessionSprite;
             GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises] = 0; // si se finalizó se coloca 0
             GameData.Instance.idListHourExercises = -1;
             GameData.Instance.scriptsGroup.bluetoothPairing.StopOutputTime();
             UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
-            StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.SendExercise());
-            GameData.Instance.exerciseData = new ExerciseData();
-            GameData.Instance.exerciseSeries = new ExerciseSeries();
 
         }
     }
@@ -175,6 +171,11 @@ public class PlayerMovement : MonoBehaviour
             imageLinePrefab.rectTransform.sizeDelta = new Vector2(imageLinePrefab.rectTransform.sizeDelta.x, pointGraphPositionY);
         }
 
+        // Añadir la serie y resetear la data
+        GameData.Instance.exerciseSeries.series.Add(GameData.Instance.exerciseData);
+        GameData.Instance.exerciseData.tiempo = new List<float>();
+        GameData.Instance.exerciseData.flujo = new List<float>();
+
     }
 
     public void DeleteGraph()
@@ -183,7 +184,6 @@ public class PlayerMovement : MonoBehaviour
         {
             if(point.gameObject.name == "GraphPrefab(Clone)")
                 Destroy(point.gameObject);
-        }        
-        GameData.Instance.exerciseData.flujo = new List<float>();
+        }
     }
 }
