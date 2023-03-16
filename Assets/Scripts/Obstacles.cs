@@ -30,7 +30,7 @@ public class Obstacles : MonoBehaviour
             {
                 GameData.Instance.playing = false;
                 GameData.Instance.scriptsGroup.playerMovement.CreateGraph();
-                yield return new WaitForSeconds(1.5f);
+                yield return new WaitForSeconds(1.5f);                
                 inactivityCounter = 0;
                 repCounter = 0;
                 UI_System.Instance.SwitchScreens(GameData.Instance.serieGraphMenu);

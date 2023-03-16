@@ -28,23 +28,28 @@ public class PlayerMovement : MonoBehaviour
     public float targetScale;
     public float maxTargetScale;
     public float maxFlow;
-    public List<float> exerciseData;
-    float restCount;
-    float seriesCount;
     float apneaCount;
+    float restCount;
+    int seriesCount;
     public float timeDuringGame;
+
+    public TMP_Text texttest;
 
     public void InitializeLevel()
     {
         player.transform.localScale = new Vector2(minimunScale,minimunScale);
         restCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso;
         apneaCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea;
-        timeDuringGame = 0;
+        
+        //GameData.Instance.exerciseSeries = new List<ExerciseData>();
+        for (int i = 0; i < GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series; i++)
+            GameData.Instance.exerciseSeries.Add(new ExerciseData { tiempo = new List<float>(), flujo = new List<float>() });
     }    
     public void Movement()
     {
         //test
-        //GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = "prom: "+GameData.Instance.scriptsGroup.bluetoothPairing.prom+"\nmaxFlow: " +maxFlow+"\ninsp: "+GameData.Instance.inspiration;
+        GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = "maxFlow: " +maxFlow;
+
 
         if(GameData.Instance.inspiration)
         {
@@ -91,18 +96,20 @@ public class PlayerMovement : MonoBehaviour
         DeleteGraph();
         GameData.Instance.resting = false;
         restCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso;
+
         if(seriesCount < GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series)
         {
+            GameData.Instance.scriptsGroup.bluetoothPairing.timer = 0;
             UI_System.Instance.SwitchScreens(GameData.Instance.exerciseMenu_Game);
             GameData.Instance.playing = true;
             seriesTextGame.text = "SERIE "+ (seriesCount+1);
             seriesTextGraph.text = "SERIE "+ (seriesCount+1);
-            seriesCount++;
         }
         else
-        {
+        {            
             seriesCount = 0;
-            StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.SendExercise());
+            //StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.SendResults());
+            GameData.Instance.scriptsGroup.exercisesManager.SendResults();
             GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards();
             GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises] = 0; // si se finalizó se coloca 0
             GameData.Instance.idListHourExercises = -1;
@@ -130,8 +137,9 @@ public class PlayerMovement : MonoBehaviour
 
     public void SaveGraphData()
     {
-        GameData.Instance.exerciseData.flujo.Add(maxFlow);
-        GameData.Instance.exerciseData.tiempo.Add(timeDuringGame);
+        GameData.Instance.exerciseSeries[seriesCount].flujo.Add(maxFlow);
+        GameData.Instance.exerciseSeries[seriesCount].tiempo.Add(timeDuringGame);
+        texttest.text = JsonUtility.ToJson(GameData.Instance.exerciseSeries[seriesCount]);//[0]) + "\n" + JsonUtility.ToJson(GameData.Instance.exerciseSeries.series[1]) + "\n" + JsonUtility.ToJson(GameData.Instance.exerciseSeries.series[2]);
         maxTargetScale = 0;
         maxFlow = 0;
         timeDuringGame = 0;
@@ -140,15 +148,15 @@ public class PlayerMovement : MonoBehaviour
     public void CreateGraph()
     {
         float maxValue = 0;
-        if(Mathf.Max(GameData.Instance.exerciseData.flujo.ToArray()) > GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
-            maxValue = Mathf.Max(GameData.Instance.exerciseData.flujo.ToArray());
+        if(Mathf.Max(GameData.Instance.exerciseSeries[seriesCount].flujo.ToArray()) > GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
+            maxValue = Mathf.Max(GameData.Instance.exerciseSeries[seriesCount].flujo.ToArray());
         else
             maxValue = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo;
         
         float goalGraphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo / maxValue;
         goalGraph.transform.localPosition = new Vector2(0f, goalGraphPositionY);
 
-        for(int i = 0; i < GameData.Instance.exerciseData.flujo.Count; i++)
+        for(int i = 0; i < GameData.Instance.exerciseSeries[seriesCount].flujo.Count; i++)
         {
             GameObject go = Instantiate(graphPrefab, Vector3.zero, Quaternion.identity);
             go.SetActive(true);
@@ -156,9 +164,9 @@ public class PlayerMovement : MonoBehaviour
             go.transform.localScale = new Vector3(1,1,1);
 
             //X position
-            float pointGraphPositionX = (i + 1) * (graphStructure.GetComponent<RectTransform>().rect.width / (GameData.Instance.exerciseData.flujo.Count + 1)); //+1 para dejar un margen visual de la gráfica
+            float pointGraphPositionX = (i + 1) * (graphStructure.GetComponent<RectTransform>().rect.width / (GameData.Instance.exerciseSeries[seriesCount].flujo.Count + 1)); //+1 para dejar un margen visual de la gráfica
             // Y position
-            float pointGraphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * GameData.Instance.exerciseData.flujo[i] / maxValue;
+            float pointGraphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * GameData.Instance.exerciseSeries[seriesCount].flujo[i] / maxValue;
             go.transform.localPosition = new Vector2(pointGraphPositionX, pointGraphPositionY);
 
             if(pointGraphPositionY >= goalGraphPositionY)
@@ -171,15 +179,11 @@ public class PlayerMovement : MonoBehaviour
             imageLinePrefab.rectTransform.sizeDelta = new Vector2(imageLinePrefab.rectTransform.sizeDelta.x, pointGraphPositionY);
         }
 
-        // Añadir la serie y resetear la data
-        GameData.Instance.exerciseSeries.series.Add(GameData.Instance.exerciseData);
-        GameData.Instance.exerciseData.tiempo = new List<float>();
-        GameData.Instance.exerciseData.flujo = new List<float>();
-
+        seriesCount++;
     }
 
     public void DeleteGraph()
-    {
+    {        
         foreach (Transform point in graphStructure.transform)
         {
             if(point.gameObject.name == "GraphPrefab(Clone)")

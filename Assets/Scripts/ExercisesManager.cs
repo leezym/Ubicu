@@ -177,25 +177,13 @@ public class ExercisesManager : MonoBehaviour
     {
         PlayerPrefs.SetString("exerciseHourArray", string.Join(",", GameData.Instance.exerciseHourArray));
     }
-
-    public void SendExercise2() // test
-    {
-        StartCoroutine(SendExercise());
+    public void SendResults(){
+        //test
+        texttest.text = JsonUtility.ToJson(GameData.Instance.exerciseSeries[0]) + "\n" + JsonUtility.ToJson(GameData.Instance.exerciseSeries[1]) + "\n" + JsonUtility.ToJson(GameData.Instance.exerciseSeries[2]);
     }
-    public IEnumerator SendExercise()
+    
+    /*public IEnumerator SendResults()
     {
-        /*GameData.Instance.exerciseSeries = new ExerciseSeries{ //test
-            series = new List<ExerciseData> {
-                new ExerciseData{
-                    flujo = new List<float> {10,20,50},
-                    tiempo = new List<float> {1,10,50}
-                },
-                new ExerciseData{
-                    flujo = new List<float> {100,250,500},
-                    tiempo = new List<float> {1,5,8}
-                }
-            }
-        };*/
         
         WWWForm form = new WWWForm();
         string json = JsonUtility.ToJson(GameData.Instance.exerciseSeries);
@@ -203,9 +191,10 @@ public class ExercisesManager : MonoBehaviour
 
         form.AddField("id_ejercicio", GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises]._id);
         form.AddField("fecha", PlayerPrefs.GetString("currentExerciseDate"));
-        form.AddField("hora",22);
-        //form.AddField("hora", GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises]);
+        form.AddField("hora", GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises]);
         form.AddField("datos", json);
+
+        texttest.text = json;
 
 
         UnityWebRequest www = UnityWebRequest.Post("https://server.ubicu.co/createResult", form);
@@ -222,11 +211,11 @@ public class ExercisesManager : MonoBehaviour
         }
         else
         {
+            GameData.Instance.exerciseSeries = new ExerciseSeries();
             Debug.Log("Post request complete!" + " Response Code: " + www.responseCode);
         }
         
-        GameData.Instance.exerciseSeries = new ExerciseSeries();
-        StopCoroutine(SendExercise());
-    }
+        StopCoroutine(SendResults());
+    }*/
 
 }
