@@ -41,15 +41,13 @@ public class PlayerMovement : MonoBehaviour
         restCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso;
         apneaCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea;
         
-        //GameData.Instance.exerciseSeries = new List<ExerciseData>();
         for (int i = 0; i < GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series; i++)
             GameData.Instance.exerciseSeries.Add(new ExerciseData { tiempo = new List<float>(), flujo = new List<float>() });
     }    
     public void Movement()
     {
         //test
-        GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = "maxFlow: " +maxFlow;
-
+        //GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = "maxFlow: " +maxFlow;
 
         if(GameData.Instance.inspiration)
         {
@@ -108,8 +106,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {            
             seriesCount = 0;
-            //StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.SendResults());
-            GameData.Instance.scriptsGroup.exercisesManager.SendResults();
+            StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.SendResults());
             GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards();
             GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises] = 0; // si se finalizó se coloca 0
             GameData.Instance.idListHourExercises = -1;
@@ -139,7 +136,6 @@ public class PlayerMovement : MonoBehaviour
     {
         GameData.Instance.exerciseSeries[seriesCount].flujo.Add(maxFlow);
         GameData.Instance.exerciseSeries[seriesCount].tiempo.Add(timeDuringGame);
-        texttest.text = JsonUtility.ToJson(GameData.Instance.exerciseSeries[seriesCount]);//[0]) + "\n" + JsonUtility.ToJson(GameData.Instance.exerciseSeries.series[1]) + "\n" + JsonUtility.ToJson(GameData.Instance.exerciseSeries.series[2]);
         maxTargetScale = 0;
         maxFlow = 0;
         timeDuringGame = 0;

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Networking;
 using System.Globalization;
+using Newtonsoft.Json;
 
 public class ExercisesManager : MonoBehaviour
 {
@@ -177,25 +178,19 @@ public class ExercisesManager : MonoBehaviour
     {
         PlayerPrefs.SetString("exerciseHourArray", string.Join(",", GameData.Instance.exerciseHourArray));
     }
-    public void SendResults(){
-        //test
-        texttest.text = JsonUtility.ToJson(GameData.Instance.exerciseSeries[0]) + "\n" + JsonUtility.ToJson(GameData.Instance.exerciseSeries[1]) + "\n" + JsonUtility.ToJson(GameData.Instance.exerciseSeries[2]);
-    }
     
-    /*public IEnumerator SendResults()
+    public IEnumerator SendResults()
     {
         
         WWWForm form = new WWWForm();
-        string json = JsonUtility.ToJson(GameData.Instance.exerciseSeries);
-        json = json.Substring(10, json.Length - 11);
+        string json = JsonConvert.SerializeObject(GameData.Instance.exerciseSeries);
 
         form.AddField("id_ejercicio", GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises]._id);
         form.AddField("fecha", PlayerPrefs.GetString("currentExerciseDate"));
         form.AddField("hora", GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises]);
         form.AddField("datos", json);
 
-        texttest.text = json;
-
+        Debug.Log(json);
 
         UnityWebRequest www = UnityWebRequest.Post("https://server.ubicu.co/createResult", form);
         //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/createResult", form);
@@ -211,11 +206,11 @@ public class ExercisesManager : MonoBehaviour
         }
         else
         {
-            GameData.Instance.exerciseSeries = new ExerciseSeries();
             Debug.Log("Post request complete!" + " Response Code: " + www.responseCode);
         }
         
+        GameData.Instance.exerciseSeries = new List<ExerciseData>();        
         StopCoroutine(SendResults());
-    }*/
+    }
 
 }

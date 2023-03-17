@@ -162,7 +162,6 @@ public class GameData : MonoBehaviour
         // select available session
         if(sessionMenu.gameObject.activeSelf)
         {
-           
            // scriptsGroup.exercisesManager.SaveExercise();
             for(int i = 0; i < exerciseHourArray.Length; i++)
             {

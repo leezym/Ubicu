@@ -120,10 +120,8 @@ public class BluetoothPairing : MonoBehaviour
     }
 
     IEnumerator LoadingScreen(){
-        string connectionStatus = "non";
         yield return new WaitForSeconds(0.5f);
         bluet.Call("connectToDevice", parameters2);
-        stringConnection.text = connectionStatus;
         //Debug.Log(connectionStatus);
         /*BluetoothConnector.Call("PrintOnScreen", context, connectionStatus);
             if (connectionStatus == "Connected") return true;
