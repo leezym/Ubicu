@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
     public void Movement()
     {
         //test
-        //GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = "maxFlow: " +maxFlow;
+        GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = "maxFlow: " + Math.Round(maxFlow, 1);
 
         if(GameData.Instance.inspiration)
         {

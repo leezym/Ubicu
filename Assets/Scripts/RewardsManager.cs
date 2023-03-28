@@ -26,7 +26,7 @@ public class RewardsManager : MonoBehaviour
     {
         sessionReward = PlayerPrefs.GetInt("sessionReward");
         dayReward = PlayerPrefs.GetInt("dayReward");
-        totalReward = 100000;//PlayerPrefs.GetInt("totalReward"); //test
+        totalReward = PlayerPrefs.GetInt("totalReward");
     }
     
     public void SaveReward()

@@ -34,11 +34,11 @@ public class ExercisesManager : MonoBehaviour
     public IEnumerator GetExercises()
     {
         WWWForm form = new WWWForm();
-        form.AddField("id_user", GameData.Instance.jsonObjectUser.user._id);
+        form.AddField("id_patient", GameData.Instance.jsonObjectUser.user._id);
         form.AddField("token", GameData.Instance.jsonObjectUser.token);
 
-        UnityWebRequest www = UnityWebRequest.Post("https://server.ubicu.co/allEjerciciosByUser", form);
-        //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/allEjerciciosByUser", form);
+        UnityWebRequest www = UnityWebRequest.Post("https://server.ubicu.co/allEjerciciosByPatient", form);
+        //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/allEjerciciosByPatient", form);
 
         www.downloadHandler = new DownloadHandlerBuffer();
 
