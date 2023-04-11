@@ -95,8 +95,11 @@ public class GameData : MonoBehaviour
 
     void Start()
     {
-        PlayerPrefs.DeleteAll();
+        scriptsGroup.rewardsManager.sessionReward = 1200;
+        scriptsGroup.rewardsManager.dayReward = 450;
 
+        //scriptsGroup.rewardsManager.CalculateRewards();
+        PlayerPrefs.DeleteAll();
 
         if(PlayerPrefs.GetString("currentExerciseDate") == "") // fecha actual
             PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString("dd/MM/yyyy"));

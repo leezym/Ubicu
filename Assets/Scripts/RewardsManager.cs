@@ -19,7 +19,6 @@ public class RewardsManager : MonoBehaviour
     public int serieReward;
     public int sessionReward;
     public int dayReward;
-    public int weekReward;
     public int totalReward;
 
     public void LoadReward()
@@ -41,20 +40,24 @@ public class RewardsManager : MonoBehaviour
         serieReward = (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series * RewardsManager.SERIE_REWARD);
         sessionReward += RewardsManager.SESSION_REWARD;
         totalReward += (serieReward + RewardsManager.SESSION_REWARD);
-        
+        NotificationsManager.Instance.WarningNotifications("¡FELICITACIONES!\nGanaste "+serieReward+" Ubicoins por cada serie realizada y "+RewardsManager.SESSION_REWARD+" por el ejercicio completo");
+        NotificationsManager.Instance.SetCloseFunction(GameData.Instance.sessionMenu);
+
         if(sessionReward == (GameData.Instance.scriptsGroup.exercisesManager.sesiones * RewardsManager.SESSION_REWARD))
         {
             dayReward += RewardsManager.DAY_REWARD;
-            totalReward += dayReward;
+            totalReward += RewardsManager.DAY_REWARD;
             sessionReward = 0;
+            NotificationsManager.Instance.SetCloseFunction("¡FELICITACIONES!\nGanaste "+RewardsManager.DAY_REWARD+" Ubicoins por completar un día de fisioterapias");
         }
 
         if(dayReward == (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_dias * RewardsManager.DAY_REWARD) && DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) == DateTime.ParseExact(GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture))
         {
-            weekReward = RewardsManager.WEEK_REWARD;
-            totalReward += weekReward;
+            totalReward += RewardsManager.WEEK_REWARD;
             dayReward = 0;
+            NotificationsManager.Instance.SetCloseFunction("¡FELICITACIONES!\nGanaste "+RewardsManager.WEEK_REWARD+" Ubicoins por completar una semana de fisioterapias");
         }
+
         //pdte subir total reward a la DB
     }
 

@@ -6,7 +6,6 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Networking;
 using System.Globalization;
-using Newtonsoft.Json;
 
 public class ExercisesManager : MonoBehaviour
 {
@@ -171,7 +170,7 @@ public class ExercisesManager : MonoBehaviour
         }
 
         extraMinuteToWaitForExercise = (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas == 1 ? 30f : 59f); // minutos
-        //extraMinuteToWaitForExercise = 59f;
+        //extraMinuteToWaitForExercise = 59f; test
     }
 
     public void SaveExercise()
@@ -183,7 +182,7 @@ public class ExercisesManager : MonoBehaviour
     {
         
         WWWForm form = new WWWForm();
-        string json = JsonConvert.SerializeObject(GameData.Instance.exerciseSeries);
+        string json = JsonUtility.ToJson(GameData.Instance.exerciseSeries);
 
         form.AddField("id_ejercicio", GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises]._id);
         form.AddField("fecha", PlayerPrefs.GetString("currentExerciseDate"));

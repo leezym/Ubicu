@@ -26,7 +26,6 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("IN GAME")]
     public GameObject player;
-    public float targetScale;
     public float maxTargetScale;
     public float maxFlow;
     float apneaCount;
@@ -48,26 +47,23 @@ public class PlayerMovement : MonoBehaviour
     public void Movement()
     {
         //test
-        GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = "maxFlow: " + Math.Round(maxFlow, 1);
+        GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = Math.Round(maxFlow, 1).ToString();
 
         if(GameData.Instance.inspiration)
         {
-            // convert scale
-            if(GameData.Instance.scriptsGroup.bluetoothPairing.prom <= GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
+            if(GameData.Instance.scriptsGroup.bluetoothPairing.prom > maxFlow)
             {
-                targetScale = (GameData.Instance.scriptsGroup.bluetoothPairing.prom * maximunScale / GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo) + minimunScale;
-                if (targetScale > maxTargetScale)
-                {
-                    maxTargetScale = targetScale;
-                    maxFlow = (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo * (maxTargetScale - minimunScale))/maximunScale;
-                    timeDuringGame = GameData.Instance.scriptsGroup.bluetoothPairing.timer;
-                }
-            }
-            else
-            {
-                targetScale = maximunScale;
                 maxFlow = GameData.Instance.scriptsGroup.bluetoothPairing.prom;
                 timeDuringGame = GameData.Instance.scriptsGroup.bluetoothPairing.timer;
+
+                if(maxFlow <= GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
+                {
+                    maxTargetScale = (maxFlow * maximunScale / GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo) + minimunScale;                    
+                }
+                else
+                {
+                    maxTargetScale = maximunScale;
+                }
             }
         }
         else
@@ -108,12 +104,11 @@ public class PlayerMovement : MonoBehaviour
         {            
             seriesCount = 0;
             StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.SendResults());
-            GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards();
             GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises] = 0; // si se finalizó se coloca 0
             GameData.Instance.idListHourExercises = -1;
             GameData.Instance.scriptsGroup.bluetoothPairing.StopOutputTime();
-            UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
-
+            GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards();
+            //UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
         }
     }
 

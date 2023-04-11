@@ -47,6 +47,12 @@ public class NotificationsManager : MonoBehaviour
         });
     }
 
+    public void SetCloseFunction(string text)
+    {
+        //notificationsCloseButton.onClick.RemoveAllListeners();
+        WarningNotifications(text);
+    }
+
     public void SetYesButton(Action function)
     {
         notificationsYesButton.onClick.RemoveAllListeners();

@@ -71,12 +71,6 @@ public class Exercises
 }
 
 [Serializable]
-public class ExerciseSeries
-{
-    public List<ExerciseData> series = new List<ExerciseData>();
-}
-
-[Serializable]
 public class ExerciseData
 {
     public List<float> tiempo;

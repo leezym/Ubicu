@@ -385,7 +385,7 @@ public class CustomizationManager : MonoBehaviour
         {
             //notificacion de que no alcanza
             NotificationsManager.Instance.WarningNotifications("No tienes UbiCoins suficientes para comprar el fondo.\n¡Sigue haciendo tu fisioterapia!");
-            NotificationsManager.Instance.SetCloseFunction(null);
+            //NotificationsManager.Instance.SetCloseFunction(null);
         }
     }
 
@@ -409,7 +409,7 @@ public class CustomizationManager : MonoBehaviour
         {
             //notificacion de que no alcanza
             NotificationsManager.Instance.WarningNotifications("No tienes UbiCoins suficientes para comprar la figura.\n¡Sigue haciendo tu fisioterapia!");
-            NotificationsManager.Instance.SetCloseFunction(null);
+            //NotificationsManager.Instance.SetCloseFunction(null);
         }
     }
 
@@ -453,7 +453,7 @@ public class CustomizationManager : MonoBehaviour
         {
             // notificacion de no poder colocar el tema porque no ha seleccionado un item
             NotificationsManager.Instance.WarningNotifications("Por favor selecciona un fondo y una figura para usar el tema.");
-            NotificationsManager.Instance.SetCloseFunction(null);
+            //NotificationsManager.Instance.SetCloseFunction(null);
             idCustomization = tempIdCustomization;
         }
     }
