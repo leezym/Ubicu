@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Networking;
 using System.Globalization;
+using Newtonsoft.Json;
 
 public class ExercisesManager : MonoBehaviour
 {
@@ -139,7 +140,7 @@ public class ExercisesManager : MonoBehaviour
         if(emptyExercise == true || (emptyExercise == false && uniqueExercise == true && currentDate == false) || (emptyExercise == false && uniqueExercise == false && currentDate == false))
             add = 0;
         if((emptyExercise == false && uniqueExercise == true && currentDate == true) || (emptyExercise == false && uniqueExercise == false && currentDate == true))
-            add = 12/GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas;
+            add = (12/GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas) + 1;
 
         return add;        
     }
@@ -182,7 +183,7 @@ public class ExercisesManager : MonoBehaviour
     {
         
         WWWForm form = new WWWForm();
-        string json = JsonUtility.ToJson(GameData.Instance.exerciseSeries);
+        string json = JsonConvert.SerializeObject(GameData.Instance.exerciseSeries);
 
         form.AddField("id_ejercicio", GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises]._id);
         form.AddField("fecha", PlayerPrefs.GetString("currentExerciseDate"));

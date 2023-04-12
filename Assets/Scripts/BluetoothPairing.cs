@@ -73,50 +73,78 @@ public class BluetoothPairing : MonoBehaviour
             }
         }
     }
-    void OutputTime()
+    /*public void OutputTime()
     {
-            string data = bluet.Call<string>("getData");
-            
-            string[] info = Regex.Split(data, Environment.NewLine);
-            List<float> valuesList = new List<float>();
-            float tempValue;
-            int apneaValue;
-            bool apnea;
+        string data = bluet.Call<string>("getData");
+        
+        string[] info = Regex.Split(data, Environment.NewLine);
+        List<float> valuesList = new List<float>();
+        float tempValue;
+        int apneaValue;
+        bool apnea;
 
-            for (int i = 1; i < info.Length-1; i++)
+        for (int i = 1; i < info.Length-1; i++)
+        {
+            string[] patientData = Regex.Split(info[i], ",");
+            // patientData[0] -> flujo
+            // patientData[1] -> apnea
+            // patientData[2] -> frecuencia respiratoria
+            if(float.TryParse(patientData[0], out tempValue))
             {
-                string[] patientData = Regex.Split(info[i], ",");
-                // patientData[0] -> flujo
-                // patientData[1] -> apnea
-                // patientData[2] -> frecuencia respiratoria
-                if(float.TryParse(patientData[0], out tempValue))
-                {
-                    valuesList.Add(tempValue);
-                    GameData.Instance.inspiration = (tempValue == 0 ? false : true);
-                }
-                else
-                {
-                    Console.WriteLine("error parse data {0}", patientData[0]);
-                }
-
-                GameData.Instance.apnea = false;
-                if(int.TryParse(patientData[1], out apneaValue))
-                {
-                    GameData.Instance.apnea = (apneaValue == 1 ? true : false);
-                }
-                else
-                {
-                    Console.WriteLine("error parse data {1}", patientData[1]);
-                }
+                valuesList.Add(tempValue);
+                GameData.Instance.inspiration = (tempValue == 0 ? false : true);
+            }
+            else
+            {
+                Console.WriteLine("error parse data {0}", patientData[0]);
             }
 
-            float[] valuesDouble = valuesList.ToArray();
-
-            if(valuesDouble.Length > 0)
+            GameData.Instance.apnea = false;
+            if(int.TryParse(patientData[1], out apneaValue))
             {
-                prom = valuesDouble.Average();
-                timer += Time.deltaTime;
+                GameData.Instance.apnea = (apneaValue == 1 ? true : false);
             }
+            else
+            {
+                Console.WriteLine("error parse data {1}", patientData[1]);
+            }
+        }
+
+        float[] valuesDouble = valuesList.ToArray();
+
+        if(valuesDouble.Length > 0)
+            prom = valuesDouble.Average();
+        timer += Time.deltaTime;
+    }*/
+
+    public void OutputTime()
+    {
+        timer += Time.deltaTime;
+        int apneaValue;
+        
+        string data = bluet.Call<string>("getData");
+        string[] patientData = Regex.Split(data, ",");
+        // patientData[0] -> flujo
+        // patientData[1] -> apnea
+        // patientData[2] -> frecuencia respiratoria
+        if(float.TryParse(patientData[0], out prom))
+        {
+            GameData.Instance.scriptsGroup.playerMovement.SaveData(prom, timer);
+            GameData.Instance.inspiration = (prom == 0 ? false : true);
+        }
+        else
+        {
+            Console.WriteLine("error parse data {0}", patientData[0]);
+        }
+
+        if(int.TryParse(patientData[1], out apneaValue))
+        {
+            GameData.Instance.apnea = (apneaValue == 1 ? true : false);
+        }
+        else
+        {
+            Console.WriteLine("error parse data {1}", patientData[1]);
+        }
     }
 
     IEnumerator LoadingScreen(){
@@ -132,12 +160,12 @@ public class BluetoothPairing : MonoBehaviour
         
     }    
 
-    public void CallOutputTime(){
+    /*public void CallOutputTime(){
         InvokeRepeating("OutputTime", 0.5f, 0.0033f); // 1/250 datos
     }
 
     public void StopOutputTime()
     {
         CancelInvoke();
-    }
+    }*/
 }

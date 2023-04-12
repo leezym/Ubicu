@@ -95,11 +95,11 @@ public class GameData : MonoBehaviour
 
     void Start()
     {
-        scriptsGroup.rewardsManager.sessionReward = 1200;
-        scriptsGroup.rewardsManager.dayReward = 450;
+        //scriptsGroup.rewardsManager.sessionReward = 1200;
+        //scriptsGroup.rewardsManager.dayReward = 450;
 
         //scriptsGroup.rewardsManager.CalculateRewards();
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
 
         if(PlayerPrefs.GetString("currentExerciseDate") == "") // fecha actual
             PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString("dd/MM/yyyy"));
@@ -142,18 +142,20 @@ public class GameData : MonoBehaviour
     }
     
     void Update()
-    {     
-        // Calcular tiempo durante el juego
+    {
         if (Input.GetKeyDown(KeyCode.Escape)) 
-            Application.Quit(); 
-            
+            Application.Quit();
+ 
+        // llamar bluetooth
+        if(exerciseMenu_Game.gameObject.GetComponent<CanvasGroup>().alpha != 0)
+            scriptsGroup.bluetoothPairing.OutputTime();
+       
         if(playing)
         {
             StartCoroutine(scriptsGroup.obstacles.ObstaclesCounter());
             // contador de inactividad
             scriptsGroup.obstacles.DetectInactivity();
-        }
-        //else
+        }//else
             //ya se acaben las series de la sesion
 
         if(resting)
@@ -162,8 +164,8 @@ public class GameData : MonoBehaviour
         }
 
         
-        // select available session
-        if(sessionMenu.gameObject.activeSelf)
+        // seleccionar sesion disponible
+        if(sessionMenu.gameObject.GetComponent<CanvasGroup>().alpha != 0)
         {
            // scriptsGroup.exercisesManager.SaveExercise();
             for(int i = 0; i < exerciseHourArray.Length; i++)
@@ -200,6 +202,6 @@ public class GameData : MonoBehaviour
         scriptsGroup.rewardsManager.SaveReward();
         scriptsGroup.exercisesManager.SaveExercise();
         scriptsGroup.customizationManager.SaveCustomization();
-        //PlayerPrefs.Save();
+        PlayerPrefs.Save();
     }
 }

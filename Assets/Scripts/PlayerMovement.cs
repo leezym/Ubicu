@@ -32,8 +32,8 @@ public class PlayerMovement : MonoBehaviour
     float restCount;
     int seriesCount;
     public float timeDuringGame;
-
-    public TMP_Text texttest;
+    public List<float> tempGraphFlow;
+    public List<float> tempGraphTime;
 
     public void InitializeLevel()
     {
@@ -47,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
     public void Movement()
     {
         //test
-        GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = Math.Round(maxFlow, 1).ToString();
+        GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = Math.Round(maxFlow, 1).ToString()+" mL";
 
         if(GameData.Instance.inspiration)
         {
@@ -106,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.SendResults());
             GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises] = 0; // si se finalizó se coloca 0
             GameData.Instance.idListHourExercises = -1;
-            GameData.Instance.scriptsGroup.bluetoothPairing.StopOutputTime();
+            //GameData.Instance.scriptsGroup.bluetoothPairing.StopOutputTime();
             GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards();
             //UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
         }
@@ -128,10 +128,17 @@ public class PlayerMovement : MonoBehaviour
         apneaCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea;
     }
 
+    public void SaveData(float flow, float time)
+    {
+        GameData.Instance.exerciseSeries[seriesCount].flujo.Add(flow);
+        GameData.Instance.exerciseSeries[seriesCount].tiempo.Add(time);
+    }
+
     public void SaveGraphData()
     {
-        GameData.Instance.exerciseSeries[seriesCount].flujo.Add(maxFlow);
-        GameData.Instance.exerciseSeries[seriesCount].tiempo.Add(timeDuringGame);
+        tempGraphFlow.Add(maxFlow);
+        tempGraphTime.Add(timeDuringGame);
+        
         maxTargetScale = 0;
         maxFlow = 0;
         timeDuringGame = 0;
@@ -140,15 +147,15 @@ public class PlayerMovement : MonoBehaviour
     public void CreateGraph()
     {
         float maxValue = 0;
-        if(Mathf.Max(GameData.Instance.exerciseSeries[seriesCount].flujo.ToArray()) > GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
-            maxValue = Mathf.Max(GameData.Instance.exerciseSeries[seriesCount].flujo.ToArray());
+        if(Mathf.Max(tempGraphFlow.ToArray()) > GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
+            maxValue = Mathf.Max(tempGraphFlow.ToArray());
         else
             maxValue = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo;
         
         float goalGraphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo / maxValue;
         goalGraph.transform.localPosition = new Vector2(0f, goalGraphPositionY);
 
-        for(int i = 0; i < GameData.Instance.exerciseSeries[seriesCount].flujo.Count; i++)
+        for(int i = 0; i < tempGraphFlow.Count; i++)
         {
             GameObject go = Instantiate(graphPrefab, Vector3.zero, Quaternion.identity);
             go.SetActive(true);
@@ -156,9 +163,9 @@ public class PlayerMovement : MonoBehaviour
             go.transform.localScale = new Vector3(1,1,1);
 
             //X position
-            float pointGraphPositionX = (i + 1) * (graphStructure.GetComponent<RectTransform>().rect.width / (GameData.Instance.exerciseSeries[seriesCount].flujo.Count + 1)); //+1 para dejar un margen visual de la gráfica
+            float pointGraphPositionX = (i + 1) * (graphStructure.GetComponent<RectTransform>().rect.width / (tempGraphFlow.Count + 1)); //+1 para dejar un margen visual de la gráfica
             // Y position
-            float pointGraphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * GameData.Instance.exerciseSeries[seriesCount].flujo[i] / maxValue;
+            float pointGraphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * tempGraphFlow[i] / maxValue;
             go.transform.localPosition = new Vector2(pointGraphPositionX, pointGraphPositionY);
 
             if(pointGraphPositionY >= goalGraphPositionY)
@@ -176,6 +183,9 @@ public class PlayerMovement : MonoBehaviour
 
     public void DeleteGraph()
     {        
+        tempGraphFlow = new List<float>();
+        tempGraphTime = new List<float>();
+
         foreach (Transform point in graphStructure.transform)
         {
             if(point.gameObject.name == "GraphPrefab(Clone)")
