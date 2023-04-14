@@ -122,7 +122,7 @@ public class ExercisesManager : MonoBehaviour
                     go.transform.localScale = new Vector3(1,1,1);
 
                     sessionTitlePrefab = go.transform.Find("TitleText");
-                    sessionTitlePrefab.GetComponent<TMP_Text>().text = "Sesión " + GameData.Instance.exerciseHourArray[i] + ":00";
+                    sessionTitlePrefab.GetComponent<TMP_Text>().text = "Sesión " + (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].hora_inicio + (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas * i)) + ":00";
 
                     sesionesList.Add(go);
 

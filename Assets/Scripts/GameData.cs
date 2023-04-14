@@ -145,10 +145,6 @@ public class GameData : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape)) 
             Application.Quit();
- 
-        // llamar bluetooth
-        if(exerciseMenu_Game.gameObject.GetComponent<CanvasGroup>().alpha != 0)
-            scriptsGroup.bluetoothPairing.OutputTime();
        
         if(playing)
         {
@@ -195,6 +191,13 @@ public class GameData : MonoBehaviour
             }
         }
     }
+
+    /*void LateUpdate()
+    {
+        // llamar bluetooth
+        if(exerciseMenu_Game.gameObject.GetComponent<CanvasGroup>().alpha != 0)
+            scriptsGroup.bluetoothPairing.OutputTime();
+    }*/
 
     void OnApplicationQuit()
     {

@@ -160,12 +160,12 @@ public class BluetoothPairing : MonoBehaviour
         
     }    
 
-    /*public void CallOutputTime(){
-        InvokeRepeating("OutputTime", 0.5f, 0.0033f); // 1/250 datos
+    public void CallOutputTime(){
+        InvokeRepeating("OutputTime", 0.5f, 0.05f); // 1/20 datos
     }
 
     public void StopOutputTime()
     {
         CancelInvoke();
-    }*/
+    }
 }

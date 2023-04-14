@@ -51,6 +51,23 @@ public class PlayerMovement : MonoBehaviour
 
         if(GameData.Instance.inspiration)
         {
+            // sin maximo
+            /*if(GameData.Instance.scriptsGroup.bluetoothPairing.prom > maxFlow)
+            {
+                maxFlow = GameData.Instance.scriptsGroup.bluetoothPairing.prom;
+                timeDuringGame = GameData.Instance.scriptsGroup.bluetoothPairing.timer;
+            }
+
+            if(GameData.Instance.scriptsGroup.bluetoothPairing.prom <= GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
+            {
+                maxTargetScale = (GameData.Instance.scriptsGroup.bluetoothPairing.prom * maximunScale / GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo) + minimunScale;                    
+            }
+            else
+            {
+                maxTargetScale = maximunScale;
+            }*/
+
+            // con maximo
             if(GameData.Instance.scriptsGroup.bluetoothPairing.prom > maxFlow)
             {
                 maxFlow = GameData.Instance.scriptsGroup.bluetoothPairing.prom;
@@ -106,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.SendResults());
             GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises] = 0; // si se finalizó se coloca 0
             GameData.Instance.idListHourExercises = -1;
-            //GameData.Instance.scriptsGroup.bluetoothPairing.StopOutputTime();
+            GameData.Instance.scriptsGroup.bluetoothPairing.StopOutputTime();
             GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards();
             //UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
         }
