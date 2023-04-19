@@ -272,6 +272,7 @@ public class CustomizationManager : MonoBehaviour
             playerGameObject[1].SetActive(true); //lung
             GameData.Instance.scriptsGroup.playerMovement.minimunScale = PlayerMovement.LUNG_MINIMUM_SCALE;
             GameData.Instance.scriptsGroup.playerMovement.maximunScale = PlayerMovement.LUNG_MAXIMUM_SCALE;
+            GameData.Instance.scriptsGroup.playerMovement.plusScale = PlayerMovement.LUNG_PLUS_SCALE;
             GameData.Instance.scriptsGroup.playerMovement.player = playerGameObject[1].transform.Find("Lung").gameObject;
         }
         else
@@ -280,6 +281,7 @@ public class CustomizationManager : MonoBehaviour
             playerGameObject[1].SetActive(false); //lung
             GameData.Instance.scriptsGroup.playerMovement.minimunScale = PlayerMovement.CIRCLE_MINIMUM_SCALE;
             GameData.Instance.scriptsGroup.playerMovement.maximunScale = PlayerMovement.CIRCLE_MAXIMUM_SCALE;
+            GameData.Instance.scriptsGroup.playerMovement.plusScale = PlayerMovement.CIRCLE_PLUS_SCALE;
             GameData.Instance.scriptsGroup.playerMovement.player = playerGameObject[0].transform.Find("Circle").gameObject;
         }
         this.fondosSprites = fondosSprites.Clone() as Sprite[];

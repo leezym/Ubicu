@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44402185, g: 0.49316472, b: 0.57223153, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4467,7 +4467,7 @@ RectTransform:
   m_GameObject: {fileID: 436523247}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 113992459}
@@ -7247,7 +7247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77c9b65285898e84196000b2f1779778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_StartScreen: {fileID: 309271660}
+  m_StartScreen: {fileID: 403161336}
   onSwitchedScreen:
     m_PersistentCalls:
       m_Calls: []
@@ -13493,6 +13493,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minimunScale: 0
   maximunScale: 0
+  plusScale: 0
   speedStandarScale: 3
   pause: {fileID: 1622353318}
   pauseText: {fileID: 110329460}
@@ -13856,7 +13857,7 @@ RectTransform:
   m_GameObject: {fileID: 1393575484}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.29999998, y: 0.29999998, z: 0.29999998}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 908234388}

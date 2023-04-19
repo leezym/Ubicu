@@ -36,6 +36,7 @@ public class Obstacles : MonoBehaviour
                 UI_System.Instance.SwitchScreens(GameData.Instance.serieGraphMenu);
                 GameData.Instance.resting = true;
                 StopCoroutine(ObstaclesCounter());
+                GameData.Instance.scriptsGroup.bluetoothPairing.StopOutputTime();
             }
         }
         else

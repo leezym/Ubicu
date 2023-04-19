@@ -8,12 +8,15 @@ using TMPro;
 public class PlayerMovement : MonoBehaviour
 {
     public static float CIRCLE_MINIMUM_SCALE = 0.08f;
-    public static float CIRCLE_MAXIMUM_SCALE = 0.8f;
+    public static float CIRCLE_MAXIMUM_SCALE = 0.75f;
+    public static float CIRCLE_PLUS_SCALE = 0.05f;
     public static float LUNG_MINIMUM_SCALE = 0.23f;
-    public static float LUNG_MAXIMUM_SCALE = 0.75f;
+    public static float LUNG_MAXIMUM_SCALE = 0.72f;
+    public static float LUNG_PLUS_SCALE = 0.03f;
     [Header("ATTACHED")]
     public float minimunScale;
     public float maximunScale;
+    public float plusScale;
     public int speedStandarScale;
     public GameObject pause;
     public TMP_Text pauseText;
@@ -73,13 +76,13 @@ public class PlayerMovement : MonoBehaviour
                 maxFlow = GameData.Instance.scriptsGroup.bluetoothPairing.prom;
                 timeDuringGame = GameData.Instance.scriptsGroup.bluetoothPairing.timer;
 
-                if(maxFlow <= GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
+                if(maxFlow < GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
                 {
                     maxTargetScale = (maxFlow * maximunScale / GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo) + minimunScale;                    
                 }
                 else
                 {
-                    maxTargetScale = maximunScale;
+                    maxTargetScale = maximunScale + plusScale;
                 }
             }
         }
@@ -95,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public void RestingPlayer()
-    {
+    {        
         restText.text = "Descansa por " + (int)restCount + " segundos...";
         if(restCount >= 0)
             restCount -= Time.deltaTime;
@@ -111,6 +114,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(seriesCount < GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series)
         {
+            GameData.Instance.scriptsGroup.bluetoothPairing.CallOutputTime();
             GameData.Instance.scriptsGroup.bluetoothPairing.timer = 0;
             UI_System.Instance.SwitchScreens(GameData.Instance.exerciseMenu_Game);
             GameData.Instance.playing = true;
@@ -118,12 +122,11 @@ public class PlayerMovement : MonoBehaviour
             seriesTextGraph.text = "SERIE "+ (seriesCount+1);
         }
         else
-        {            
+        {
             seriesCount = 0;
             StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.SendResults());
             GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises] = 0; // si se finalizó se coloca 0
             GameData.Instance.idListHourExercises = -1;
-            GameData.Instance.scriptsGroup.bluetoothPairing.StopOutputTime();
             GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards();
             //UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
         }
