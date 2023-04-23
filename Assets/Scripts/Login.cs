@@ -11,6 +11,7 @@ public class Login : MonoBehaviour
     [Header("ATTACHED")]
     public TMP_InputField userInputField;
     public TMP_InputField passInputField;
+    public Button loginButton;
 
     public void LogIn(){
         StartCoroutine(OnLogin());
@@ -18,6 +19,8 @@ public class Login : MonoBehaviour
 
     public IEnumerator OnLogin()
     {
+        loginButton.interactable = false;
+
         WWWForm form = new WWWForm();
         if(userInputField.text != "" && passInputField.text != "")
         {
@@ -48,10 +51,15 @@ public class Login : MonoBehaviour
                 StopCoroutine(OnLogin());
                 StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.GetExercises());
                 UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
-
             }
+            yield return new WaitForSeconds(1f);
+            loginButton.interactable = true;
+
         }
-        else
-            Debug.Log("llena los datos");
+        else{
+            loginButton.interactable = true;
+            NotificationsManager.Instance.WarningNotifications("Ingresa los datos");
+        }
+
     }
 }

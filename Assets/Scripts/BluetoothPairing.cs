@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Globalization;
 
 public class BluetoothPairing : MonoBehaviour
 {
@@ -127,7 +128,7 @@ public class BluetoothPairing : MonoBehaviour
         // patientData[0] -> flujo
         // patientData[1] -> apnea
         // patientData[2] -> frecuencia respiratoria
-        if(float.TryParse(patientData[0], out prom))
+        if(float.TryParse(patientData[0], NumberStyles.Any, CultureInfo.InvariantCulture, out prom))
         {
             GameData.Instance.scriptsGroup.playerMovement.SaveData(prom, timer);
             GameData.Instance.inspiration = (prom == 0 ? false : true);

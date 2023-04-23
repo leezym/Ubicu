@@ -29,14 +29,15 @@ public class Obstacles : MonoBehaviour
             if(repCounter == GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].repeticiones)
             {
                 GameData.Instance.playing = false;
+                GameData.Instance.scriptsGroup.bluetoothPairing.timer = 0;
                 GameData.Instance.scriptsGroup.playerMovement.CreateGraph();
+                GameData.Instance.scriptsGroup.bluetoothPairing.StopOutputTime();
                 yield return new WaitForSeconds(1.5f);                
                 inactivityCounter = 0;
                 repCounter = 0;
                 UI_System.Instance.SwitchScreens(GameData.Instance.serieGraphMenu);
                 GameData.Instance.resting = true;
                 StopCoroutine(ObstaclesCounter());
-                GameData.Instance.scriptsGroup.bluetoothPairing.StopOutputTime();
             }
         }
         else

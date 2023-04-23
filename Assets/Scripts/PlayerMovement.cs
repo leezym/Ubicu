@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     public static float LUNG_MINIMUM_SCALE = 0.23f;
     public static float LUNG_MAXIMUM_SCALE = 0.72f;
     public static float LUNG_PLUS_SCALE = 0.03f;
+    
     [Header("ATTACHED")]
     public float minimunScale;
     public float maximunScale;
@@ -115,7 +116,6 @@ public class PlayerMovement : MonoBehaviour
         if(seriesCount < GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series)
         {
             GameData.Instance.scriptsGroup.bluetoothPairing.CallOutputTime();
-            GameData.Instance.scriptsGroup.bluetoothPairing.timer = 0;
             UI_System.Instance.SwitchScreens(GameData.Instance.exerciseMenu_Game);
             GameData.Instance.playing = true;
             seriesTextGame.text = "SERIE "+ (seriesCount+1);

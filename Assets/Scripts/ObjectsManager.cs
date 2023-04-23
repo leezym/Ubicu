@@ -77,6 +77,12 @@ public class ExerciseData
     public List<float> flujo;
 }
 
+[Serializable]
+public class MotivationSound
+{
+    public string text;
+    public AudioClip clip;
+}
 public class ObjectsManager : MonoBehaviour
 {
 

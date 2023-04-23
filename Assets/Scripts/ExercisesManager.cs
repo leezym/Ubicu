@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Networking;
@@ -22,6 +23,8 @@ public class ExercisesManager : MonoBehaviour
     public Sprite currentSessionSprite;
     public Sprite finishedSessionSprite;
     public Sprite notFinishedSessionSprite;
+    public VideoPlayer tutorialVideo;
+    public GameObject buttonPlayVideo;
 
     public TMP_Text texttest;
 
@@ -213,4 +216,15 @@ public class ExercisesManager : MonoBehaviour
         StopCoroutine(SendResults());
     }
 
+    IEnumerator PlayVideo()
+    {
+        tutorialVideo.Play();
+        yield return new WaitForSeconds(3f);
+        buttonPlayVideo.SetActive(true);
+    }
+
+    public void CallPlayVideo()
+    {
+        StartCoroutine(PlayVideo());
+    }
 }
