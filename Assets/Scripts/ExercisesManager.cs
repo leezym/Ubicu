@@ -26,8 +26,6 @@ public class ExercisesManager : MonoBehaviour
     public VideoPlayer tutorialVideo;
     public GameObject buttonPlayVideo;
 
-    public TMP_Text texttest;
-
     [Header("IN GAME")]
     public Transform sessionTitlePrefab;
     public int sesiones;
@@ -54,9 +52,7 @@ public class ExercisesManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Post request complete!" + " Response Code: " + www.responseCode);
             string responseText = www.downloadHandler.text;
-            Debug.Log("Response Text:" + responseText);
 
             GameData.Instance.jsonObjectExercises = JsonUtility.FromJson<Exercises>("{\"array\":" + responseText + "}");
 
@@ -193,8 +189,6 @@ public class ExercisesManager : MonoBehaviour
         form.AddField("hora", GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises]);
         form.AddField("datos", json);
 
-        Debug.Log(json);
-
         UnityWebRequest www = UnityWebRequest.Post("https://server.ubicu.co/createResult", form);
         //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/createResult", form);
 
@@ -207,11 +201,7 @@ public class ExercisesManager : MonoBehaviour
             Debug.Log(www.error);
             Debug.Log(form.data);
         }
-        else
-        {
-            Debug.Log("Post request complete!" + " Response Code: " + www.responseCode);
-        }
-        
+
         GameData.Instance.exerciseSeries = new List<ExerciseData>();        
         StopCoroutine(SendResults());
     }
@@ -219,7 +209,7 @@ public class ExercisesManager : MonoBehaviour
     IEnumerator PlayVideo()
     {
         tutorialVideo.Play();
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
         buttonPlayVideo.SetActive(true);
     }
 

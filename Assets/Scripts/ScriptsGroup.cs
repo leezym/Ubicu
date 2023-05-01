@@ -11,4 +11,5 @@ public class ScriptsGroup : MonoBehaviour
     public PlayerMovement playerMovement;
     public RewardsManager rewardsManager;
     public CustomizationManager customizationManager;
+    public SoundsManager soundsManager;
 }

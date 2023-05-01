@@ -14,6 +14,8 @@ public class GameData : MonoBehaviour
     public UI_Screen exerciseMenu_Game;
     public UI_Screen serieGraphMenu;
     public UI_Screen customizeMenu_Select;
+    public UI_Screen badgesMenu;
+    public UI_Screen infoBadgesMenu;
 
     private bool m_playing = false;
     public bool playing
@@ -91,15 +93,9 @@ public class GameData : MonoBehaviour
             Destroy(this);
         else
             Instance = this;
-    }
 
-    void Start()
-    {
-        //scriptsGroup.rewardsManager.sessionReward = 1200;
-        //scriptsGroup.rewardsManager.dayReward = 450;
-
-        //scriptsGroup.rewardsManager.CalculateRewards();
-        //PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll(); test
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
         if(PlayerPrefs.GetString("currentExerciseDate") == "") // fecha actual
             PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString("dd/MM/yyyy"));
@@ -136,15 +132,30 @@ public class GameData : MonoBehaviour
             PlayerPrefs.SetString("allFigurasItemsArray", s);
         }
 
-        scriptsGroup.rewardsManager.LoadReward();
+        if(PlayerPrefs.GetString("allBadgesArray") == "")
+        {
+            string s = "";
+            for(int i = 0; i < 4; i++)
+            {
+                s += string.Join(",", "0,0,0,0,0,0,0")+";"; // 0 desactivado
+            }
+            PlayerPrefs.SetString("allBadgesArray", s);
+        }
+    }
+
+    void Start()
+    {
         scriptsGroup.customizationManager.LoadCustomization();
+        scriptsGroup.rewardsManager.LoadReward();
         idListHourExercises = -1;
     }
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) 
+        if (Input.GetKeyDown(KeyCode.Escape)){
+            //preguntar si quiere salir?
             Application.Quit();
+        }
        
         if(playing)
         {
@@ -158,7 +169,6 @@ public class GameData : MonoBehaviour
         {
             scriptsGroup.playerMovement.RestingPlayer();
         }
-
         
         // seleccionar sesion disponible
         if(sessionMenu.gameObject.GetComponent<CanvasGroup>().alpha != 0)
@@ -174,34 +184,35 @@ public class GameData : MonoBehaviour
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.currentSessionSprite;
                     // almacenar el id del ejercicio activado
                     idListHourExercises = i;
-                }
-                else if(DateTime.Now.Hour > exerciseHourArray[i])
+                }else if ((exerciseHourArray[i] < DateTime.Now.Hour) || (DateTime.Now.Hour == exerciseHourArray[i] && DateTime.Now.Minute > scriptsGroup.exercisesManager.extraMinuteToWaitForExercise))
                 {
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable = false;
+                    
+                    // pregunta si ya finalizó
+                    if (exerciseHourArray[i] == 0)
+                        scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.finishedSessionSprite;
                     // pregunta si esta disponible los viejos ejercicios y coloca que no se finalizó
-                    if(exerciseHourArray[i] > 0)
+                    else
                     {
                         exerciseHourArray[i] = -1;                        
                         scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.notFinishedSessionSprite;
                     }
-                    // pregunta si ya finalizó
-                    else if (exerciseHourArray[i] == 0)
-                        scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.finishedSessionSprite;
                 }         
             }
         }
-    }
 
-    /*void LateUpdate()
-    {
-        // llamar bluetooth
-        if(exerciseMenu_Game.gameObject.GetComponent<CanvasGroup>().alpha != 0)
-            scriptsGroup.bluetoothPairing.OutputTime();
-    }*/
+        // detectar cuando lanzar sonido de motivacion
+        if(exerciseMenu_Game.gameObject.GetComponent<CanvasGroup>().alpha != 0){
+            if(inspiration)
+                scriptsGroup.soundsManager.PlayRandomSound();
+            if(apnea)
+                scriptsGroup.soundsManager.StopRandomSound();
+
+        }
+    }
 
     void OnApplicationQuit()
     {
-        //preguntar si quiere salir?
         scriptsGroup.rewardsManager.SaveReward();
         scriptsGroup.exercisesManager.SaveExercise();
         scriptsGroup.customizationManager.SaveCustomization();

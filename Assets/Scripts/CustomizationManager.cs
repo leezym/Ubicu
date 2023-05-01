@@ -6,18 +6,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-[System.Serializable]
-public class ButtonsItems
-{
-    public GameObject useButton;
-    public GameObject buyButton;
-}
-
-[System.Serializable]
-public class AllItems
-{
-    public int[] item = new int[0];
-}
 
 public class CustomizationManager : MonoBehaviour
 {
@@ -63,6 +51,7 @@ public class CustomizationManager : MonoBehaviour
     public GameObject[] playerGameObject = new GameObject[2]; // jugadores
     public Image backgroundImage; // fondo del juego
     public Image settingsImage; // boton configuracion
+    public Image backButtonImage; // boton regresar
     public TMP_Text[] textsArray = new TMP_Text[0]; // textos del juego
     public Image playerPreviewFondos; // preview jugador pantalla Fondos
     public Image backgroundPreviewFondos; // preview fondo pantalla Fondos
@@ -154,6 +143,7 @@ public class CustomizationManager : MonoBehaviour
     {
         tempIdFondosItem = id;
         backgroundPreviewFondos.sprite = fondosSprites[id];
+        descriptionPreviewFondos.text = descriptionsFondos[id];
         buttonsFondosItemsPreviewArray[0].buyButton.transform.Find("Price").GetComponent<TMP_Text>().text = priceItemFondosArray[idCustomization , id].ToString();
 
         if(idItemFigurasArray[idCustomization] < 0) // si no ha comprado nada debe salir la combinacion con el item 0
@@ -171,12 +161,12 @@ public class CustomizationManager : MonoBehaviour
             buttonsFondosItemsPreviewArray[0].useButton.SetActive(true);
             buttonsFondosItemsPreviewArray[0].buyButton.SetActive(false);
         }
-        // descripcion
     }
     public void SetTempIdFigurasItem(int id)
     {
         tempIdFigurasItem = id;
         playerPreviewFiguras.sprite = circuloPreviewSprites[id];
+        descriptionPreviewFiguras.text = descriptionsFiguras[id];
         buttonsFigurasItemsPreviewArray[0].buyButton.transform.Find("Price").GetComponent<TMP_Text>().text = priceItemFigurasArray[idCustomization , id].ToString();
 
         if(idItemFondosArray[idCustomization] < 0) // si no ha comprado nada debe salir la combinacion con el item 0
@@ -194,7 +184,6 @@ public class CustomizationManager : MonoBehaviour
             buttonsFigurasItemsPreviewArray[0].useButton.SetActive(true);
             buttonsFigurasItemsPreviewArray[0].buyButton.SetActive(false);
         }
-        // descripcion
     }
 
     public void SetIdFondosItem() { SetIdFondosItem(tempIdFondosItem); }
@@ -204,6 +193,7 @@ public class CustomizationManager : MonoBehaviour
         {
             backgroundImage.sprite = fondosSprites[id];
             settingsImage.sprite = settingsSprites[id];
+            backButtonImage.color = colorText[id];
             foreach(TMP_Text t in textsArray)
                 t.color = colorText[id];
             checkFondosSprite.SetActive(true);
@@ -220,9 +210,9 @@ public class CustomizationManager : MonoBehaviour
     public void SetIdFigurasItem() { SetIdFigurasItem(tempIdFigurasItem); }
     public void SetIdFigurasItem(int id)
     {
-        if(id >= 0)
+        if(id >= 0) // verificar si esta en modo circulo o modo velocimetro //velocimetroSprites
         {
-            playerGameObject[0].transform.Find("Circle").GetComponent<Image>().sprite = circuloSprites[id]; //circle
+            playerGameObject[0].transform.Find("Circle").GetComponent<Image>().sprite = circuloSprites[id]; //circle 
             playerGameObject[1].transform.Find("Lung").GetComponent<Image>().sprite = circuloSprites[id]; //lung
             checkFigurasSprite.SetActive(true);
             checkFigurasSprite.transform.parent = figurasItemTransform[id];

@@ -1,0 +1,186 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &310879463235914890
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 310879463235914892}
+  - component: {fileID: 310879463235914891}
+  m_Layer: 0
+  m_Name: RewardsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &310879463235914892
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310879463235914890}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 170.55919, y: 398.43814, z: -2.7553644}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &310879463235914891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310879463235914890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80e2a565f984efa4eb621f31e5e99f06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textReward:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  blockedBadgesSprite:
+  - {fileID: 21300000, guid: 29de7735c0fb77c4b8f626aa38277808, type: 3}
+  - {fileID: 21300000, guid: 277ac752f08375c4385306875f3b1967, type: 3}
+  - {fileID: 21300000, guid: 5ff18ab80fcd5e44db0f5da6bf521f14, type: 3}
+  - {fileID: 21300000, guid: 3e72069587a08dc418c5535be3099a7e, type: 3}
+  - {fileID: 21300000, guid: 136d65a2a0b1cb444afc21e8e7ea6c35, type: 3}
+  - {fileID: 21300000, guid: 4b8f19c3ae40e654da1358dc90ecb99c, type: 3}
+  - {fileID: 21300000, guid: 1e134c6ece12e3343a4e92251e2ad1bc, type: 3}
+  seriesBadgesSmallSprite:
+  - {fileID: 21300000, guid: 30757c057701182419979851b56ca9a6, type: 3}
+  - {fileID: 21300000, guid: a83f714ddd45c0f4cb9f0ec35bdf8b84, type: 3}
+  - {fileID: 21300000, guid: 5622fe22ae069904a9bab584804677b0, type: 3}
+  - {fileID: 21300000, guid: 6279424f570a40a47b74fa63525af261, type: 3}
+  - {fileID: 21300000, guid: 8848e833e8747e843a45b28fc7d34e37, type: 3}
+  - {fileID: 21300000, guid: f12c1b704a2b8c54db58d989e3e00a71, type: 3}
+  - {fileID: 21300000, guid: 540963f0a6445b8449044e89b4b8bff7, type: 3}
+  sessionsBadgesSmallSprite:
+  - {fileID: 21300000, guid: 27e4bc7e2093fa945b1ea833b3bd07ab, type: 3}
+  - {fileID: 21300000, guid: 675228bc26915724a8ae3dc3e05da5f5, type: 3}
+  - {fileID: 21300000, guid: b6ff64ae6f03e27439d25324d470cc85, type: 3}
+  - {fileID: 21300000, guid: 205e6b88b1e34694ebec790a63198952, type: 3}
+  - {fileID: 21300000, guid: f4517ec17ee169b48abb24afc89a961f, type: 3}
+  - {fileID: 21300000, guid: be4fe13443c3acf44a1f67447e851784, type: 3}
+  - {fileID: 21300000, guid: a86122e5f7f601a4aa61b4d3eba541a7, type: 3}
+  daysBadgesSmallSprite:
+  - {fileID: 21300000, guid: 57012547a771fa1449e05d84dc6df5e6, type: 3}
+  - {fileID: 21300000, guid: 91d68bfea8c5d5a429355fafe9b6ecae, type: 3}
+  - {fileID: 21300000, guid: 2a7f638a0046ede458a012b5dc7a6ae4, type: 3}
+  - {fileID: 21300000, guid: 72ff30f20de38994f848101b7590542a, type: 3}
+  - {fileID: 21300000, guid: 4268ad42738883c429da77a31020004f, type: 3}
+  - {fileID: 21300000, guid: b72d65b3329711342a48d1bd1947c91f, type: 3}
+  - {fileID: 21300000, guid: 215d29615b248144fbb67f7b3ddcb897, type: 3}
+  weeksBadgesSmallSprite:
+  - {fileID: 21300000, guid: 38d8ace8067fca34d885a25f59d93a97, type: 3}
+  - {fileID: 21300000, guid: 56e509249ab1b5c4baeec152f400fae1, type: 3}
+  - {fileID: 21300000, guid: f22839eae99c0984cbf79a584a137928, type: 3}
+  - {fileID: 21300000, guid: 39143041b55170549a038981044ced1a, type: 3}
+  - {fileID: 21300000, guid: 17d51f0defece8945b61f12e20b05c2a, type: 3}
+  - {fileID: 21300000, guid: c16933f56ee89a44eb03a385bd220185, type: 3}
+  - {fileID: 21300000, guid: 5a9ed4ccf4f86d545bd64176edb47fa7, type: 3}
+  seriesBadgesSmallImage:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  sessionsBadgesSmallImage:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  daysBadgesSmallImage:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  weeksBadgesSmallImage:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  badgesNames:
+  - Acero
+  - Bronce
+  - Plata
+  - Oro
+  - Platino
+  - Diamante
+  - Obsidiana
+  seriesBadgesBigSprite:
+  - {fileID: 21300000, guid: 9eea799a6a38596449b801d2f9caa758, type: 3}
+  - {fileID: 21300000, guid: c95a23f32bea3ac4394e975d68e1160c, type: 3}
+  - {fileID: 21300000, guid: c1a632d9ab88d2a4cbf0e6b25efbb317, type: 3}
+  - {fileID: 21300000, guid: 67cb8c217b4656140b548db74da189d7, type: 3}
+  - {fileID: 21300000, guid: 6b0e1614bc53c884e9d1c04256d6af79, type: 3}
+  - {fileID: 21300000, guid: abfa937148a618849ab7fbc648539ebf, type: 3}
+  - {fileID: 21300000, guid: d599dbe55587e2e44a9fba9d83dfb252, type: 3}
+  sessionsBadgesBigSprite:
+  - {fileID: 21300000, guid: 077d121c0791b474a9ee71f283917e0e, type: 3}
+  - {fileID: 21300000, guid: e7ef1f3c53ad75f43800ed41df66fc3b, type: 3}
+  - {fileID: 21300000, guid: 6814fb57dab6f384bb68960151f4f485, type: 3}
+  - {fileID: 21300000, guid: 75b3f9e2d29dba6498c647f2a623db1f, type: 3}
+  - {fileID: 21300000, guid: fdb3f111dd9e9d14286e8dcc39ea10e4, type: 3}
+  - {fileID: 21300000, guid: 27c1281c7da3cc94589dafecdf388f81, type: 3}
+  - {fileID: 21300000, guid: c42bb702ac880db40a1ab59b6a32ec87, type: 3}
+  daysBadgesBigSprite:
+  - {fileID: 21300000, guid: cfedca5dd3da9ab43aecfc223b1656f7, type: 3}
+  - {fileID: 21300000, guid: 4034283312a4e064c9168e1b445d84a4, type: 3}
+  - {fileID: 21300000, guid: cdcb02944e084884a9ced91fe4cd509e, type: 3}
+  - {fileID: 21300000, guid: fbce5d63e444c0b4d83b3e42f1bf0d12, type: 3}
+  - {fileID: 21300000, guid: c7df7b1b9472f3045a2bdd82354cfe86, type: 3}
+  - {fileID: 21300000, guid: 3fb2ded862423324a94d091e85d44bb0, type: 3}
+  - {fileID: 21300000, guid: 3439e5b5041c5d446827b77a0c237725, type: 3}
+  weeksBadgesBigSprite:
+  - {fileID: 21300000, guid: 4efa14409c3ef61448bf25da86a4aa45, type: 3}
+  - {fileID: 21300000, guid: d72b0c1fe93dab5478ec96c1f467667b, type: 3}
+  - {fileID: 21300000, guid: 4c2b73220ae8196469917de862562400, type: 3}
+  - {fileID: 21300000, guid: f073b8d7aee02b74a9b1fc806ff69f88, type: 3}
+  - {fileID: 21300000, guid: b5ae1b44fb9a2604294c8e034c1213e0, type: 3}
+  - {fileID: 21300000, guid: 7e78345064e984d449cb1d1f08e54c90, type: 3}
+  - {fileID: 21300000, guid: c132cc73073266941bd088a007e368bb, type: 3}
+  badgesPoints: 0a0000001e00000032000000640000002c010000f4010000e8030000
+  badgesTitle: {fileID: 0}
+  badgesSubTitle: {fileID: 0}
+  badgesBigImage: {fileID: 0}
+  badgesDescription: {fileID: 0}
+  serieReward: 0
+  sessionReward: 0
+  dayReward: 0
+  totalReward: 0
+  totalSeries: 0
+  totalSessions: 0
+  totalDays: 0
+  totalWeeks: 0
+  allBadgesArray:
+  - item: 
+  - item: 
+  - item: 
+  - item: 
+  - item: 
+  - item: 
+  - item: 

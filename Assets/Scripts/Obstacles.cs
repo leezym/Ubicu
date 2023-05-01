@@ -59,10 +59,17 @@ public class Obstacles : MonoBehaviour
             inactivityCounter += Time.deltaTime;
         else
         {
-            GameData.Instance.playing = false;
             inactivityCounter = 0;
-            repCounter = 0;
-            UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
+            ExitGame();
         }
+    }
+
+    public void ExitGame()
+    {
+        GameData.Instance.scriptsGroup.bluetoothPairing.StopOutputTime();
+        UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
+        GameData.Instance.playing = false;
+        GameData.Instance.scriptsGroup.playerMovement.seriesCount = 0;
+        repCounter = 0;
     }
 }

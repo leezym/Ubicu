@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     public TMP_Text restText;
     public TMP_Text seriesTextGame;
     public TMP_Text seriesTextGraph;
+    public Button buttonPlayGame;
 
     [Header("IN GAME")]
     public GameObject player;
@@ -34,43 +35,37 @@ public class PlayerMovement : MonoBehaviour
     public float maxFlow;
     float apneaCount;
     float restCount;
-    int seriesCount;
+    public int seriesCount;
     public float timeDuringGame;
     public List<float> tempGraphFlow;
     public List<float> tempGraphTime;
 
     public void InitializeLevel()
     {
+        StartCoroutine(CallInitializeLevel());
+    }    
+
+    IEnumerator CallInitializeLevel()
+    {
+        buttonPlayGame.interactable = false;
         player.transform.localScale = new Vector2(minimunScale,minimunScale);
         restCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso;
         apneaCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea;
         
         for (int i = 0; i < GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series; i++)
             GameData.Instance.exerciseSeries.Add(new ExerciseData { tiempo = new List<float>(), flujo = new List<float>() });
-    }    
+        
+        yield return new WaitForSeconds(2f);
+        buttonPlayGame.interactable = true;
+    }
+
     public void Movement()
     {
         //test
-        GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = Math.Round(maxFlow, 1).ToString()+" mL";
+        GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = Math.Round(GameData.Instance.scriptsGroup.bluetoothPairing.prom, 1).ToString()+" mL";
 
         if(GameData.Instance.inspiration)
         {
-            // sin maximo
-            /*if(GameData.Instance.scriptsGroup.bluetoothPairing.prom > maxFlow)
-            {
-                maxFlow = GameData.Instance.scriptsGroup.bluetoothPairing.prom;
-                timeDuringGame = GameData.Instance.scriptsGroup.bluetoothPairing.timer;
-            }
-
-            if(GameData.Instance.scriptsGroup.bluetoothPairing.prom <= GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
-            {
-                maxTargetScale = (GameData.Instance.scriptsGroup.bluetoothPairing.prom * maximunScale / GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo) + minimunScale;                    
-            }
-            else
-            {
-                maxTargetScale = maximunScale;
-            }*/
-
             // con maximo
             if(GameData.Instance.scriptsGroup.bluetoothPairing.prom > maxFlow)
             {
@@ -127,6 +122,7 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.SendResults());
             GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises] = 0; // si se finalizó se coloca 0
             GameData.Instance.idListHourExercises = -1;
+            //StartCoroutine(GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards()); //pdte
             GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards();
             //UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
         }

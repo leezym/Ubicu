@@ -46,13 +46,11 @@ public class Login : MonoBehaviour
             else
             {
                 GameData.Instance.jsonObjectUser = JsonUtility.FromJson<Data>(responseText);
-                Debug.Log("Response token:" + GameData.Instance.jsonObjectUser.token);
-                Debug.Log("Response name:" + GameData.Instance.jsonObjectUser.user.nombre);
                 StopCoroutine(OnLogin());
                 StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.GetExercises());
                 UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
             }
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(2f);
             loginButton.interactable = true;
 
         }

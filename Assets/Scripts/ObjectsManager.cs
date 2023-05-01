@@ -83,6 +83,20 @@ public class MotivationSound
     public string text;
     public AudioClip clip;
 }
+
+[System.Serializable]
+public class ButtonsItems
+{
+    public GameObject useButton;
+    public GameObject buyButton;
+}
+
+[System.Serializable]
+public class AllItems
+{
+    public int[] item = new int[0];
+}
+
 public class ObjectsManager : MonoBehaviour
 {
 
