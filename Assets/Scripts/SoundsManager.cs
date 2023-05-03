@@ -22,11 +22,11 @@ public class SoundsManager : MonoBehaviour
 
     public void PlayRandomSound(){
         int r = Random.Range(0, motivationSounds.Count);
-        if(!audioSource.clip)
+        if(audioSource.clip == null)
         {
+            motivationMessage.text = motivationSounds[r].text;
             audioSource.clip = motivationSounds[r].clip;
             audioSource.Play();
-            motivationMessage.text = motivationSounds[r].text;
         }
     }
 

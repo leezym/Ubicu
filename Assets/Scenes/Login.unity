@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44402185, g: 0.49316472, b: 0.57223153, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2364,8 +2364,11 @@ MonoBehaviour:
   exerciseMenu_Game: {fileID: 618448814}
   serieGraphMenu: {fileID: 1043462109}
   customizeMenu_Select: {fileID: 20110026}
+  customizeMenu_Items: {fileID: 0}
   badgesMenu: {fileID: 5277140862175605144}
   infoBadgesMenu: {fileID: 636473425603101224}
+  m_apnea: 0
+  m_inspiration: 0
   m_jsonObjectUser:
     token: 
     user:
@@ -5873,19 +5876,7 @@ MonoBehaviour:
   m_StartSelectable: {fileID: 0}
   onScreenStart:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onScreenClose:
     m_PersistentCalls:
       m_Calls: []
@@ -7249,7 +7240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77c9b65285898e84196000b2f1779778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_StartScreen: {fileID: 309271660}
+  m_StartScreen: {fileID: 403161336}
   onSwitchedScreen:
     m_PersistentCalls:
       m_Calls: []
@@ -9652,7 +9643,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &991357408
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14164,7 +14155,7 @@ RectTransform:
   m_GameObject: {fileID: 1393575484}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 908234388}
@@ -21471,6 +21462,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 793086686}
     - target: {fileID: 6654221475125430851, guid: 8f091b1b3fc4f214da8bd8ab71e7dc9f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 683307370810265616}
+    - target: {fileID: 6654221475125430851, guid: 8f091b1b3fc4f214da8bd8ab71e7dc9f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 5277140862175605144}
@@ -22569,37 +22564,37 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c16933f56ee89a44eb03a385bd220185, type: 3}
   - {fileID: 21300000, guid: 5a9ed4ccf4f86d545bd64176edb47fa7, type: 3}
   seriesBadgesSmallImage:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 5277140861813115533}
+  - {fileID: 5277140863473034664}
+  - {fileID: 5277140861975754055}
+  - {fileID: 5277140862981526812}
+  - {fileID: 5277140863101569812}
+  - {fileID: 5277140863079635551}
+  - {fileID: 5277140862535933314}
   sessionsBadgesSmallImage:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 5277140863418771519}
+  - {fileID: 5277140863879923453}
+  - {fileID: 5277140863694347168}
+  - {fileID: 5277140862290343474}
+  - {fileID: 5277140863750114713}
+  - {fileID: 5277140863892652320}
+  - {fileID: 5277140863110041134}
   daysBadgesSmallImage:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 5277140862666039246}
+  - {fileID: 5277140862080582600}
+  - {fileID: 5277140863262472399}
+  - {fileID: 5277140863785092419}
+  - {fileID: 5277140863674337227}
+  - {fileID: 5277140862936729739}
+  - {fileID: 5277140863900784207}
   weeksBadgesSmallImage:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 5277140862158994523}
+  - {fileID: 5277140862020457975}
+  - {fileID: 5277140862902214641}
+  - {fileID: 5277140862496407843}
+  - {fileID: 5277140862082115149}
+  - {fileID: 5277140861932770188}
+  - {fileID: 5277140862119491622}
   badgesNames:
   - Acero
   - Bronce

@@ -377,7 +377,7 @@ public class CustomizationManager : MonoBehaviour
         {
             //notificacion de que no alcanza
             NotificationsManager.Instance.WarningNotifications("No tienes UbiCoins suficientes para comprar el fondo.\n¡Sigue haciendo tu fisioterapia!");
-            //NotificationsManager.Instance.SetCloseFunction(null);
+            NotificationsManager.Instance.SetCloseFunction(GameData.Instance.customizeMenu_Items);
         }
     }
 
@@ -401,7 +401,7 @@ public class CustomizationManager : MonoBehaviour
         {
             //notificacion de que no alcanza
             NotificationsManager.Instance.WarningNotifications("No tienes UbiCoins suficientes para comprar la figura.\n¡Sigue haciendo tu fisioterapia!");
-            //NotificationsManager.Instance.SetCloseFunction(null);
+            NotificationsManager.Instance.SetCloseFunction(GameData.Instance.customizeMenu_Items);
         }
     }
 

@@ -14,6 +14,7 @@ public class GameData : MonoBehaviour
     public UI_Screen exerciseMenu_Game;
     public UI_Screen serieGraphMenu;
     public UI_Screen customizeMenu_Select;
+    public UI_Screen customizeMenu_Items;
     public UI_Screen badgesMenu;
     public UI_Screen infoBadgesMenu;
 
@@ -38,14 +39,14 @@ public class GameData : MonoBehaviour
         set { m_resting = value; }
     }
 
-    private bool m_apnea = false;
+    public bool m_apnea = false;
     public bool apnea
     {
         get { return m_apnea; }
         set { m_apnea = value; }
     }
 
-    private bool m_inspiration = false;
+    public bool m_inspiration = false;
     public bool inspiration
     {
         get { return m_inspiration; }
@@ -94,7 +95,7 @@ public class GameData : MonoBehaviour
         else
             Instance = this;
 
-        //PlayerPrefs.DeleteAll(); test
+        PlayerPrefs.DeleteAll(); //test
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
         if(PlayerPrefs.GetString("currentExerciseDate") == "") // fecha actual
@@ -203,11 +204,10 @@ public class GameData : MonoBehaviour
 
         // detectar cuando lanzar sonido de motivacion
         if(exerciseMenu_Game.gameObject.GetComponent<CanvasGroup>().alpha != 0){
-            if(inspiration)
+            if(inspiration && GameData.Instance.scriptsGroup.bluetoothPairing.prom > 200)
                 scriptsGroup.soundsManager.PlayRandomSound();
             if(apnea)
                 scriptsGroup.soundsManager.StopRandomSound();
-
         }
     }
 

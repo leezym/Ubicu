@@ -27,8 +27,8 @@ VideoClipImporter:
       codec: 1
       resizeFormat: 7
       aspectRatio: 5
-      customWidth: 1080
-      customHeight: 1920
+      customWidth: 720
+      customHeight: 1280
       bitrateMode: 1
       spatialQuality: 1
   userData: 

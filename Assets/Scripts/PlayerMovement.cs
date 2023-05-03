@@ -9,10 +9,10 @@ public class PlayerMovement : MonoBehaviour
 {
     public static float CIRCLE_MINIMUM_SCALE = 0.08f;
     public static float CIRCLE_MAXIMUM_SCALE = 0.75f;
-    public static float CIRCLE_PLUS_SCALE = 0.05f;
+    public static float CIRCLE_PLUS_SCALE = 0.83f;
     public static float LUNG_MINIMUM_SCALE = 0.23f;
     public static float LUNG_MAXIMUM_SCALE = 0.72f;
-    public static float LUNG_PLUS_SCALE = 0.03f;
+    public static float LUNG_PLUS_SCALE = 0.76f;
     
     [Header("ATTACHED")]
     public float minimunScale;
@@ -62,33 +62,25 @@ public class PlayerMovement : MonoBehaviour
     public void Movement()
     {
         //test
-        GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = Math.Round(GameData.Instance.scriptsGroup.bluetoothPairing.prom, 1).ToString()+" mL";
-
+        GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = maxFlow.ToString()+" - "+GameData.Instance.scriptsGroup.bluetoothPairing.prom.ToString();
+        
         if(GameData.Instance.inspiration)
         {
-            // con maximo
             if(GameData.Instance.scriptsGroup.bluetoothPairing.prom > maxFlow)
             {
                 maxFlow = GameData.Instance.scriptsGroup.bluetoothPairing.prom;
                 timeDuringGame = GameData.Instance.scriptsGroup.bluetoothPairing.timer;
-
-                if(maxFlow < GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
-                {
+                if(maxFlow <= GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
                     maxTargetScale = (maxFlow * maximunScale / GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo) + minimunScale;                    
-                }
                 else
-                {
-                    maxTargetScale = maximunScale + plusScale;
-                }
+                    maxTargetScale = plusScale;
             }
         }
         else
             maxTargetScale = 0;
-        
+                
         if (player.transform.localScale.x < minimunScale)
             player.transform.localScale = new Vector2(minimunScale,minimunScale);
-        else if (player.transform.localScale.x > maximunScale)
-            player.transform.localScale = new Vector2(maximunScale,maximunScale);
         else
             player.transform.localScale = Vector2.Lerp(player.transform.localScale, new Vector2(maxTargetScale, maxTargetScale), Time.deltaTime * speedStandarScale);
     }
