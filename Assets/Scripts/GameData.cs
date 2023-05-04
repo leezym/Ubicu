@@ -95,7 +95,7 @@ public class GameData : MonoBehaviour
         else
             Instance = this;
 
-        PlayerPrefs.DeleteAll(); //test
+        //PlayerPrefs.DeleteAll(); //test
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
         if(PlayerPrefs.GetString("currentExerciseDate") == "") // fecha actual
