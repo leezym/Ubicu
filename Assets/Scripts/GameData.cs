@@ -154,12 +154,17 @@ public class GameData : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape)){
-            //preguntar si quiere salir?
-            Application.Quit();
+            // notificacion de salir
+            NotificationsManager.Instance.QuestionNotifications("Deseas salir de la aplicación?");
+            // si
+            NotificationsManager.Instance.SetYesButton(()=>{
+                SaveLocalData();
+            });
         }
        
         if(playing)
         {
+            GameData.Instance.scriptsGroup.playerMovement.Movement();
             StartCoroutine(scriptsGroup.obstacles.ObstaclesCounter());
             // contador de inactividad
             scriptsGroup.obstacles.DetectInactivity();
@@ -211,7 +216,7 @@ public class GameData : MonoBehaviour
         }
     }
 
-    void OnApplicationQuit()
+    public void SaveLocalData()
     {
         scriptsGroup.rewardsManager.SaveReward();
         scriptsGroup.exercisesManager.SaveExercise();

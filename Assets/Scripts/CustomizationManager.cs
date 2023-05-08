@@ -440,6 +440,7 @@ public class CustomizationManager : MonoBehaviour
             //notificacion de tema seleccionado
             NotificationsManager.Instance.WarningNotifications("¡Tema seleccionado!");
             NotificationsManager.Instance.SetCloseFunction(GameData.Instance.customizeMenu_Select);
+            GameData.Instance.SaveLocalData();
         }
         else
         {

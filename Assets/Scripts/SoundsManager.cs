@@ -40,4 +40,10 @@ public class SoundsManager : MonoBehaviour
         int r = Random.Range(0, seconds.Count);
         return seconds[r];
     }
+
+    private void OnAudioFilterRead(float[] data, int channels)
+    {
+        if (audioSource.time >= audioSource.clip.length)
+           StopRandomSound();
+    }
 }

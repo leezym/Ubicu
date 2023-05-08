@@ -116,7 +116,6 @@ public class PlayerMovement : MonoBehaviour
             GameData.Instance.idListHourExercises = -1;
             //StartCoroutine(GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards()); //pdte
             GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards();
-            //UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
         }
     }
 

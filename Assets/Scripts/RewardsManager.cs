@@ -101,6 +101,8 @@ public class RewardsManager : MonoBehaviour
             NotificationsManager.Instance.SetCloseFunction("¡FELICITACIONES!\nGanaste <b>"+RewardsManager.WEEK_REWARD+" Ubicoins</b> por completar una semana de fisioterapias");
             totalWeeks++;   
         }
+        
+        GameData.Instance.SaveLocalData();
         //pdte subir total reward a la DB
     }
 

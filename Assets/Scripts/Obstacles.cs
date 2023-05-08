@@ -25,7 +25,6 @@ public class Obstacles : MonoBehaviour
         {
             enabledCounter = true;
             GameData.Instance.scriptsGroup.playerMovement.StopApnea();
-            GameData.Instance.scriptsGroup.playerMovement.Movement();
             if(repCounter == GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].repeticiones)
             {
                 GameData.Instance.playing = false;

@@ -170,7 +170,6 @@ public class ExercisesManager : MonoBehaviour
         }
 
         extraMinuteToWaitForExercise = (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas == 1 ? 30f : 59f); // minutos
-        //extraMinuteToWaitForExercise = 59f; test
     }
 
     public void SaveExercise()
