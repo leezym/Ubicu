@@ -211,8 +211,8 @@ public class GameData : MonoBehaviour
         if(exerciseMenu_Game.gameObject.GetComponent<CanvasGroup>().alpha != 0){
             if(inspiration && GameData.Instance.scriptsGroup.bluetoothPairing.prom > 200)
                 scriptsGroup.soundsManager.PlayRandomSound();
-            if(apnea)
-                scriptsGroup.soundsManager.StopRandomSound();
+            /*if(apnea)
+                scriptsGroup.soundsManager.StopRandomSound();*/
         }
     }
 
@@ -222,5 +222,10 @@ public class GameData : MonoBehaviour
         scriptsGroup.exercisesManager.SaveExercise();
         scriptsGroup.customizationManager.SaveCustomization();
         PlayerPrefs.Save();
+    }
+
+    void OnApplicationQuit()
+    {
+        SaveLocalData();
     }
 }
