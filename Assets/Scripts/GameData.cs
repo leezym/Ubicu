@@ -7,7 +7,7 @@ using System.Globalization;
 
 public class GameData : MonoBehaviour
 {
-    public static GameData Instance{get; private set;}
+    public static GameData Instance {get; private set;}
     public ScriptsGroup scriptsGroup;
     public UI_Screen loginMenu;
     public UI_Screen sessionMenu;
@@ -190,7 +190,8 @@ public class GameData : MonoBehaviour
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.currentSessionSprite;
                     // almacenar el id del ejercicio activado
                     idListHourExercises = i;
-                }else if ((exerciseHourArray[i] < DateTime.Now.Hour) || (DateTime.Now.Hour == exerciseHourArray[i] && DateTime.Now.Minute > scriptsGroup.exercisesManager.extraMinuteToWaitForExercise))
+                }
+                else if ((exerciseHourArray[i] < DateTime.Now.Hour) || (DateTime.Now.Hour == exerciseHourArray[i] && DateTime.Now.Minute > scriptsGroup.exercisesManager.extraMinuteToWaitForExercise))
                 {
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable = false;
                     
@@ -200,7 +201,7 @@ public class GameData : MonoBehaviour
                     // pregunta si esta disponible los viejos ejercicios y coloca que no se finalizó
                     else
                     {
-                        exerciseHourArray[i] = -1;                        
+                        exerciseHourArray[i] = -1;
                         scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.notFinishedSessionSprite;
                     }
                 }         
