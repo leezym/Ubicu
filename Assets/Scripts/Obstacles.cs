@@ -65,10 +65,10 @@ public class Obstacles : MonoBehaviour
 
     public void ExitGame()
     {
+        GameData.Instance.playing = false;
+        repCounter = 0;
+        GameData.Instance.scriptsGroup.playerMovement.seriesCount = 0;
         GameData.Instance.scriptsGroup.bluetoothPairing.StopOutputTime();
         UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
-        GameData.Instance.playing = false;
-        GameData.Instance.scriptsGroup.playerMovement.seriesCount = 0;
-        repCounter = 0;
     }
 }

@@ -47,12 +47,15 @@ public class RewardsManager : MonoBehaviour
     public int totalSessions;
     public int totalDays;
     public int totalWeeks;
-    public AllItems[] allBadgesArray = new AllItems[7]; // cuales insignias se han ganado
+    public AllItems[] allBadgesArray = new AllItems[4]; // cuales insignias se han ganado
 
+    void Start()
+    {
+        LoadReward();
+    }
 
     public void LoadReward()
     {
-        GetAllBadges();
         sessionReward = PlayerPrefs.GetInt("sessionReward");
         dayReward = PlayerPrefs.GetInt("dayReward");
         totalReward = PlayerPrefs.GetInt("totalReward");
@@ -60,11 +63,11 @@ public class RewardsManager : MonoBehaviour
         totalSessions = PlayerPrefs.GetInt("totalSessions");
         totalDays = PlayerPrefs.GetInt("totalDays");
         totalWeeks = PlayerPrefs.GetInt("totalWeeks");
+        GetAllBadges();
     }
     
     public void SaveReward()
     {
-        SetAllBadges();
         PlayerPrefs.SetInt("sessionReward", sessionReward);
         PlayerPrefs.SetInt("dayReward", dayReward);
         PlayerPrefs.SetInt("totalReward", totalReward);
@@ -72,6 +75,7 @@ public class RewardsManager : MonoBehaviour
         PlayerPrefs.SetInt("totalSessions", totalSessions);
         PlayerPrefs.SetInt("totalDays", totalDays);
         PlayerPrefs.SetInt("totalWeeks", totalWeeks);
+        SetAllBadges();
     }
 
     public void CalculateRewards() //pdte como reiniciar al final de semana o como subir a final de semana a mongodb
@@ -79,6 +83,7 @@ public class RewardsManager : MonoBehaviour
         serieReward = (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series * RewardsManager.SERIE_REWARD);
         sessionReward += RewardsManager.SESSION_REWARD;
         totalReward += (serieReward + RewardsManager.SESSION_REWARD);
+        
         NotificationsManager.Instance.WarningNotifications("¡FELICITACIONES!\nGanaste <b>"+serieReward+" Ubicoins</b> por cada serie realizada y <b>"+RewardsManager.SESSION_REWARD+" Ubicoins</b> por el ejercicio completo");
         NotificationsManager.Instance.SetCloseFunction(GameData.Instance.sessionMenu);
 
@@ -90,18 +95,19 @@ public class RewardsManager : MonoBehaviour
             dayReward += RewardsManager.DAY_REWARD;
             totalReward += RewardsManager.DAY_REWARD;
             sessionReward = 0;
-            NotificationsManager.Instance.SetCloseFunction("¡FELICITACIONES!\nGanaste <b>"+RewardsManager.DAY_REWARD+" Ubicoins</b> por completar un día de fisioterapias");
+            NotificationsManager.Instance.SetChangeTextFunction("¡FELICITACIONES!\nGanaste <b>"+RewardsManager.DAY_REWARD+" Ubicoins</b> por completar un día de fisioterapias");
             totalDays++;
-        }
 
-        if(dayReward == (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_dias * RewardsManager.DAY_REWARD) && DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) == DateTime.ParseExact(GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture))
-        {
-            totalReward += RewardsManager.WEEK_REWARD;
-            dayReward = 0;
-            NotificationsManager.Instance.SetCloseFunction("¡FELICITACIONES!\nGanaste <b>"+RewardsManager.WEEK_REWARD+" Ubicoins</b> por completar una semana de fisioterapias");
-            totalWeeks++;   
-        }
+            if(dayReward == (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_dias * RewardsManager.DAY_REWARD) && DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) == DateTime.ParseExact(GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture))
+            {
+                totalReward += RewardsManager.WEEK_REWARD;
+                dayReward = 0;
+                NotificationsManager.Instance.SetChangeTextFunction("¡FELICITACIONES!\nGanaste <b>"+RewardsManager.WEEK_REWARD+" Ubicoins</b> por completar una semana de fisioterapias");
+                totalWeeks++;
+            }
+        }       
         
+        CalculateBadges();
         GameData.Instance.SaveLocalData();
         //pdte subir total reward a la DB
     }
@@ -152,9 +158,31 @@ public class RewardsManager : MonoBehaviour
         //pdte subir total reward a la DB
     }*/
 
-    void WinBadges()
-    {
-
+    public void CalculateBadges()
+    {    
+        for(int j = 0; j < badgesPoints.Length; j++)
+        {
+            if(totalSeries >= badgesPoints[j] && allBadgesArray[0].item[j] == 0)
+            {
+                allBadgesArray[0].item[j] = 1;
+                NotificationsManager.Instance.SetChangeTextFunction("¡FELICITACIONES!\nGanaste la insignia <b>"+badgesNames[j]+"</b> en Series");
+            }
+            if(totalSessions >= badgesPoints[j] && allBadgesArray[1].item[j] == 0)
+            {
+                allBadgesArray[1].item[j] = 1;
+                NotificationsManager.Instance.SetChangeTextFunction("¡FELICITACIONES!\nGanaste la insignia <b>"+badgesNames[j]+"</b> en Sesiones");
+            }
+            if(totalDays >= badgesPoints[j] && allBadgesArray[2].item[j] == 0)
+            {
+                allBadgesArray[2].item[j] = 1;
+                NotificationsManager.Instance.SetChangeTextFunction("¡FELICITACIONES!\nGanaste la insignia <b>"+badgesNames[j]+"</b> en Días");
+            }
+            if(totalWeeks >= badgesPoints[j] && allBadgesArray[3].item[j] == 0)
+            {
+                allBadgesArray[3].item[j] = 1;
+                NotificationsManager.Instance.SetChangeTextFunction("¡FELICITACIONES!\nGanaste la insignia <b>"+badgesNames[j]+"</b> en Semanas");
+            }
+        }
     }
 
     public void ShowInfoBadges(string insignia)
@@ -197,7 +225,10 @@ public class RewardsManager : MonoBehaviour
         if(allBadgesArray[j].item[i] == 1) //si tienes la insignia muestras la info
             UI_System.Instance.SwitchScreens(GameData.Instance.infoBadgesMenu);
         else
+        {
             NotificationsManager.Instance.WarningNotifications("Aún no tienes la insignia <b>"+badgesTitle.text+" "+badgesSubTitle.text+"</b>");
+            NotificationsManager.Instance.SetCloseFunction();
+        }
     }
 
     public void GetAllBadges()

@@ -139,6 +139,11 @@ public class CustomizationManager : MonoBehaviour
     public string[] descriptionsFondosAnatomia = new string[0];
     public string[] descriptionsFigurasAnatomia = new string[0];
 
+    void Start()
+    {
+        LoadCustomization();
+    }
+
     public void SetTempIdFondosItem(int id)
     {
         tempIdFondosItem = id;
@@ -377,7 +382,7 @@ public class CustomizationManager : MonoBehaviour
         {
             //notificacion de que no alcanza
             NotificationsManager.Instance.WarningNotifications("No tienes UbiCoins suficientes para comprar el fondo.\n¡Sigue haciendo tu fisioterapia!");
-            NotificationsManager.Instance.SetCloseFunction(GameData.Instance.customizeMenu_Items);
+            NotificationsManager.Instance.SetCloseFunction();
         }
     }
 
@@ -401,7 +406,7 @@ public class CustomizationManager : MonoBehaviour
         {
             //notificacion de que no alcanza
             NotificationsManager.Instance.WarningNotifications("No tienes UbiCoins suficientes para comprar la figura.\n¡Sigue haciendo tu fisioterapia!");
-            NotificationsManager.Instance.SetCloseFunction(GameData.Instance.customizeMenu_Items);
+            NotificationsManager.Instance.SetCloseFunction();
         }
     }
 

@@ -26,24 +26,25 @@ public class SoundsManager : MonoBehaviour
         {
             motivationMessage.text = motivationSounds[r].text;
             audioSource.clip = motivationSounds[r].clip;
-            audioSource.Play();
+            //audioSource.Play();
+            audioSource.PlayOneShot(audioSource.clip);
         }
     }
 
-    public void StopRandomSound(){
-        audioSource.clip =  null;
-        motivationMessage.text = "";
+    public void StopRandomSound()
+    {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.Stop();
+            audioSource.clip =  null;
+            motivationMessage.text = "";
+        }        
     }
 
-    public float PlayRandomTime(){
+    public float PlayRandomTime()
+    {
         List<int> seconds = new List<int>{10,20,40};
         int r = Random.Range(0, seconds.Count);
         return seconds[r];
-    }
-
-    private void OnAudioFilterRead(float[] data, int channels)
-    {
-        if (audioSource.time >= audioSource.clip.length)
-           StopRandomSound();
     }
 }

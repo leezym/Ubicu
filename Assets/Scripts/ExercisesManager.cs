@@ -53,7 +53,6 @@ public class ExercisesManager : MonoBehaviour
         else
         {
             string responseText = www.downloadHandler.text;
-
             GameData.Instance.jsonObjectExercises = JsonUtility.FromJson<Exercises>("{\"array\":" + responseText + "}");
 
             bool emptyExercise = false; // array.Count = 0
@@ -94,6 +93,15 @@ public class ExercisesManager : MonoBehaviour
                         currentDate = false;
                     }
                 }
+            }
+
+            // si la fecha del ejercicio actual es diferente a la ultima almacenada
+            if(PlayerPrefs.GetString("currentExerciseFinalDate") != "" && DateTime.ParseExact(PlayerPrefs.GetString("currentExerciseFinalDate"), "dd/MM/yyyy", CultureInfo.InvariantCulture) != DateTime.ParseExact(GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture)) // fecha fin ejercicio actual
+            {
+                GameData.Instance.scriptsGroup.rewardsManager.serieReward = 0;
+                GameData.Instance.scriptsGroup.rewardsManager.sessionReward = 0;
+                GameData.Instance.scriptsGroup.rewardsManager.dayReward = 0;
+                PlayerPrefs.SetString("currentExerciseFinalDate", GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].fecha_fin);
             }
 
             // la cantidad de sesiones es de acuerdo al campo cada cuantas horas, es decir 12h/ejercicio.frecuencia_horas 
