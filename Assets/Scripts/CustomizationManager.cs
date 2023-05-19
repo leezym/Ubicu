@@ -232,6 +232,9 @@ public class CustomizationManager : MonoBehaviour
 
     public void SetIdCustomization(int id)
     {
+        tempIdCustomization = idCustomization;
+        idCustomization = id;
+
         if(id == 0)
             SetArrayCustomization("Abstracto", headerSpriteAbstracto, fondosItemSpritesAbstracto, figurasItemSpritesAbstracto, fondosSpritesAbstracto, circuloSpritesAbstracto, velocimetroSpritesAbstracto, settingsSpritesAbstracto, colorTextAbstracto, circuloPreviewSpritesAbstracto, descriptionsFondosAbstracto, descriptionsFigurasAbstracto);
         else if (id == 1)
@@ -243,6 +246,8 @@ public class CustomizationManager : MonoBehaviour
         else if (id == 4)
             SetArrayCustomization("Anatomía", headerSpriteAnatomia, fondosItemSpritesAnatomia, figurasItemSpritesAnatomia, fondosSpritesAnatomia, circuloSpritesAnatomia, velocimetroSpritesAnatomia, settingsSpritesAnatomia, colorTextAnatomia, circuloPreviewSpritesAnatomia, descriptionsFondosAnatomia, descriptionsFigurasAnatomia);
 
+        ValidateFullItems(id);        
+
         if (idItemFondosArray.Length > 0) SetIdFondosItem(idItemFondosArray[id]);
         if (idItemFigurasArray.Length > 0) SetIdFigurasItem(idItemFigurasArray[id]);
 
@@ -251,11 +256,7 @@ public class CustomizationManager : MonoBehaviour
         {
             priceTextItemFondosArray[i].text = priceItemFondosArray[id , i].ToString();
             priceTextItemFigurasArray[i].text = priceItemFigurasArray[id , i].ToString();
-        }
-        
-        ValidateFullItems(id);
-        tempIdCustomization = idCustomization;
-        idCustomization = id;
+        }        
     }
 
     public void SetArrayCustomization(string subtitleHeaderText, Sprite headerSprite, Sprite[] fondosItemSprites, Sprite[] figurasItemSprites, Sprite[] fondosSprites, Sprite[] circuloSprites, Sprite[] velocimetroSprites, Sprite[] settingsSprites, 
