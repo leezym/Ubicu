@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
     public void Movement()
     {
         //test
-        GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = "I:"+GameData.Instance.inspiration+"-A:"+GameData.Instance.apnea+"\nMx:"+maxFlow.ToString()+"-Curr:"+GameData.Instance.scriptsGroup.bluetoothPairing.prom.ToString();
+        //GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = "I:"+GameData.Instance.inspiration+"-A:"+GameData.Instance.apnea+"\nMx:"+maxFlow.ToString()+"-Curr:"+GameData.Instance.scriptsGroup.bluetoothPairing.prom.ToString();
         
         if(GameData.Instance.inspiration)
         {
@@ -112,21 +112,20 @@ public class PlayerMovement : MonoBehaviour
         {
             seriesCount = 0;
             StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.SendResults());
-            GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises] = 0; // si se finalizó se coloca 0
-            GameData.Instance.idListHourExercises = -1;
-            //StartCoroutine(GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards()); //pdte
             GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards();
         }
     }
 
     public void StartApnea()
-    {
-        pauseText.text = ((int)apneaCount+1).ToString();
+    {        
         pause.SetActive(true);
         if(apneaCount >= 0)
         {
             apneaCount -= Time.deltaTime;
+            pauseText.text = ((int)apneaCount+1).ToString();
         }
+        else
+            pauseText.text = "BOTA EL AIRE";
     }
 
     public void StopApnea()

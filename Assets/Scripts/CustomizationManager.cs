@@ -179,15 +179,15 @@ public class CustomizationManager : MonoBehaviour
         else
             backgroundPreviewFiguras.sprite = fondosSprites[idItemFondosArray[idCustomization]];
 
-        if(allFigurasItemsArray[idCustomization].item[id] == 0)
+        if(allFigurasItemsArray[idCustomization].item[id] == 0) // si no ha comprado sale el boton de comprar activo
         {     
-            buttonsFigurasItemsPreviewArray[0].useButton.SetActive(false);
             buttonsFigurasItemsPreviewArray[0].buyButton.SetActive(true);
+            buttonsFigurasItemsPreviewArray[0].useButton.SetActive(false);
         }
         else
         {
-            buttonsFigurasItemsPreviewArray[0].useButton.SetActive(true);
             buttonsFigurasItemsPreviewArray[0].buyButton.SetActive(false);
+            buttonsFigurasItemsPreviewArray[0].useButton.SetActive(true);
         }
     }
 
@@ -246,7 +246,7 @@ public class CustomizationManager : MonoBehaviour
         else if (id == 4)
             SetArrayCustomization("Anatomía", headerSpriteAnatomia, fondosItemSpritesAnatomia, figurasItemSpritesAnatomia, fondosSpritesAnatomia, circuloSpritesAnatomia, velocimetroSpritesAnatomia, settingsSpritesAnatomia, colorTextAnatomia, circuloPreviewSpritesAnatomia, descriptionsFondosAnatomia, descriptionsFigurasAnatomia);
 
-        ValidateFullItems(id);        
+        ValidateFullItems(id);  
 
         if (idItemFondosArray.Length > 0) SetIdFondosItem(idItemFondosArray[id]);
         if (idItemFigurasArray.Length > 0) SetIdFigurasItem(idItemFigurasArray[id]);

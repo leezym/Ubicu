@@ -160,21 +160,21 @@ public class ExercisesManager : MonoBehaviour
         exerciseDescansoPrefab.text = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso.ToString();
         exerciseFlujoPrefab.text = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo.ToString()+"ml";
         
-        if(DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) == DateTime.ParseExact(PlayerPrefs.GetString("currentExerciseDate"), "dd/MM/yyyy", CultureInfo.InvariantCulture) && PlayerPrefs.GetString("exerciseHourArray") != "")
-        {
-            // actualizar de acuerdo a la DB local
-            GameData.Instance.exerciseHourArray = Array.ConvertAll(PlayerPrefs.GetString("exerciseHourArray").Split(","), int.Parse);
-        }
-        else
+        GameData.Instance.exerciseHourArray = new int[sesiones];   
+        if(DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) != DateTime.ParseExact(PlayerPrefs.GetString("currentExerciseDate"), "dd/MM/yyyy", CultureInfo.InvariantCulture) || PlayerPrefs.GetString("exerciseHourArray") == "")
         {
             PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString("dd/MM/yyyy"));
             int hours = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].hora_inicio;
-            GameData.Instance.exerciseHourArray = new int[sesiones];
             for(int i = 0; i < sesiones; i++)
             {
                 GameData.Instance.exerciseHourArray[i] = hours;
                 hours += GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas;
             }
+        }
+        else
+        {
+            // actualizar de acuerdo a la DB local
+            GameData.Instance.exerciseHourArray = Array.ConvertAll(PlayerPrefs.GetString("exerciseHourArray").Split(","), int.Parse);
         }
 
         extraMinuteToWaitForExercise = (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas == 1 ? 30f : 59f); // minutos
@@ -208,8 +208,12 @@ public class ExercisesManager : MonoBehaviour
             Debug.Log(www.error);
             Debug.Log(form.data);
         }
-
-        GameData.Instance.exerciseSeries = new List<ExerciseData>();        
+        else
+        {
+            GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises] = 0; // si se finalizó se coloca 0
+            GameData.Instance.idListHourExercises = -1;
+            GameData.Instance.exerciseSeries = new List<ExerciseData>();        
+        }
         StopCoroutine(SendResults());
     }
 

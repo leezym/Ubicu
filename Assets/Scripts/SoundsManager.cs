@@ -11,56 +11,64 @@ public class SoundsManager : MonoBehaviour
     public AudioSource signalAudioSource;
     public TMP_Text motivationMessage;
     public AudioClip signalAudioClip;
-    bool active = true;
-
+    bool activeSignalSound = true;
+    bool activeRandomSound = true;
+    int r;
     
-    public void InitializeMotivationSound()
+    public void Start()
     {
         motivationMessage.text = "";
+        r = Random.Range(0, motivationSounds.Count);
+        motivationAudioSource.clip = motivationSounds[r].clip;
     }
 
-    public void AddSignalSound()
+    public void AddSound()
     {
-        active = true;
+        activeSignalSound = true;
         signalAudioSource.mute = false;
+
+        r = Random.Range(0, motivationSounds.Count);
+        motivationAudioSource.clip = motivationSounds[r].clip;
+        motivationAudioSource.mute = false;
+        activeRandomSound = true;
     }
 
     public void PlaySignalSound()
     {
-        if(active)
+        if(activeSignalSound)
         {
             signalAudioSource.PlayOneShot(signalAudioSource.clip);
-            active = false;
+            motivationMessage.text = "Toma el aire";
+            activeSignalSound = false;
         }
     }
 
     public void PlayRandomSound()
     {
-        int r = Random.Range(0, motivationSounds.Count);
-        if(motivationAudioSource.clip == null)
+        if(activeRandomSound)
         {
-            motivationMessage.text = motivationSounds[r].text;
-            motivationAudioSource.clip = motivationSounds[r].clip;
-            //motivationAudioSource.Play();
             motivationAudioSource.PlayOneShot(motivationAudioSource.clip);
+            motivationMessage.text = motivationSounds[r].text;
+            activeRandomSound = false;
         }
     }
 
     public void StopSignalSound()
     {
-        if (!signalAudioSource.isPlaying && !active)
+        if (!signalAudioSource.isPlaying && !activeSignalSound)
         {
             signalAudioSource.Stop();
             signalAudioSource.mute = true;
+            motivationMessage.text = "";
         }
     }
 
     public void StopRandomSound()
     {
-        if (!motivationAudioSource.isPlaying)
+        if (!motivationAudioSource.isPlaying && !activeRandomSound)
         {
             motivationAudioSource.Stop();
-            motivationAudioSource.clip =  null;
+            motivationAudioSource.mute = true;
             motivationMessage.text = "";
         }        
     }

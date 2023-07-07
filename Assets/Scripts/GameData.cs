@@ -146,8 +146,6 @@ public class GameData : MonoBehaviour
 
     void Start()
     {
-        //scriptsGroup.customizationManager.LoadCustomization();
-        //scriptsGroup.rewardsManager.LoadReward();
         idListHourExercises = -1;
     }
     
@@ -182,9 +180,11 @@ public class GameData : MonoBehaviour
         {
             for(int i = 0; i < exerciseHourArray.Length; i++)
             {
+                int horaActual = int.Parse(DateTime.Now.Hour.ToString(CultureInfo.InvariantCulture));
+                int minutoActual = int.Parse(DateTime.Now.Minute.ToString(CultureInfo.InvariantCulture));
+                
                 // detectar cual ejercicio se debe activar
-                if(DateTime.Now.Hour == exerciseHourArray[i]
-                    && DateTime.Now.Minute <= scriptsGroup.exercisesManager.extraMinuteToWaitForExercise)
+                if(horaActual == exerciseHourArray[i] && minutoActual <= scriptsGroup.exercisesManager.extraMinuteToWaitForExercise)
                 {
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable = true;
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.currentSessionSprite;
@@ -192,7 +192,7 @@ public class GameData : MonoBehaviour
                     idListHourExercises = i;
                 }
                 
-                if ((exerciseHourArray[i] < DateTime.Now.Hour) || (DateTime.Now.Hour == exerciseHourArray[i] && DateTime.Now.Minute > scriptsGroup.exercisesManager.extraMinuteToWaitForExercise))
+                if ((exerciseHourArray[i] < horaActual) || (horaActual == exerciseHourArray[i] && minutoActual > scriptsGroup.exercisesManager.extraMinuteToWaitForExercise))
                 {
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable = false;
                     
@@ -216,10 +216,9 @@ public class GameData : MonoBehaviour
                 scriptsGroup.soundsManager.PlayRandomSound();
             else if(inspiration && GameData.Instance.scriptsGroup.bluetoothPairing.prom < 200)
                 scriptsGroup.soundsManager.PlaySignalSound();
-            if(apnea)
-                scriptsGroup.soundsManager.AddSignalSound();
+            else if(!inspiration && apnea)
+                scriptsGroup.soundsManager.AddSound();
         }
-        
     }
 
     public void SaveLocalData()
