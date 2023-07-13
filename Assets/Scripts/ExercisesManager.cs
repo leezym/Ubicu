@@ -12,7 +12,6 @@ using Newtonsoft.Json;
 public class ExercisesManager : MonoBehaviour
 {
     [Header("ATTACHED")]
-    public GameObject sessionPrefab;
     public GameObject sessionContent;
     public TMP_Text exerciseRepPrefab;
     public TMP_Text exerciseSeriePrefab;
@@ -27,9 +26,9 @@ public class ExercisesManager : MonoBehaviour
     public GameObject buttonPlayVideo;
 
     [Header("IN GAME")]
+    public GameObject[] sessionPrefab;
     public Transform sessionTitlePrefab;
     public int sesiones;
-    public List<GameObject> sesionesList = new List<GameObject>();
     public float extraMinuteToWaitForExercise;
 
     public IEnumerator GetExercises()
@@ -109,13 +108,9 @@ public class ExercisesManager : MonoBehaviour
 
             if(sesiones == 0)
             {
-                GameObject go = Instantiate(sessionPrefab, Vector3.zero, Quaternion.identity);
-                go.SetActive(true);
-                go.GetComponent<Button>().interactable = false;
-                go.transform.parent = sessionContent.transform;
-                go.transform.localScale = new Vector3(1,1,1);
-
-                sessionTitlePrefab = go.transform.Find("TitleText");
+                sessionPrefab[0].SetActive(true);
+                sessionPrefab[0].GetComponent<Button>().interactable = false;
+                sessionTitlePrefab = sessionPrefab[0].transform.Find("TitleText");
                 sessionTitlePrefab.GetComponent<TMP_Text>().text = "No hay sesiones";
             }
             else
@@ -123,17 +118,10 @@ public class ExercisesManager : MonoBehaviour
                 AddExcersiseData();
                 for(int i = 0; i < sesiones; i++)
                 {
-                    GameObject go = Instantiate(sessionPrefab, Vector3.zero, Quaternion.identity);
-                    go.SetActive(true);
-                    go.transform.parent = sessionContent.transform;
-                    go.transform.localScale = new Vector3(1,1,1);
-
-                    sessionTitlePrefab = go.transform.Find("TitleText");
+                    sessionPrefab[i].SetActive(true);
+                    sessionPrefab[i].GetComponent<Button>().interactable = false;
+                    sessionTitlePrefab = sessionPrefab[i].transform.Find("TitleText");
                     sessionTitlePrefab.GetComponent<TMP_Text>().text = "Sesión " + (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].hora_inicio + (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas * i)) + ":00";
-
-                    sesionesList.Add(go);
-
-                    go.GetComponent<Button>().interactable = false;
                 }
             }
             StopCoroutine(GetExercises());

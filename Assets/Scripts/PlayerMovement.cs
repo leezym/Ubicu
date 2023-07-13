@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
     public int speedStandarScale;
     public GameObject pause;
     public TMP_Text pauseText;
-    public GameObject graphPrefab;
+    public GameObject[] graphPrefab;
     public GameObject goalGraph;
     public Transform graphStructure;
     public TMP_Text restText;
@@ -163,24 +163,20 @@ public class PlayerMovement : MonoBehaviour
 
         for(int i = 0; i < tempGraphFlow.Count; i++)
         {
-            GameObject go = Instantiate(graphPrefab, Vector3.zero, Quaternion.identity);
-            go.SetActive(true);
-            go.transform.parent = graphStructure.transform;
-            go.transform.localScale = new Vector3(1,1,1);
-
+            graphPrefab[i].SetActive(true);
             //X position
             float pointGraphPositionX = (i + 1) * (graphStructure.GetComponent<RectTransform>().rect.width / (tempGraphFlow.Count + 1)); //+1 para dejar un margen visual de la gráfica
             // Y position
             float pointGraphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * tempGraphFlow[i] / maxValue;
-            go.transform.localPosition = new Vector2(pointGraphPositionX, pointGraphPositionY);
+            graphPrefab[i].transform.localPosition = new Vector2(pointGraphPositionX, pointGraphPositionY);
 
             if(pointGraphPositionY >= goalGraphPositionY)
             {
-                Transform checkPrefab = go.transform.Find("Check");
+                Transform checkPrefab = graphPrefab[i].transform.Find("Check");
                 checkPrefab.gameObject.SetActive(true);
             }
 
-            Image imageLinePrefab = go.transform.Find("Line").GetComponent<Image>();
+            Image imageLinePrefab = graphPrefab[i].transform.Find("Line").GetComponent<Image>();
             imageLinePrefab.rectTransform.sizeDelta = new Vector2(imageLinePrefab.rectTransform.sizeDelta.x, pointGraphPositionY);
         }
 

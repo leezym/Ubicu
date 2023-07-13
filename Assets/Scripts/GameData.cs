@@ -186,22 +186,22 @@ public class GameData : MonoBehaviour
                 // detectar cual ejercicio se debe activar
                 if(horaActual == exerciseHourArray[i] && minutoActual <= scriptsGroup.exercisesManager.extraMinuteToWaitForExercise)
                 {
-                    scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable = true;
-                    scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.currentSessionSprite;
+                    scriptsGroup.exercisesManager.sessionPrefab[i].GetComponent<Button>().interactable = true;
+                    scriptsGroup.exercisesManager.sessionPrefab[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.currentSessionSprite;
                     // almacenar el id del ejercicio activado
                     idListHourExercises = i;
                 }
                 
                 if ((exerciseHourArray[i] < horaActual) || (horaActual == exerciseHourArray[i] && minutoActual > scriptsGroup.exercisesManager.extraMinuteToWaitForExercise))
                 {
-                    scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable = false;
+                    scriptsGroup.exercisesManager.sessionPrefab[i].GetComponent<Button>().interactable = false;
                     
                     // pregunta si ya finalizó los ejercicios pasados
                     if (exerciseHourArray[i] == 0)
-                        scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.finishedSessionSprite;
+                        scriptsGroup.exercisesManager.sessionPrefab[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.finishedSessionSprite;
                     // pregunta si esta disponible los ejercicios pasados y coloca que no se finalizó
                     else
-                        scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.notFinishedSessionSprite;
+                        scriptsGroup.exercisesManager.sessionPrefab[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.notFinishedSessionSprite;
                 }         
             }
         }

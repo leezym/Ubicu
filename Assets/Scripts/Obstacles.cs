@@ -62,7 +62,7 @@ public class Obstacles : MonoBehaviour
             ExitGame();
         }
     }
-
+    
     public void ExitGame()
     {
         GameData.Instance.playing = false;
