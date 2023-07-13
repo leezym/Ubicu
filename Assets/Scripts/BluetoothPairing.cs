@@ -49,14 +49,12 @@ public class BluetoothPairing : MonoBehaviour
         unityActivity = unityPlayerClass.GetStatic<AndroidJavaObject>("currentActivity");
         bluet = new AndroidJavaObject("com.millerbsv.bluetoothhc.BluetoothT");
         string data = bluet.Call<string>("getDevices");
-
         if (data != null)
         {
             string[] devices = data.Split(';');
-
-            for(int i = 0; i < devices.Length; i++)
+            for(int i = 0; i < devices.Length-1; i++)
             {
-                prefabTextBluetooth[i].SetActive(true);                
+                prefabTextBluetooth[i].SetActive(true);         
                 TextMeshProUGUI text = prefabTextBluetooth[i].GetComponentInChildren<TextMeshProUGUI>();
                 text.text = devices[i].Substring(1,devices[i].Length - 24);
 
