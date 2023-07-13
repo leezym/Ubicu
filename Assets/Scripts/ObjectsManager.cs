@@ -61,6 +61,7 @@ public class Exercise
     public int apnea;
     public int flujo;
     public int hora_inicio;
+    public string id_patient;
     public string __v;
 }
 
@@ -95,6 +96,33 @@ public class ButtonsItems
 public class AllItems
 {
     public int[] item = new int[0];
+}
+
+[Serializable]
+public class Rewards
+{
+    public string _id;
+    public string all_badges_array;
+    public int session_reward;
+    public int day_reward;
+    public int total_reward;
+    public int total_series;
+    public int total_sessions;
+    public int total_days;
+    public int total_weeks;
+    public string id_patient;
+}
+
+[Serializable]
+public class Customizations
+{
+    public string _id;
+    public int id_customization;
+    public string id_item_fondos_array;
+    public string id_item_figuras_array;
+    public string all_fondos_items_array;
+    public string all_figuras_items_array;
+    public string id_patient;
 }
 
 public class ObjectsManager : MonoBehaviour

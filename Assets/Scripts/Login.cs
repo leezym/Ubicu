@@ -28,7 +28,7 @@ public class Login : MonoBehaviour
             form.AddField("password", passInputField.text);
 
             //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/authenticatePatient", form);
-            UnityWebRequest www = UnityWebRequest.Post("https://server.ubicu.co/authenticatePatient", form);
+            UnityWebRequest www = UnityWebRequest.Post(GameData.URL+"authenticatePatient", form);
 
             www.downloadHandler = new DownloadHandlerBuffer();
 
@@ -39,8 +39,13 @@ public class Login : MonoBehaviour
             {
                 Debug.Log(www.error);
                 Debug.Log(form.data);
-                
-                userInputField.text = responseText;
+
+                if(responseText != "")
+                    NotificationsManager.Instance.WarningNotifications(responseText.Replace('"', ' '));
+                else
+                    NotificationsManager.Instance.WarningNotifications("No tienes conexión a internet");
+
+                userInputField.text = "";
                 passInputField.text = "";
             }
             else
@@ -48,6 +53,8 @@ public class Login : MonoBehaviour
                 GameData.Instance.jsonObjectUser = JsonUtility.FromJson<Data>(responseText);
                 StopCoroutine(OnLogin());
                 StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.GetExercises());
+                StartCoroutine(GameData.Instance.scriptsGroup.rewardsManager.GetRewards());
+                //StartCoroutine(GameData.Instance.scriptsGroup.customizationManager.GetCustomizations());
                 UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
             }
             yield return new WaitForSeconds(2f);

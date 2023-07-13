@@ -2389,6 +2389,28 @@ MonoBehaviour:
   m_idListHourExercises: 0
   m_exerciseSeries: []
   m_exerciseHourArray: 
+  m_jsonObjectRewards:
+    _id: 
+    all_badges_array: 
+    session_reward: 0
+    day_reward: 0
+    total_reward: 0
+    total_series: 0
+    total_sessions: 0
+    total_days: 0
+    total_weeks: 0
+    id_patient: 
+  m_jsonObjectCustomizations:
+    _id: 
+    all_badges_array: 
+    session_reward: 0
+    day_reward: 0
+    total_reward: 0
+    total_series: 0
+    total_sessions: 0
+    total_days: 0
+    total_weeks: 0
+    id_patient: 
 --- !u!4 &164669504
 Transform:
   m_ObjectHideFlags: 0
@@ -3723,7 +3745,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00006866455}
+  m_AnchoredPosition: {x: 0, y: 0.00008160207}
   m_SizeDelta: {x: 15.8245, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &319122042
@@ -7489,7 +7511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77c9b65285898e84196000b2f1779778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_StartScreen: {fileID: 309271660}
+  m_StartScreen: {fileID: 403161336}
   onSwitchedScreen:
     m_PersistentCalls:
       m_Calls: []
@@ -22921,7 +22943,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b5ae1b44fb9a2604294c8e034c1213e0, type: 3}
   - {fileID: 21300000, guid: 7e78345064e984d449cb1d1f08e54c90, type: 3}
   - {fileID: 21300000, guid: c132cc73073266941bd088a007e368bb, type: 3}
-  badgesPoints: 0a0000001e00000032000000640000002c010000f4010000e8030000
+  badgesPoints:
+  - badgesPoints: 0a0000001e00000032000000640000002c010000f4010000e8030000
+  - badgesPoints: 050000000f000000190000003200000096000000fa000000f4010000
+  - badgesPoints: 0100000003000000060000000c000000230000004b00000096000000
+  - badgesPoints: 0200000004000000060000000a0000000e000000140000001e000000
   badgesTitle: {fileID: 636473425373778905}
   badgesSubTitle: {fileID: 636473425716982374}
   badgesBigImage: {fileID: 636473425240514296}

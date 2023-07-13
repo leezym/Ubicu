@@ -8,6 +8,7 @@ using System.Globalization;
 public class GameData : MonoBehaviour
 {
     public static GameData Instance {get; private set;}
+    public static string URL = "https://server.ubicu.co/";
     public ScriptsGroup scriptsGroup;
     public UI_Screen loginMenu;
     public UI_Screen sessionMenu;
@@ -88,6 +89,20 @@ public class GameData : MonoBehaviour
         set { m_exerciseHourArray = value; }
     }
 
+    public Rewards m_jsonObjectRewards;
+    public Rewards jsonObjectRewards
+    {
+        get { return m_jsonObjectRewards; }
+        set { m_jsonObjectRewards = value; }
+    }
+
+    public Rewards m_jsonObjectCustomizations;
+    public Rewards jsonObjectCustomizations
+    {
+        get { return m_jsonObjectCustomizations; }
+        set { m_jsonObjectCustomizations = value; }
+    }
+
     private void Awake()
     {
         if(Instance != null && Instance != this)
@@ -95,7 +110,7 @@ public class GameData : MonoBehaviour
         else
             Instance = this;
 
-        //PlayerPrefs.DeleteAll(); //test
+        PlayerPrefs.DeleteAll(); //test
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
         if(PlayerPrefs.GetString("currentExerciseDate") == "") // fecha actual
@@ -140,14 +155,13 @@ public class GameData : MonoBehaviour
             {
                 s += string.Join(",", "0,0,0,0,0,0,0")+";"; // 0 desactivado
             }
+            Debug.Log("asda "+s);
             PlayerPrefs.SetString("allBadgesArray", s);
         }
     }
 
     void Start()
     {
-        //scriptsGroup.customizationManager.LoadCustomization();
-        //scriptsGroup.rewardsManager.LoadReward();
         idListHourExercises = -1;
     }
     
@@ -182,9 +196,11 @@ public class GameData : MonoBehaviour
         {
             for(int i = 0; i < exerciseHourArray.Length; i++)
             {
+                int horaActual = int.Parse(DateTime.Now.Hour.ToString(CultureInfo.InvariantCulture));
+                int minutoActual = int.Parse(DateTime.Now.Minute.ToString(CultureInfo.InvariantCulture));
+                
                 // detectar cual ejercicio se debe activar
-                if(DateTime.Now.Hour == exerciseHourArray[i]
-                    && DateTime.Now.Minute <= scriptsGroup.exercisesManager.extraMinuteToWaitForExercise)
+                if(horaActual == exerciseHourArray[i] && minutoActual <= scriptsGroup.exercisesManager.extraMinuteToWaitForExercise)
                 {
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable = true;
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.currentSessionSprite;
@@ -192,7 +208,7 @@ public class GameData : MonoBehaviour
                     idListHourExercises = i;
                 }
                 
-                if ((exerciseHourArray[i] < DateTime.Now.Hour) || (DateTime.Now.Hour == exerciseHourArray[i] && DateTime.Now.Minute > scriptsGroup.exercisesManager.extraMinuteToWaitForExercise))
+                if ((exerciseHourArray[i] < horaActual) || (horaActual == exerciseHourArray[i] && minutoActual > scriptsGroup.exercisesManager.extraMinuteToWaitForExercise))
                 {
                     scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable = false;
                     
@@ -224,7 +240,6 @@ public class GameData : MonoBehaviour
 
     public void SaveLocalData()
     {
-        scriptsGroup.rewardsManager.SaveReward();
         scriptsGroup.exercisesManager.SaveExercise();
         scriptsGroup.customizationManager.SaveCustomization();
         PlayerPrefs.Save();

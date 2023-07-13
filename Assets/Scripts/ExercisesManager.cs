@@ -38,13 +38,14 @@ public class ExercisesManager : MonoBehaviour
         form.AddField("id_patient", GameData.Instance.jsonObjectUser.user._id);
         form.AddField("token", GameData.Instance.jsonObjectUser.token);
 
-        UnityWebRequest www = UnityWebRequest.Post("https://server.ubicu.co/allEjerciciosByPatient", form);
+        UnityWebRequest www = UnityWebRequest.Post(GameData.URL+"allEjerciciosByPatient", form);
         //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/allEjerciciosByPatient", form);
 
         www.downloadHandler = new DownloadHandlerBuffer();
 
         yield return www.SendWebRequest();
 
+        string responseText = www.downloadHandler.text;
         if (www.isNetworkError || www.isHttpError)
         {
             Debug.Log(www.error);
@@ -52,7 +53,6 @@ public class ExercisesManager : MonoBehaviour
         }
         else
         {
-            string responseText = www.downloadHandler.text;
             GameData.Instance.jsonObjectExercises = JsonUtility.FromJson<Exercises>("{\"array\":" + responseText + "}");
 
             bool emptyExercise = false; // array.Count = 0
@@ -160,21 +160,21 @@ public class ExercisesManager : MonoBehaviour
         exerciseDescansoPrefab.text = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso.ToString();
         exerciseFlujoPrefab.text = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo.ToString()+"ml";
         
-        if(DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) == DateTime.ParseExact(PlayerPrefs.GetString("currentExerciseDate"), "dd/MM/yyyy", CultureInfo.InvariantCulture) && PlayerPrefs.GetString("exerciseHourArray") != "")
-        {
-            // actualizar de acuerdo a la DB local
-            GameData.Instance.exerciseHourArray = Array.ConvertAll(PlayerPrefs.GetString("exerciseHourArray").Split(","), int.Parse);
-        }
-        else
+        GameData.Instance.exerciseHourArray = new int[sesiones];   
+        if(DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) != DateTime.ParseExact(PlayerPrefs.GetString("currentExerciseDate"), "dd/MM/yyyy", CultureInfo.InvariantCulture) || PlayerPrefs.GetString("exerciseHourArray") == "")
         {
             PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString("dd/MM/yyyy"));
             int hours = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].hora_inicio;
-            GameData.Instance.exerciseHourArray = new int[sesiones];
             for(int i = 0; i < sesiones; i++)
             {
                 GameData.Instance.exerciseHourArray[i] = hours;
                 hours += GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas;
             }
+        }
+        else
+        {
+            // actualizar de acuerdo a la DB local
+            GameData.Instance.exerciseHourArray = Array.ConvertAll(PlayerPrefs.GetString("exerciseHourArray").Split(","), int.Parse);
         }
 
         extraMinuteToWaitForExercise = (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas == 1 ? 30f : 59f); // minutos
@@ -187,7 +187,6 @@ public class ExercisesManager : MonoBehaviour
     
     public IEnumerator SendResults()
     {
-        
         WWWForm form = new WWWForm();
         string json = JsonConvert.SerializeObject(GameData.Instance.exerciseSeries);
 
@@ -196,7 +195,7 @@ public class ExercisesManager : MonoBehaviour
         form.AddField("hora", GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises]);
         form.AddField("datos", json);
 
-        UnityWebRequest www = UnityWebRequest.Post("https://server.ubicu.co/createResult", form);
+        UnityWebRequest www = UnityWebRequest.Post(GameData.URL+"createResult", form);
         //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/createResult", form);
 
         www.downloadHandler = new DownloadHandlerBuffer();
@@ -208,8 +207,12 @@ public class ExercisesManager : MonoBehaviour
             Debug.Log(www.error);
             Debug.Log(form.data);
         }
-
-        GameData.Instance.exerciseSeries = new List<ExerciseData>();        
+        else
+        {
+            GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises] = 0; // si se finalizó se coloca 0
+            GameData.Instance.idListHourExercises = -1;
+            GameData.Instance.exerciseSeries = new List<ExerciseData>();        
+        }        
         StopCoroutine(SendResults());
     }
 

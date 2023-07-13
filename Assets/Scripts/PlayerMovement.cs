@@ -112,9 +112,6 @@ public class PlayerMovement : MonoBehaviour
         {
             seriesCount = 0;
             StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.SendResults());
-            GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises] = 0; // si se finalizó se coloca 0
-            GameData.Instance.idListHourExercises = -1;
-            //StartCoroutine(GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards()); //pdte
             GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards();
         }
     }
