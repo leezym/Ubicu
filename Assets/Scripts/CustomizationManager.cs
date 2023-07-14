@@ -179,15 +179,15 @@ public class CustomizationManager : MonoBehaviour
         else
             backgroundPreviewFiguras.sprite = fondosSprites[idItemFondosArray[idCustomization]];
 
-        if(allFigurasItemsArray[idCustomization].item[id] == 0)
+        if(allFigurasItemsArray[idCustomization].item[id] == 0) // si no ha comprado sale el boton de comprar activo
         {     
-            buttonsFigurasItemsPreviewArray[0].useButton.SetActive(false);
             buttonsFigurasItemsPreviewArray[0].buyButton.SetActive(true);
+            buttonsFigurasItemsPreviewArray[0].useButton.SetActive(false);
         }
         else
         {
-            buttonsFigurasItemsPreviewArray[0].useButton.SetActive(true);
             buttonsFigurasItemsPreviewArray[0].buyButton.SetActive(false);
+            buttonsFigurasItemsPreviewArray[0].useButton.SetActive(true);
         }
     }
 
@@ -246,7 +246,7 @@ public class CustomizationManager : MonoBehaviour
         else if (id == 4)
             SetArrayCustomization("Anatomía", headerSpriteAnatomia, fondosItemSpritesAnatomia, figurasItemSpritesAnatomia, fondosSpritesAnatomia, circuloSpritesAnatomia, velocimetroSpritesAnatomia, settingsSpritesAnatomia, colorTextAnatomia, circuloPreviewSpritesAnatomia, descriptionsFondosAnatomia, descriptionsFigurasAnatomia);
 
-        ValidateFullItems(id);        
+        ValidateFullItems(id);  
 
         if (idItemFondosArray.Length > 0) SetIdFondosItem(idItemFondosArray[id]);
         if (idItemFigurasArray.Length > 0) SetIdFigurasItem(idItemFigurasArray[id]);
@@ -366,14 +366,14 @@ public class CustomizationManager : MonoBehaviour
     public void BuyFondo() { BuyFondo(tempIdFondosItem); }
     public void BuyFondo(int id)
     {
-        if(priceItemFondosArray[idCustomization , id] <= GameData.Instance.scriptsGroup.rewardsManager.totalReward)
+        if(priceItemFondosArray[idCustomization , id] <= GameData.Instance.jsonObjectRewards.total_reward)
         {
             // notificacion de preguntar pdte
             NotificationsManager.Instance.QuestionNotifications("¿Seguro que quieres obtener este fondo?");
             // si
             NotificationsManager.Instance.SetYesButton(()=>{
                 allFondosItemsArray[idCustomization].item[id] = 1;
-                GameData.Instance.scriptsGroup.rewardsManager.totalReward -= priceItemFondosArray[idCustomization , id];
+                GameData.Instance.jsonObjectRewards.total_reward -= priceItemFondosArray[idCustomization , id];
                 buttonsFondosItemsPreviewArray[0].useButton.SetActive(true);
                 buttonsFondosItemsPreviewArray[0].buyButton.SetActive(false);
                 ValidateFullItems(idCustomization);
@@ -390,14 +390,14 @@ public class CustomizationManager : MonoBehaviour
     public void BuyFigura() { BuyFigura(tempIdFigurasItem); }
     public void BuyFigura(int id)
     {
-        if(priceItemFigurasArray[idCustomization , id] <= GameData.Instance.scriptsGroup.rewardsManager.totalReward)
+        if(priceItemFigurasArray[idCustomization , id] <= GameData.Instance.jsonObjectRewards.total_reward)
         {
             // notificacion de preguntar
             NotificationsManager.Instance.QuestionNotifications("¿Seguro que quieres obtener esta figura?");
             // si
             NotificationsManager.Instance.SetYesButton(()=>{
                 allFigurasItemsArray[idCustomization].item[id] = 1;
-                GameData.Instance.scriptsGroup.rewardsManager.totalReward -= priceItemFigurasArray[idCustomization , id];
+                GameData.Instance.jsonObjectRewards.total_reward -= priceItemFigurasArray[idCustomization , id];
                 buttonsFigurasItemsPreviewArray[0].useButton.SetActive(true);
                 buttonsFigurasItemsPreviewArray[0].buyButton.SetActive(false);
                 ValidateFullItems(idCustomization);

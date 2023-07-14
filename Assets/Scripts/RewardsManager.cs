@@ -47,13 +47,6 @@ public class RewardsManager : MonoBehaviour
 
     [Header("IN GAME")]
     public int serieReward;
-    public int sessionReward;
-    public int dayReward;
-    public int totalReward;
-    public int totalSeries;
-    public int totalSessions;
-    public int totalDays;
-    public int totalWeeks;
     public AllItems[] allBadgesArray = new AllItems[4]; // cuales insignias se han ganado
 
     public IEnumerator GetRewards()
@@ -78,8 +71,8 @@ public class RewardsManager : MonoBehaviour
         }
         else
         {
-            GameData.Instance.jsonObjectRewards = JsonUtility.FromJson<Rewards>(responseText);
-            LoadReward();
+            GameData.Instance.jsonObjectRewards = JsonConvert.DeserializeObject<Rewards>(responseText);
+            GetAllBadges();
         }
         StopCoroutine(GetRewards());
     }
@@ -88,25 +81,14 @@ public class RewardsManager : MonoBehaviour
     {
         WWWForm form = new WWWForm();
         
-        form.AddField("session_reward", sessionReward);
-        form.AddField("day_reward", dayReward);
-        form.AddField("total_reward", totalReward);
-        form.AddField("total_series", totalSeries);
-        form.AddField("total_sessions", totalSessions);
-        form.AddField("total_days", totalDays);
-        form.AddField("total_weeks", totalWeeks);
-        string s = "";
-        for(int i = 0; i < allBadgesArray.Length; i++)
-        {
-            s += string.Join(",", allBadgesArray[i].item)+";";
-        }
-        form.AddField("all_badges_array", s);
+        SetAllBadges();
+        string jsonData = JsonConvert.SerializeObject(GameData.Instance.jsonObjectRewards);
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
         
-        form.AddField("_id", GameData.Instance.jsonObjectRewards._id);
-        UnityWebRequest www = UnityWebRequest.Post(GameData.URL+"updateRewards", form);
-        //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/updateRewards", form);
+        UnityWebRequest www = UnityWebRequest.Put(GameData.URL+"updateRewards", jsonData);
+        //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/updateRewards", jsonData);
 
-        www.downloadHandler = new DownloadHandlerBuffer();
+        www.SetRequestHeader("Content-Type", "application/json");
 
         yield return www.SendWebRequest();
 
@@ -115,54 +97,40 @@ public class RewardsManager : MonoBehaviour
             Debug.Log(www.error);
             Debug.Log(form.data);
         }
+        else
+        {
+            Debug.Log("Datos de recompensas actualizados correctamente");
+        }
             
         StopCoroutine(SendReward());
-    }
-
-    public void LoadReward()
-    {
-        Rewards r = GameData.Instance.jsonObjectRewards;
-
-        sessionReward = r.session_reward;
-        dayReward = r.day_reward;
-        totalReward = r.total_reward;
-        totalSeries = r.total_series;
-        totalSessions = r.total_sessions;
-        totalDays = r. total_days;
-        totalWeeks = r. total_weeks;
-        string[] temp = Array.ConvertAll(r.all_badges_array.Split(";"), x => x.ToString());
-        for(int i = 0; i < allBadgesArray.Length; i++)
-        {
-            allBadgesArray[i].item = Array.ConvertAll(temp[i].Split(","), int.Parse);
-        }
     }
 
     public void CalculateRewards()
     {
         serieReward = (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series * RewardsManager.SERIE_REWARD);
-        sessionReward += RewardsManager.SESSION_REWARD;
-        totalReward += (serieReward + RewardsManager.SESSION_REWARD);
+        GameData.Instance.jsonObjectRewards.session_reward += RewardsManager.SESSION_REWARD;
+        GameData.Instance.jsonObjectRewards.total_reward += (serieReward + RewardsManager.SESSION_REWARD);
         
         NotificationsManager.Instance.WarningNotifications("¡FELICITACIONES!\nGanaste <b>"+serieReward+" Ubicoins</b> por cada serie realizada y <b>"+RewardsManager.SESSION_REWARD+" Ubicoins</b> por el ejercicio completo");
         NotificationsManager.Instance.SetCloseFunction(GameData.Instance.sessionMenu);
 
-        totalSeries += GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series;
-        totalSessions++;
+        GameData.Instance.jsonObjectRewards.total_series += GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series;
+        GameData.Instance.jsonObjectRewards.total_sessions++;
 
-        if(sessionReward == (GameData.Instance.scriptsGroup.exercisesManager.sesiones * RewardsManager.SESSION_REWARD))
+        if(GameData.Instance.jsonObjectRewards.session_reward == (GameData.Instance.scriptsGroup.exercisesManager.sesiones * RewardsManager.SESSION_REWARD))
         {
-            dayReward += RewardsManager.DAY_REWARD;
-            totalReward += RewardsManager.DAY_REWARD;
-            sessionReward = 0;
+            GameData.Instance.jsonObjectRewards.day_reward += RewardsManager.DAY_REWARD;
+            GameData.Instance.jsonObjectRewards.total_reward += RewardsManager.DAY_REWARD;
+            GameData.Instance.jsonObjectRewards.session_reward = 0;
             NotificationsManager.Instance.SetChangeTextFunction("¡FELICITACIONES!\nGanaste <b>"+RewardsManager.DAY_REWARD+" Ubicoins</b> por completar un día de fisioterapias");
-            totalDays++;
+            GameData.Instance.jsonObjectRewards.total_days++;
 
-            if(dayReward == (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_dias * RewardsManager.DAY_REWARD) && DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) == DateTime.ParseExact(GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture))
+            if(GameData.Instance.jsonObjectRewards.day_reward == (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_dias * RewardsManager.DAY_REWARD) && DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) == DateTime.ParseExact(GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture))
             {
-                totalReward += RewardsManager.WEEK_REWARD;
-                dayReward = 0;
+                GameData.Instance.jsonObjectRewards.total_reward += RewardsManager.WEEK_REWARD;
+                GameData.Instance.jsonObjectRewards.day_reward = 0;
                 NotificationsManager.Instance.SetChangeTextFunction("¡FELICITACIONES!\nGanaste <b>"+RewardsManager.WEEK_REWARD+" Ubicoins</b> por completar una semana de fisioterapias");
-                totalWeeks++;
+                GameData.Instance.jsonObjectRewards.total_weeks++;
             }
         }       
         
@@ -174,22 +142,22 @@ public class RewardsManager : MonoBehaviour
     {    
         for(int j = 0; j < badgesPoints[0].badgesPoints.Length; j++)
         {
-            if(totalSeries >= badgesPoints[0].badgesPoints[j] && allBadgesArray[0].item[j] == 0)
+            if(GameData.Instance.jsonObjectRewards.total_series >= badgesPoints[0].badgesPoints[j] && allBadgesArray[0].item[j] == 0)
             {
                 allBadgesArray[0].item[j] = 1;
                 NotificationsManager.Instance.SetChangeTextFunction("¡FELICITACIONES!\nGanaste la insignia <b>"+badgesNames[j]+"</b> en Series");
             }
-            if(totalSessions >= badgesPoints[1].badgesPoints[j] && allBadgesArray[1].item[j] == 0)
+            if(GameData.Instance.jsonObjectRewards.total_sessions >= badgesPoints[1].badgesPoints[j] && allBadgesArray[1].item[j] == 0)
             {
                 allBadgesArray[1].item[j] = 1;
                 NotificationsManager.Instance.SetChangeTextFunction("¡FELICITACIONES!\nGanaste la insignia <b>"+badgesNames[j]+"</b> en Sesiones");
             }
-            if(totalDays >= badgesPoints[2].badgesPoints[j] && allBadgesArray[2].item[j] == 0)
+            if(GameData.Instance.jsonObjectRewards.total_days >= badgesPoints[2].badgesPoints[j] && allBadgesArray[2].item[j] == 0)
             {
                 allBadgesArray[2].item[j] = 1;
                 NotificationsManager.Instance.SetChangeTextFunction("¡FELICITACIONES!\nGanaste la insignia <b>"+badgesNames[j]+"</b> en Días");
             }
-            if(totalWeeks >= badgesPoints[3].badgesPoints[j] && allBadgesArray[3].item[j] == 0)
+            if(GameData.Instance.jsonObjectRewards.total_weeks >= badgesPoints[3].badgesPoints[j] && allBadgesArray[3].item[j] == 0)
             {
                 allBadgesArray[3].item[j] = 1;
                 NotificationsManager.Instance.SetChangeTextFunction("¡FELICITACIONES!\nGanaste la insignia <b>"+badgesNames[j]+"</b> en Semanas");
@@ -257,9 +225,27 @@ public class RewardsManager : MonoBehaviour
         }
     }
 
+    public void GetAllBadges()
+    {
+        string[] temp;
+        temp = Array.ConvertAll(GameData.Instance.jsonObjectRewards.all_badges_array.Split(";"), x => x.ToString());
+        for(int i = 0; i < allBadgesArray.Length; i++)
+        {
+            allBadgesArray[i].item = Array.ConvertAll(temp[i].Split(","), int.Parse);
+        }
+    }
+    public void SetAllBadges()
+    {
+        GameData.Instance.jsonObjectRewards.all_badges_array = "";
+        for(int i = 0; i < allBadgesArray.Length; i++)
+        {
+            GameData.Instance.jsonObjectRewards.all_badges_array += string.Join(",", allBadgesArray[i].item)+";";
+        }
+    }
+
     void Update()
     {
         foreach(TMP_Text t in textReward)
-            t.text = totalReward.ToString();
+            t.text = GameData.Instance.jsonObjectRewards.total_reward.ToString();
     }
 }

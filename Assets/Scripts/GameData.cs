@@ -147,17 +147,6 @@ public class GameData : MonoBehaviour
             }
             PlayerPrefs.SetString("allFigurasItemsArray", s);
         }
-
-        if(PlayerPrefs.GetString("allBadgesArray") == "")
-        {
-            string s = "";
-            for(int i = 0; i < 4; i++)
-            {
-                s += string.Join(",", "0,0,0,0,0,0,0")+";"; // 0 desactivado
-            }
-            Debug.Log("asda "+s);
-            PlayerPrefs.SetString("allBadgesArray", s);
-        }
     }
 
     void Start()
@@ -202,22 +191,22 @@ public class GameData : MonoBehaviour
                 // detectar cual ejercicio se debe activar
                 if(horaActual == exerciseHourArray[i] && minutoActual <= scriptsGroup.exercisesManager.extraMinuteToWaitForExercise)
                 {
-                    scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable = true;
-                    scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.currentSessionSprite;
+                    scriptsGroup.exercisesManager.sessionPrefab[i].GetComponent<Button>().interactable = true;
+                    scriptsGroup.exercisesManager.sessionPrefab[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.currentSessionSprite;
                     // almacenar el id del ejercicio activado
                     idListHourExercises = i;
                 }
                 
                 if ((exerciseHourArray[i] < horaActual) || (horaActual == exerciseHourArray[i] && minutoActual > scriptsGroup.exercisesManager.extraMinuteToWaitForExercise))
                 {
-                    scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Button>().interactable = false;
+                    scriptsGroup.exercisesManager.sessionPrefab[i].GetComponent<Button>().interactable = false;
                     
                     // pregunta si ya finalizó los ejercicios pasados
                     if (exerciseHourArray[i] == 0)
-                        scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.finishedSessionSprite;
+                        scriptsGroup.exercisesManager.sessionPrefab[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.finishedSessionSprite;
                     // pregunta si esta disponible los ejercicios pasados y coloca que no se finalizó
                     else
-                        scriptsGroup.exercisesManager.sesionesList[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.notFinishedSessionSprite;
+                        scriptsGroup.exercisesManager.sessionPrefab[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.notFinishedSessionSprite;
                 }         
             }
         }
@@ -232,10 +221,9 @@ public class GameData : MonoBehaviour
                 scriptsGroup.soundsManager.PlayRandomSound();
             else if(inspiration && GameData.Instance.scriptsGroup.bluetoothPairing.prom < 200)
                 scriptsGroup.soundsManager.PlaySignalSound();
-            if(apnea)
-                scriptsGroup.soundsManager.AddSignalSound();
+            else if(!inspiration && apnea)
+                scriptsGroup.soundsManager.AddSound();
         }
-        
     }
 
     public void SaveLocalData()

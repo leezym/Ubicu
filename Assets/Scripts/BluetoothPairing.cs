@@ -17,7 +17,7 @@ public class BluetoothPairing : MonoBehaviour
     object[] parameters2 = new object[2];
 
     [Header("ATTACHED")]
-    public GameObject prefabTextBluetooth;
+    public GameObject[] prefabTextBluetooth;
     public GameObject bluetoothContent;
 
     //test
@@ -26,7 +26,6 @@ public class BluetoothPairing : MonoBehaviour
     [Header("IN GAME")]
     public float prom = 0;
     public float timer = 0;
-    public List<GameObject> bluetoothList;
     
     void Start()
     {
@@ -34,9 +33,12 @@ public class BluetoothPairing : MonoBehaviour
     }
 
     public void Refresh(){
-        foreach(GameObject g in bluetoothList)
-            Destroy(g);
-        bluetoothList = new List<GameObject>();
+        foreach(GameObject g in prefabTextBluetooth)
+        {
+            g.SetActive(false);
+            g.GetComponentInChildren<TextMeshProUGUI>().text = "";
+            g.GetComponent<Button>().onClick.RemoveAllListeners();
+        }
         CallNativePlugin();
     }
 
@@ -47,29 +49,20 @@ public class BluetoothPairing : MonoBehaviour
         unityActivity = unityPlayerClass.GetStatic<AndroidJavaObject>("currentActivity");
         bluet = new AndroidJavaObject("com.millerbsv.bluetoothhc.BluetoothT");
         string data = bluet.Call<string>("getDevices");
-
         if (data != null)
         {
             string[] devices = data.Split(';');
-            //Debug.LogWarningFormat("Devices: {0}", data);
+            for(int i = 0; i < devices.Length-1; i++)
+            {
+                prefabTextBluetooth[i].SetActive(true);         
+                TextMeshProUGUI text = prefabTextBluetooth[i].GetComponentInChildren<TextMeshProUGUI>();
+                text.text = devices[i].Substring(1,devices[i].Length - 24);
 
-            foreach(string s in devices)
-            {                
-                GameObject go = Instantiate(prefabTextBluetooth, Vector3.zero, Quaternion.identity);
-                go.SetActive(true);
-                go.name = s.Substring(s.Length - 17, 17); //MAC
-                go.transform.parent = bluetoothContent.transform;
-                
-                TextMeshProUGUI text = go.GetComponentInChildren<TextMeshProUGUI>();
-                text.text = s.Substring(1,s.Length - 24);
-
-                go.GetComponent<Button>().onClick.AddListener(()=>{
+                prefabTextBluetooth[i].GetComponent<Button>().onClick.AddListener(()=>{
                     parameters2[0] = 4;
-                    parameters2[1] = go.name; //MAC
+                    parameters2[1] = devices[i].Substring(devices[i].Length - 17, 17); //MAC
                     StartCoroutine(LoadingScreen());
                 });
-
-                bluetoothList.Add(go);
             }
         }
     }
@@ -88,7 +81,7 @@ public class BluetoothPairing : MonoBehaviour
         if(float.TryParse(patientData[0], NumberStyles.Any, CultureInfo.InvariantCulture, out prom))
         {
             GameData.Instance.scriptsGroup.playerMovement.SaveData(prom, timer);
-            GameData.Instance.inspiration = (prom == 0 ? false : true);
+            GameData.Instance.inspiration = (prom > 0 ? true : false);
         }
         else
         {
