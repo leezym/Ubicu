@@ -54,13 +54,14 @@ public class BluetoothPairing : MonoBehaviour
             string[] devices = data.Split(';');
             for(int i = 0; i < devices.Length-1; i++)
             {
-                prefabTextBluetooth[i].SetActive(true);         
+                string device = devices[i];
+                prefabTextBluetooth[i].SetActive(true);
                 TextMeshProUGUI text = prefabTextBluetooth[i].GetComponentInChildren<TextMeshProUGUI>();
-                text.text = devices[i].Substring(1,devices[i].Length - 24);
+                text.text = device.Substring(1,device.Length - 24); //NOMBRE
 
                 prefabTextBluetooth[i].GetComponent<Button>().onClick.AddListener(()=>{
                     parameters2[0] = 4;
-                    parameters2[1] = devices[i].Substring(devices[i].Length - 17, 17); //MAC
+                    parameters2[1] = device.Substring(device.Length - 17, 17); //MAC
                     StartCoroutine(LoadingScreen());
                 });
             }
