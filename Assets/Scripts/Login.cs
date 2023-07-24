@@ -54,7 +54,7 @@ public class Login : MonoBehaviour
                 StopCoroutine(OnLogin());
                 StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.GetExercises());
                 StartCoroutine(GameData.Instance.scriptsGroup.rewardsManager.GetRewards());
-                //StartCoroutine(GameData.Instance.scriptsGroup.customizationManager.GetCustomizations());
+                StartCoroutine(GameData.Instance.scriptsGroup.customizationManager.GetCustomizations());
                 UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
             }
             yield return new WaitForSeconds(2f);

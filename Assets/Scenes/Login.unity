@@ -3170,14 +3170,11 @@ MonoBehaviour:
     id_patient: 
   m_jsonObjectCustomizations:
     _id: 
-    all_badges_array: 
-    session_reward: 0
-    day_reward: 0
-    total_reward: 0
-    total_series: 0
-    total_sessions: 0
-    total_days: 0
-    total_weeks: 0
+    id_customization: 0
+    id_item_fondos_array: 
+    id_item_figuras_array: 
+    all_fondos_items_array: 
+    all_figuras_items_array: 
     id_patient: 
 --- !u!4 &164669504
 Transform:
@@ -12227,7 +12224,6 @@ MonoBehaviour:
   tempIdFigurasItem: 0
   tempIdFondosItemBuy: 0
   tempIdFigurasItemBuy: 0
-  idCustomization: 0
   tempIdCustomization: 0
   priceTextItemFondosArray:
   - {fileID: 1153625206}

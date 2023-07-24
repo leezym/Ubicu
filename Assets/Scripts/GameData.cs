@@ -96,8 +96,8 @@ public class GameData : MonoBehaviour
         set { m_jsonObjectRewards = value; }
     }
 
-    public Rewards m_jsonObjectCustomizations;
-    public Rewards jsonObjectCustomizations
+    public Customizations m_jsonObjectCustomizations;
+    public Customizations jsonObjectCustomizations
     {
         get { return m_jsonObjectCustomizations; }
         set { m_jsonObjectCustomizations = value; }
@@ -110,48 +110,15 @@ public class GameData : MonoBehaviour
         else
             Instance = this;
 
-        PlayerPrefs.DeleteAll(); //test
-        Screen.sleepTimeout = SleepTimeout.NeverSleep;
-
-        if(PlayerPrefs.GetString("currentExerciseDate") == "") // fecha actual
-            PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString("dd/MM/yyyy"));
-        
-        if(PlayerPrefs.GetString("idItemFondosArray") == "")
-            PlayerPrefs.SetString("idItemFondosArray", string.Join(",", "0,-1,-1,-1,-1")); // 0 es default abstract
-        
-        if(PlayerPrefs.GetString("idItemFigurasArray") == "")
-            PlayerPrefs.SetString("idItemFigurasArray", string.Join(",", "0,-1,-1,-1,-1")); // 0 es default abstract
-        
-        if(PlayerPrefs.GetString("allFondosItemsArray") == "")
-        {
-            string s = "";
-            for(int i = 0; i < 5; i++)
-            {
-                if(i == 0)
-                    s += string.Join(",", "1,1,1")+";"; // 1 activado
-                else
-                    s += string.Join(",", "0,0,0")+";"; // 0 desactivado
-            }
-            PlayerPrefs.SetString("allFondosItemsArray", s);
-        }
-
-        if(PlayerPrefs.GetString("allFigurasItemsArray") == "")
-        {
-            string s = "";
-            for(int i = 0; i < 5; i++)
-            {
-                if(i == 0)
-                    s += string.Join(",", "1,1,1")+";"; // 1 activado
-                else
-                    s += string.Join(",", "0,0,0")+";"; // 0 desactivado
-            }
-            PlayerPrefs.SetString("allFigurasItemsArray", s);
-        }
+        //PlayerPrefs.DeleteAll(); //test
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;     
     }
 
     void Start()
     {
         idListHourExercises = -1;
+        if(PlayerPrefs.GetString("currentExerciseDate") == "") // fecha actual
+            PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString("dd/MM/yyyy"));
     }
     
     void Update()
@@ -229,7 +196,6 @@ public class GameData : MonoBehaviour
     public void SaveLocalData()
     {
         scriptsGroup.exercisesManager.SaveExercise();
-        scriptsGroup.customizationManager.SaveCustomization();
         PlayerPrefs.Save();
     }
 

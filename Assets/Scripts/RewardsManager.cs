@@ -172,7 +172,6 @@ public class RewardsManager : MonoBehaviour
         int j = 0;
         badgesTitle.text = badgesNames[i];
         badgesDescription.text = "Esta medalla se le otorga a aquellos que lograron completar <b>";
-        //Debug.Log();
         
         if(info[0] == "series")
         {

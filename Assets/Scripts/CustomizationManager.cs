@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Networking;
+using Newtonsoft.Json;
 
 
 public class CustomizationManager : MonoBehaviour
@@ -28,7 +30,6 @@ public class CustomizationManager : MonoBehaviour
     public int tempIdFigurasItem;
     public int tempIdFondosItemBuy;
     public int tempIdFigurasItemBuy;
-    public int idCustomization;
     public int tempIdCustomization;
     public TMP_Text[] priceTextItemFondosArray = new TMP_Text[3]; // textos de los precios de los items Fondos
     public TMP_Text[] priceTextItemFigurasArray = new TMP_Text[3]; // textos de los precios de los items Figuras
@@ -139,9 +140,70 @@ public class CustomizationManager : MonoBehaviour
     public string[] descriptionsFondosAnatomia = new string[0];
     public string[] descriptionsFigurasAnatomia = new string[0];
 
-    void Start()
+    public IEnumerator GetCustomizations()
     {
-        LoadCustomization();
+        WWWForm form = new WWWForm();
+        form.AddField("id_patient", GameData.Instance.jsonObjectUser.user._id);
+        form.AddField("token", GameData.Instance.jsonObjectUser.token);
+
+        UnityWebRequest www = UnityWebRequest.Post(GameData.URL+"allCustomizationsByPatient", form);
+        //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/allCustomizationsByPatient", form);
+
+        www.downloadHandler = new DownloadHandlerBuffer();
+
+        yield return www.SendWebRequest();
+
+        string responseText = www.downloadHandler.text;
+
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+            Debug.Log(form.data);
+        }
+        else
+        {
+            GameData.Instance.jsonObjectCustomizations = JsonConvert.DeserializeObject<Customizations>(responseText);
+            SetIdCustomization(GameData.Instance.jsonObjectCustomizations.id_customization);
+            idItemFondosArray = Array.ConvertAll(GameData.Instance.jsonObjectCustomizations.id_item_fondos_array.Split(","), int.Parse);
+            idItemFigurasArray = Array.ConvertAll(GameData.Instance.jsonObjectCustomizations.id_item_figuras_array.Split(","), int.Parse);
+            SetIdFondosItem(idItemFondosArray[GameData.Instance.jsonObjectCustomizations.id_customization]);
+            SetIdFigurasItem(idItemFigurasArray[GameData.Instance.jsonObjectCustomizations.id_customization]);
+            GetAllFondosItems();
+            GetAllFigurasItems();
+        }
+        StopCoroutine(GetCustomizations());
+    }
+
+    public IEnumerator SendCustomizations()
+    {
+        WWWForm form = new WWWForm();
+        
+        GameData.Instance.jsonObjectCustomizations.id_item_fondos_array = string.Join(",", idItemFondosArray);
+        GameData.Instance.jsonObjectCustomizations.id_item_figuras_array = string.Join(",", idItemFigurasArray);
+        SetAllFondosItems();
+        SetAllFigurasItems();
+
+        string jsonData = JsonConvert.SerializeObject(GameData.Instance.jsonObjectCustomizations);
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
+        
+        UnityWebRequest www = UnityWebRequest.Put(GameData.URL+"updateCustomizations", jsonData);
+        //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/updateCustomizations", jsonData);
+
+        www.SetRequestHeader("Content-Type", "application/json");
+
+        yield return www.SendWebRequest();
+
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+            Debug.Log(form.data);
+        }
+        else
+        {
+            Debug.Log("Datos de recompensas actualizados correctamente");
+        }
+            
+        StopCoroutine(SendCustomizations());
     }
 
     public void SetTempIdFondosItem(int id)
@@ -149,14 +211,14 @@ public class CustomizationManager : MonoBehaviour
         tempIdFondosItem = id;
         backgroundPreviewFondos.sprite = fondosSprites[id];
         descriptionPreviewFondos.text = descriptionsFondos[id];
-        buttonsFondosItemsPreviewArray[0].buyButton.transform.Find("Price").GetComponent<TMP_Text>().text = priceItemFondosArray[idCustomization , id].ToString();
+        buttonsFondosItemsPreviewArray[0].buyButton.transform.Find("Price").GetComponent<TMP_Text>().text = priceItemFondosArray[GameData.Instance.jsonObjectCustomizations.id_customization , id].ToString();
 
-        if(idItemFigurasArray[idCustomization] < 0) // si no ha comprado nada debe salir la combinacion con el item 0
+        if(idItemFigurasArray[GameData.Instance.jsonObjectCustomizations.id_customization] < 0) // si no ha comprado nada debe salir la combinacion con el item 0
             playerPreviewFondos.sprite = circuloPreviewSprites[idItemFigurasArray[0]];
         else
-            playerPreviewFondos.sprite = circuloPreviewSprites[idItemFigurasArray[idCustomization]];
+            playerPreviewFondos.sprite = circuloPreviewSprites[idItemFigurasArray[GameData.Instance.jsonObjectCustomizations.id_customization]];
 
-        if(allFondosItemsArray[idCustomization].item[id] == 0)
+        if(allFondosItemsArray[GameData.Instance.jsonObjectCustomizations.id_customization].item[id] == 0)
         {
             buttonsFondosItemsPreviewArray[0].useButton.SetActive(false);
             buttonsFondosItemsPreviewArray[0].buyButton.SetActive(true);
@@ -172,14 +234,14 @@ public class CustomizationManager : MonoBehaviour
         tempIdFigurasItem = id;
         playerPreviewFiguras.sprite = circuloPreviewSprites[id];
         descriptionPreviewFiguras.text = descriptionsFiguras[id];
-        buttonsFigurasItemsPreviewArray[0].buyButton.transform.Find("Price").GetComponent<TMP_Text>().text = priceItemFigurasArray[idCustomization , id].ToString();
+        buttonsFigurasItemsPreviewArray[0].buyButton.transform.Find("Price").GetComponent<TMP_Text>().text = priceItemFigurasArray[GameData.Instance.jsonObjectCustomizations.id_customization , id].ToString();
 
-        if(idItemFondosArray[idCustomization] < 0) // si no ha comprado nada debe salir la combinacion con el item 0
+        if(idItemFondosArray[GameData.Instance.jsonObjectCustomizations.id_customization] < 0) // si no ha comprado nada debe salir la combinacion con el item 0
             backgroundPreviewFiguras.sprite = fondosSprites[idItemFondosArray[0]];
         else
-            backgroundPreviewFiguras.sprite = fondosSprites[idItemFondosArray[idCustomization]];
+            backgroundPreviewFiguras.sprite = fondosSprites[idItemFondosArray[GameData.Instance.jsonObjectCustomizations.id_customization]];
 
-        if(allFigurasItemsArray[idCustomization].item[id] == 0) // si no ha comprado sale el boton de comprar activo
+        if(allFigurasItemsArray[GameData.Instance.jsonObjectCustomizations.id_customization].item[id] == 0) // si no ha comprado sale el boton de comprar activo
         {     
             buttonsFigurasItemsPreviewArray[0].buyButton.SetActive(true);
             buttonsFigurasItemsPreviewArray[0].useButton.SetActive(false);
@@ -204,7 +266,7 @@ public class CustomizationManager : MonoBehaviour
             checkFondosSprite.SetActive(true);
             checkFondosSprite.transform.parent = fondosItemTransform[id];
             checkFondosSprite.transform.localPosition = new Vector2(0,0);
-            idItemFondosArray[idCustomization] = id;
+            idItemFondosArray[GameData.Instance.jsonObjectCustomizations.id_customization] = id;
         }
         else
         {
@@ -222,7 +284,7 @@ public class CustomizationManager : MonoBehaviour
             checkFigurasSprite.SetActive(true);
             checkFigurasSprite.transform.parent = figurasItemTransform[id];
             checkFigurasSprite.transform.localPosition = new Vector2(0,0);
-            idItemFigurasArray[idCustomization] = id;
+            idItemFigurasArray[GameData.Instance.jsonObjectCustomizations.id_customization] = id;
         }
         else
         {
@@ -232,8 +294,8 @@ public class CustomizationManager : MonoBehaviour
 
     public void SetIdCustomization(int id)
     {
-        tempIdCustomization = idCustomization;
-        idCustomization = id;
+        tempIdCustomization = GameData.Instance.jsonObjectCustomizations.id_customization;
+        GameData.Instance.jsonObjectCustomizations.id_customization = id;
 
         if(id == 0)
             SetArrayCustomization("Abstracto", headerSpriteAbstracto, fondosItemSpritesAbstracto, figurasItemSpritesAbstracto, fondosSpritesAbstracto, circuloSpritesAbstracto, velocimetroSpritesAbstracto, settingsSpritesAbstracto, colorTextAbstracto, circuloPreviewSpritesAbstracto, descriptionsFondosAbstracto, descriptionsFigurasAbstracto);
@@ -328,7 +390,7 @@ public class CustomizationManager : MonoBehaviour
     public void GetAllFondosItems()
     {
         string[] temp;
-        temp = Array.ConvertAll(PlayerPrefs.GetString("allFondosItemsArray").Split(";"), x => x.ToString());
+        temp = Array.ConvertAll(GameData.Instance.jsonObjectCustomizations.all_fondos_items_array.Split(";"), x => x.ToString());
         for(int i = 0; i < allFondosItemsArray.Length; i++)
         {
             allFondosItemsArray[i].item = Array.ConvertAll(temp[i].Split(","), int.Parse);
@@ -336,18 +398,17 @@ public class CustomizationManager : MonoBehaviour
     }
     public void SetAllFondosItems()
     {        
-        string s = "";
+        GameData.Instance.jsonObjectCustomizations.all_fondos_items_array = "";
         for(int i = 0; i < allFondosItemsArray.Length; i++)
         {
-            s += string.Join(",", allFondosItemsArray[i].item)+";";
+            GameData.Instance.jsonObjectCustomizations.all_fondos_items_array += string.Join(",", allFondosItemsArray[i].item)+";";
         }
-        PlayerPrefs.SetString("allFondosItemsArray", s);
     }
     
     public void GetAllFigurasItems()
     {
         string[] temp;
-        temp = Array.ConvertAll(PlayerPrefs.GetString("allFigurasItemsArray").Split(";"), x => x.ToString());
+        temp = Array.ConvertAll(GameData.Instance.jsonObjectCustomizations.all_figuras_items_array.Split(";"), x => x.ToString());
         for(int i = 0; i < allFigurasItemsArray.Length; i++)
         {
             allFigurasItemsArray[i].item = Array.ConvertAll(temp[i].Split(","), int.Parse);
@@ -355,28 +416,28 @@ public class CustomizationManager : MonoBehaviour
     }
     public void SetAllFigurasItems()
     {
-        string s = "";
+        GameData.Instance.jsonObjectCustomizations.all_figuras_items_array = "";
         for(int i = 0; i < allFigurasItemsArray.Length; i++)
         {
-            s += string.Join(",", allFigurasItemsArray[i].item)+";";
+            GameData.Instance.jsonObjectCustomizations.all_figuras_items_array += string.Join(",", allFigurasItemsArray[i].item)+";";
         }
-        PlayerPrefs.SetString("allFigurasItemsArray", s);
     }
 
     public void BuyFondo() { BuyFondo(tempIdFondosItem); }
     public void BuyFondo(int id)
     {
-        if(priceItemFondosArray[idCustomization , id] <= GameData.Instance.jsonObjectRewards.total_reward)
+        if(priceItemFondosArray[GameData.Instance.jsonObjectCustomizations.id_customization , id] <= GameData.Instance.jsonObjectRewards.total_reward)
         {
             // notificacion de preguntar pdte
             NotificationsManager.Instance.QuestionNotifications("¿Seguro que quieres obtener este fondo?");
             // si
             NotificationsManager.Instance.SetYesButton(()=>{
-                allFondosItemsArray[idCustomization].item[id] = 1;
-                GameData.Instance.jsonObjectRewards.total_reward -= priceItemFondosArray[idCustomization , id];
+                allFondosItemsArray[GameData.Instance.jsonObjectCustomizations.id_customization].item[id] = 1;
+                GameData.Instance.jsonObjectRewards.total_reward -= priceItemFondosArray[GameData.Instance.jsonObjectCustomizations.id_customization , id];
                 buttonsFondosItemsPreviewArray[0].useButton.SetActive(true);
                 buttonsFondosItemsPreviewArray[0].buyButton.SetActive(false);
-                ValidateFullItems(idCustomization);
+                ValidateFullItems(GameData.Instance.jsonObjectCustomizations.id_customization);
+                StartCoroutine(SendCustomizations());                
             });
         }
         else
@@ -390,17 +451,18 @@ public class CustomizationManager : MonoBehaviour
     public void BuyFigura() { BuyFigura(tempIdFigurasItem); }
     public void BuyFigura(int id)
     {
-        if(priceItemFigurasArray[idCustomization , id] <= GameData.Instance.jsonObjectRewards.total_reward)
+        if(priceItemFigurasArray[GameData.Instance.jsonObjectCustomizations.id_customization , id] <= GameData.Instance.jsonObjectRewards.total_reward)
         {
             // notificacion de preguntar
             NotificationsManager.Instance.QuestionNotifications("¿Seguro que quieres obtener esta figura?");
             // si
             NotificationsManager.Instance.SetYesButton(()=>{
-                allFigurasItemsArray[idCustomization].item[id] = 1;
-                GameData.Instance.jsonObjectRewards.total_reward -= priceItemFigurasArray[idCustomization , id];
+                allFigurasItemsArray[GameData.Instance.jsonObjectCustomizations.id_customization].item[id] = 1;
+                GameData.Instance.jsonObjectRewards.total_reward -= priceItemFigurasArray[GameData.Instance.jsonObjectCustomizations.id_customization , id];
                 buttonsFigurasItemsPreviewArray[0].useButton.SetActive(true);
                 buttonsFigurasItemsPreviewArray[0].buyButton.SetActive(false);
-                ValidateFullItems(idCustomization);
+                ValidateFullItems(GameData.Instance.jsonObjectCustomizations.id_customization);
+                StartCoroutine(SendCustomizations());
             });
         }
         else
@@ -411,49 +473,27 @@ public class CustomizationManager : MonoBehaviour
         }
     }
 
-    public void SaveCustomization()
-    {
-        PlayerPrefs.SetInt("idCustomization", idCustomization);
-        PlayerPrefs.SetString("idItemFondosArray", string.Join(",", idItemFondosArray));
-        PlayerPrefs.SetString("idItemFigurasArray", string.Join(",", idItemFigurasArray));
-        SetAllFondosItems();
-        SetAllFigurasItems();
-    }
-
-    public void LoadCustomization()
-    {
-        idCustomization = PlayerPrefs.GetInt("idCustomization");
-        SetIdCustomization(idCustomization);
-        idItemFondosArray = Array.ConvertAll(PlayerPrefs.GetString("idItemFondosArray").Split(","), int.Parse);
-        idItemFigurasArray = Array.ConvertAll(PlayerPrefs.GetString("idItemFigurasArray").Split(","), int.Parse);
-        SetIdFondosItem(idItemFondosArray[idCustomization]);
-        SetIdFigurasItem(idItemFigurasArray[idCustomization]);
-        GetAllFondosItems();
-        GetAllFigurasItems();
-    }
-
     public void VerifyCompleteTheme()
     {
-        if (allFondosItemsArray[idCustomization].item.Sum() == 0 || allFigurasItemsArray[idCustomization].item.Sum() == 0)
+        if (allFondosItemsArray[GameData.Instance.jsonObjectCustomizations.id_customization].item.Sum() == 0 || allFigurasItemsArray[GameData.Instance.jsonObjectCustomizations.id_customization].item.Sum() == 0)
         {
             // notificacion de no poder colocar el tema por UbiCoins
             NotificationsManager.Instance.WarningNotifications("No tienes UbiCoins suficientes para completar el tema.\n¡Sigue haciendo tu fisioterapia!");
             NotificationsManager.Instance.SetCloseFunction(GameData.Instance.customizeMenu_Select);
-            idCustomization = tempIdCustomization;
+            GameData.Instance.jsonObjectCustomizations.id_customization = tempIdCustomization;
         }
-        else if (idItemFondosArray[idCustomization] >= 0 && idItemFigurasArray [idCustomization] >= 0)
+        else if (idItemFondosArray[GameData.Instance.jsonObjectCustomizations.id_customization] >= 0 && idItemFigurasArray [GameData.Instance.jsonObjectCustomizations.id_customization] >= 0)
         {
             //notificacion de tema seleccionado
             NotificationsManager.Instance.WarningNotifications("¡Tema seleccionado!");
             NotificationsManager.Instance.SetCloseFunction(GameData.Instance.customizeMenu_Select);
-            GameData.Instance.SaveLocalData();
+            StartCoroutine(SendCustomizations());
         }
         else
         {
             // notificacion de no poder colocar el tema porque no ha seleccionado un item
             NotificationsManager.Instance.WarningNotifications("Por favor selecciona un fondo y una figura para usar el tema.");
-            //NotificationsManager.Instance.SetCloseFunction(null);
-            idCustomization = tempIdCustomization;
+            GameData.Instance.jsonObjectCustomizations.id_customization = tempIdCustomization;
         }
     }
 }
