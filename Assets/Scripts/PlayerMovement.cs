@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     public static float LUNG_MINIMUM_SCALE = 0.23f;
     public static float LUNG_MAXIMUM_SCALE = 0.72f;
     public static float LUNG_PLUS_SCALE = 0.76f;
+    public static float POST_APNEA = 5f; //5 segs, valor de descanso postapnea determinado por el fisioterapeuta
     
     [Header("ATTACHED")]
     public float minimunScale;
@@ -33,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject player;
     public float maxTargetScale;
     public float maxFlow;
+    public bool apneaBool;
     float apneaCount;
     float restCount;
     public int seriesCount;
@@ -64,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
         //test
         //GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = "I:"+GameData.Instance.inspiration+"-A:"+GameData.Instance.apnea+"\nMx:"+maxFlow.ToString()+"-Curr:"+GameData.Instance.scriptsGroup.bluetoothPairing.prom.ToString();
         
-        if(GameData.Instance.inspiration)
+        if(GameData.Instance.inspiration && !apneaBool)
         {
             if(GameData.Instance.scriptsGroup.bluetoothPairing.prom > maxFlow)
             {
@@ -76,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
                     maxTargetScale = plusScale;
             }
         }
-        else
+        else if(apneaBool)
             maxTargetScale = 0;
                 
         if (player.transform.localScale.x < minimunScale)
@@ -116,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void StartApnea()
+    public IEnumerator StartApnea()
     {        
         pause.SetActive(true);
         if(apneaCount >= 0)
@@ -125,13 +127,23 @@ public class PlayerMovement : MonoBehaviour
             pauseText.text = ((int)apneaCount+1).ToString();
         }
         else
+        {
             pauseText.text = "BOTA EL AIRE";
+            yield return new WaitForSeconds(1f);
+            apneaBool = false;
+            StartCoroutine(StopApnea());
+        }
+        StopCoroutine(StartApnea());
     }
 
-    public void StopApnea()
+    public IEnumerator StopApnea()
     {
         pause.SetActive(false);
         apneaCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea;
+        GameData.Instance.scriptsGroup.soundsManager.AddSound();
+        yield return new WaitForSeconds(POST_APNEA);
+        GameData.Instance.scriptsGroup.soundsManager.PlaySignalSound();
+        StopCoroutine(StopApnea());
     }
 
     public void SaveData(float flow, float time)

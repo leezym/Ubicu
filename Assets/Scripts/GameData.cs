@@ -110,7 +110,6 @@ public class GameData : MonoBehaviour
         else
             Instance = this;
 
-        //PlayerPrefs.DeleteAll(); //test
         Screen.sleepTimeout = SleepTimeout.NeverSleep;     
     }
 
@@ -135,17 +134,19 @@ public class GameData : MonoBehaviour
        
         if(playing)
         {
-            GameData.Instance.scriptsGroup.playerMovement.Movement();
-            StartCoroutine(scriptsGroup.obstacles.ObstaclesCounter());
+            //contador de apnea
+            if(apnea)
+                scriptsGroup.playerMovement.apneaBool = true;
+                        
             // contador de inactividad
             scriptsGroup.obstacles.DetectInactivity();
-        }//else
-            //ya se acaben las series de la sesion
+
+            scriptsGroup.playerMovement.Movement();
+            StartCoroutine(scriptsGroup.obstacles.ObstaclesCounter());
+        }
 
         if(resting)
-        {
             scriptsGroup.playerMovement.RestingPlayer();
-        }
         
         // seleccionar sesion disponible
         if(sessionMenu.gameObject.GetComponent<CanvasGroup>().alpha != 0)
@@ -184,12 +185,11 @@ public class GameData : MonoBehaviour
             scriptsGroup.soundsManager.StopRandomSound();
             scriptsGroup.soundsManager.StopSignalSound();
             
-            if(inspiration && GameData.Instance.scriptsGroup.bluetoothPairing.prom > 200)
+            if(inspiration && !apnea)
                 scriptsGroup.soundsManager.PlayRandomSound();
-            else if(inspiration && GameData.Instance.scriptsGroup.bluetoothPairing.prom < 200)
-                scriptsGroup.soundsManager.PlaySignalSound();
-            else if(!inspiration && apnea)
+            else if(apnea)
                 scriptsGroup.soundsManager.AddSound();
+
         }
     }
 

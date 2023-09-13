@@ -21,10 +21,11 @@ public class Obstacles : MonoBehaviour
     public IEnumerator ObstaclesCounter()
     {
         repGameText.text = "REPETICIÓN\n"+repCounter.ToString()+"/"+GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].repeticiones;
-        if (!GameData.Instance.apnea)
+        
+        if (!GameData.Instance.scriptsGroup.playerMovement.apneaBool)
         {
+            // VERIFICA QUE SE HAYAN ACABADO LAS REPETICIONES
             enabledCounter = true;
-            GameData.Instance.scriptsGroup.playerMovement.StopApnea();
             if(repCounter == GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].repeticiones)
             {
                 GameData.Instance.playing = false;
@@ -37,11 +38,12 @@ public class Obstacles : MonoBehaviour
                 UI_System.Instance.SwitchScreens(GameData.Instance.serieGraphMenu);
                 GameData.Instance.resting = true;
                 StopCoroutine(ObstaclesCounter());
-            }
+            }            
         }
         else
         {
-            GameData.Instance.scriptsGroup.playerMovement.StartApnea();
+            // CUENTA LAS REPETICIONES
+            StartCoroutine(GameData.Instance.scriptsGroup.playerMovement.StartApnea());
             if(enabledCounter && repCounter < GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].repeticiones)
             {
                 enabledCounter = false;
@@ -49,7 +51,7 @@ public class Obstacles : MonoBehaviour
                 repCounter ++;
                 inactivityCounter = 0;
             }
-        }        
+        }
     }
 
     public void DetectInactivity()
