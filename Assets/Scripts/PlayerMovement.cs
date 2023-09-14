@@ -13,7 +13,6 @@ public class PlayerMovement : MonoBehaviour
     public static float LUNG_MINIMUM_SCALE = 0.23f;
     public static float LUNG_MAXIMUM_SCALE = 0.72f;
     public static float LUNG_PLUS_SCALE = 0.76f;
-    public static float POST_APNEA = 5f; //5 segs, valor de descanso postapnea determinado por el fisioterapeuta
     
     [Header("ATTACHED")]
     public float minimunScale;
@@ -98,6 +97,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void ContinueGame()
     {
+        GameData.Instance.scriptsGroup.soundsManager.PlaySignalSound();
         DeleteGraph();
         GameData.Instance.resting = false;
         restCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso;
@@ -124,26 +124,22 @@ public class PlayerMovement : MonoBehaviour
         if(apneaCount >= 0)
         {
             apneaCount -= Time.deltaTime;
-            pauseText.text = ((int)apneaCount+1).ToString();
+            pauseText.text = "MANTENGA\nEL AIRE\n" + ((int)apneaCount+1).ToString();
         }
         else
         {
             pauseText.text = "BOTA EL AIRE";
             yield return new WaitForSeconds(1f);
             apneaBool = false;
-            StartCoroutine(StopApnea());
         }
         StopCoroutine(StartApnea());
     }
 
-    public IEnumerator StopApnea()
+    public void StopApnea()
     {
         pause.SetActive(false);
         apneaCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea;
         GameData.Instance.scriptsGroup.soundsManager.AddSound();
-        yield return new WaitForSeconds(POST_APNEA);
-        GameData.Instance.scriptsGroup.soundsManager.PlaySignalSound();
-        StopCoroutine(StopApnea());
     }
 
     public void SaveData(float flow, float time)

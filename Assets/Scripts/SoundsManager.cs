@@ -27,7 +27,6 @@ public class SoundsManager : MonoBehaviour
         // Señal de Toma el aire
         activeSignalSound = true;
         signalAudioSource.mute = false;
-        PlaySignalSound();
     }
 
     public void AddSound()

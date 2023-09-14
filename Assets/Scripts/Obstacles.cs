@@ -6,9 +6,9 @@ using TMPro;
 public class Obstacles : MonoBehaviour
 {
     public static int INACTIVITY = 60 * 2; //60 segs x 2 min
+    public static float POST_APNEA = 3f; //5 segs, valor de descanso postapnea determinado por el fisioterapeuta
 
     [Header("ATTACHED")]
-    public float secondsAferApnea;
     public bool enabledCounter = true;
     public GameObject limit;
     public TMP_Text serieGameText;
@@ -24,8 +24,9 @@ public class Obstacles : MonoBehaviour
         
         if (!GameData.Instance.scriptsGroup.playerMovement.apneaBool)
         {
-            // VERIFICA QUE SE HAYAN ACABADO LAS REPETICIONES
             enabledCounter = true;
+            GameData.Instance.scriptsGroup.playerMovement.StopApnea();
+            // VERIFICA QUE SE HAYAN ACABADO LAS REPETICIONES
             if(repCounter == GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].repeticiones)
             {
                 GameData.Instance.playing = false;
@@ -38,12 +39,17 @@ public class Obstacles : MonoBehaviour
                 UI_System.Instance.SwitchScreens(GameData.Instance.serieGraphMenu);
                 GameData.Instance.resting = true;
                 StopCoroutine(ObstaclesCounter());
-            }            
+            }
+            else
+            {
+                yield return new WaitForSeconds(POST_APNEA);
+                GameData.Instance.scriptsGroup.soundsManager.PlaySignalSound();
+            }     
         }
         else
         {
-            // CUENTA LAS REPETICIONES
             StartCoroutine(GameData.Instance.scriptsGroup.playerMovement.StartApnea());
+            // CUENTA LAS REPETICIONES
             if(enabledCounter && repCounter < GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].repeticiones)
             {
                 enabledCounter = false;
