@@ -122,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
         if(apneaCount >= 0)
         {
             apneaCount -= Time.deltaTime;
-            pauseText.text = ((int)apneaCount+1).ToString();
+            pauseText.text = "MANTENGA\nEL AIRE\n" + ((int)apneaCount+1).ToString();
         }
         else
             pauseText.text = "BOTA EL AIRE";

@@ -123,15 +123,8 @@ public class GameData : MonoBehaviour
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)){
-            // notificacion de salir
-            NotificationsManager.Instance.QuestionNotifications("Quieres salir de la aplicación?");
-            // si
-            NotificationsManager.Instance.SetYesButton(()=>{
-                SaveLocalData();
-                Application.Quit();
-            });
-        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+            ExitApp();
        
         if(playing)
         {
@@ -199,8 +192,19 @@ public class GameData : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    public void ExitApp()
+    {
+        // notificacion de salir
+        NotificationsManager.Instance.QuestionNotifications("Quieres salir de la aplicación?");
+        // si
+        NotificationsManager.Instance.SetYesButton(()=>{
+            SaveLocalData();
+            Application.Quit();
+        });
+    }
+
     void OnApplicationQuit()
     {
-        SaveLocalData();
+        ExitApp();
     }
 }
