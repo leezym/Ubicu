@@ -1,5 +1,5 @@
 Las versiones de las apks tienen la siguiente esctructura:
-ubicu_<DD>_<MM>_AAAA_v<VERSION_UNITY>_<IDENTIFICADOR>
+ubicu_<DD>_<MM>_<AAAA>_v<VERSION_UNITY>_<IDENTIFICADOR>
 
 La librería de bluetooth actualmente desarrollada funciona hasta la versión 2022.1.23 de Unity.
 
