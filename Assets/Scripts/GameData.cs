@@ -178,11 +178,12 @@ public class GameData : MonoBehaviour
             scriptsGroup.soundsManager.StopRandomSound();
             scriptsGroup.soundsManager.StopSignalSound();
             
-            if(inspiration && !apnea)
+            if(inspiration && GameData.Instance.scriptsGroup.bluetoothPairing.prom > 200)
                 scriptsGroup.soundsManager.PlayRandomSound();
-            else if(apnea)
+            else if(inspiration && GameData.Instance.scriptsGroup.bluetoothPairing.prom < 200)
+                scriptsGroup.soundsManager.PlaySignalSound();
+            else if(!inspiration && scriptsGroup.playerMovement.apneaBool)
                 scriptsGroup.soundsManager.AddSound();
-
         }
     }
 

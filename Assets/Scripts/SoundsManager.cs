@@ -15,18 +15,12 @@ public class SoundsManager : MonoBehaviour
     bool activeSignalSound;
     int r;
     
-    public void InitializeSounds()
+    
+    public void Start()
     {
-        //Sonidos de Motivacion
-        activeMotivationSound = false;
-        motivationAudioSource.mute = true;
         motivationMessage.text = "";
         r = Random.Range(0, motivationSounds.Count);
         motivationAudioSource.clip = motivationSounds[r].clip;
-
-        // Señal de Toma el aire
-        activeSignalSound = true;
-        signalAudioSource.mute = false;
     }
 
     public void AddSound()
@@ -36,6 +30,8 @@ public class SoundsManager : MonoBehaviour
 
         r = Random.Range(0, motivationSounds.Count);
         motivationAudioSource.clip = motivationSounds[r].clip;
+        motivationAudioSource.mute = false;
+        activeMotivationSound = true;
     }
 
     public void PlaySignalSound()
@@ -44,16 +40,13 @@ public class SoundsManager : MonoBehaviour
         {
             signalAudioSource.PlayOneShot(signalAudioSource.clip);
             motivationMessage.text = "Toma el aire";
-            activeSignalSound = false;           
-
-            activeMotivationSound = true;
-            motivationAudioSource.mute = false;            
+            activeSignalSound = false;
         }
     }
 
     public void PlayRandomSound()
     {
-        if(activeMotivationSound && signalAudioSource.mute)
+        if(activeMotivationSound)
         {
             motivationAudioSource.PlayOneShot(motivationAudioSource.clip);
             motivationMessage.text = motivationSounds[r].text;

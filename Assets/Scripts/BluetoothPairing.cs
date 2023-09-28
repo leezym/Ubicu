@@ -81,8 +81,9 @@ public class BluetoothPairing : MonoBehaviour
         
         if(float.TryParse(patientData[0], NumberStyles.Any, CultureInfo.InvariantCulture, out prom))
         {
-            GameData.Instance.scriptsGroup.playerMovement.SaveData((GameData.Instance.scriptsGroup.playerMovement.apneaBool ? 0 : prom), timer);
-            GameData.Instance.inspiration = (prom > 200 ? true : false);
+            prom = (GameData.Instance.scriptsGroup.playerMovement.apneaBool ? 0 : prom);
+            GameData.Instance.scriptsGroup.playerMovement.SaveData(prom, timer);
+            GameData.Instance.inspiration = (prom > 0 ? true : false);
         }
         else
         {

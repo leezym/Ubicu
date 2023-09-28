@@ -148,7 +148,7 @@ public class ExercisesManager : MonoBehaviour
         exerciseDescansoPrefab.text = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso.ToString();
         exerciseFlujoPrefab.text = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo.ToString()+"ml";
         
-        GameData.Instance.exerciseHourArray = new int[sesiones];   
+        GameData.Instance.exerciseHourArray = new int[sesiones];
         if(DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) != DateTime.ParseExact(PlayerPrefs.GetString("currentExerciseDate"), "dd/MM/yyyy", CultureInfo.InvariantCulture) || PlayerPrefs.GetString("exerciseHourArray") == "")
         {
             PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString("dd/MM/yyyy"));
