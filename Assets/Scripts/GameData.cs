@@ -116,6 +116,7 @@ public class GameData : MonoBehaviour
     void Start()
     {
         idListHourExercises = -1;
+        scriptsGroup.soundsManager.InitializeSound();
         if(PlayerPrefs.GetString("currentExerciseDate") == "") // fecha actual
             PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString("dd/MM/yyyy"));
     }

@@ -16,11 +16,13 @@ public class SoundsManager : MonoBehaviour
     int r;
     
     
-    public void Start()
+    public void InitializeSound()
     {
         motivationMessage.text = "";
         r = Random.Range(0, motivationSounds.Count);
         motivationAudioSource.clip = motivationSounds[r].clip;
+        activeMotivationSound = true;
+        activeSignalSound = true;
     }
 
     public void AddSound()

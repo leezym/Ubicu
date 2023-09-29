@@ -65,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
     public void Movement()
     {
         //test
-        GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = "I:"+GameData.Instance.inspiration+"-A:"+apneaBool+"\nMx:"+maxFlow.ToString()+"-Curr:"+GameData.Instance.scriptsGroup.bluetoothPairing.prom.ToString();
+        //GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = "I:"+GameData.Instance.inspiration+"-A:"+apneaBool+"\nMx:"+maxFlow.ToString()+"-Curr:"+GameData.Instance.scriptsGroup.bluetoothPairing.prom.ToString();
         
         if(GameData.Instance.inspiration && !apneaBool)
         {
