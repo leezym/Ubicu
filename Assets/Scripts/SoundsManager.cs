@@ -11,8 +11,8 @@ public class SoundsManager : MonoBehaviour
     public AudioSource signalAudioSource;
     public TMP_Text motivationMessage;
     public AudioClip signalAudioClip;
-    bool activeSignalSound = true;
-    bool activeRandomSound = true;
+    bool activeSignalSound;
+    bool activeRandomSound;
     int r;
     
     public void Start()
@@ -20,6 +20,8 @@ public class SoundsManager : MonoBehaviour
         motivationMessage.text = "";
         r = Random.Range(0, motivationSounds.Count);
         motivationAudioSource.clip = motivationSounds[r].clip;
+        activeSignalSound = true;
+        activeRandomSound = true;
     }
 
     public void AddSound()
@@ -59,7 +61,6 @@ public class SoundsManager : MonoBehaviour
         {
             signalAudioSource.Stop();
             signalAudioSource.mute = true;
-            motivationMessage.text = "";
         }
     }
 
@@ -69,7 +70,6 @@ public class SoundsManager : MonoBehaviour
         {
             motivationAudioSource.Stop();
             motivationAudioSource.mute = true;
-            motivationMessage.text = "";
         }        
     }
 }
