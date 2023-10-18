@@ -29,6 +29,7 @@ public class BluetoothPairing : MonoBehaviour
     
     void Start()
     {
+        GameData.Instance.StartToAdd(0, 0);
         CallNativePlugin();
     }
 
@@ -71,7 +72,6 @@ public class BluetoothPairing : MonoBehaviour
     public void OutputTime()
     {
         timer += Time.deltaTime;
-        int apneaValue;
         
         string data = bluet.Call<string>("getData");
         string[] patientData = Regex.Split(data, ",");
@@ -81,36 +81,20 @@ public class BluetoothPairing : MonoBehaviour
         
         if(float.TryParse(patientData[0], NumberStyles.Any, CultureInfo.InvariantCulture, out prom))
         {
-            GameData.Instance.scriptsGroup.playerMovement.SaveData(prom, timer);
-            GameData.Instance.inspiration = (prom > 0 ? true : false);
+            GameData.Instance.StartToAdd(prom, timer);
         }
         else
         {
             Console.WriteLine("error parse data {0}", patientData[0]);
         }
-
-        if(int.TryParse(patientData[1], out apneaValue))
-        {
-            GameData.Instance.apnea = (apneaValue == 1 ? true : false);
-        }
-        else
-        {
-            Console.WriteLine("error parse data {1}", patientData[1]);
-        }
     }
 
     IEnumerator LoadingScreen(){
         yield return new WaitForSeconds(0.5f);
-        bluet.Call("connectToDevice", parameters2);
-        //Debug.Log(connectionStatus);
-        /*BluetoothConnector.Call("PrintOnScreen", context, connectionStatus);
-            if (connectionStatus == "Connected") return true;
-            else return false;*/
+       bluet.Call("connectToDevice", parameters2);
         yield return new WaitForSeconds(3f);
-        UI_System.Instance.SwitchScreens(GameData.Instance.loginMenu);
-        StopCoroutine(LoadingScreen());
-        
-    }    
+        UI_System.Instance.SwitchScreens(GameData.Instance.dataMenu);       
+    }
 
     public void CallOutputTime()
     {

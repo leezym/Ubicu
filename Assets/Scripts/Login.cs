@@ -8,64 +8,39 @@ using UnityEngine.Networking;
 
 public class Login : MonoBehaviour
 {
-    [Header("ATTACHED")]
-    public TMP_InputField userInputField;
-    public TMP_InputField passInputField;
-    public Button loginButton;
-
-    public void LogIn(){
+    public void StartToRead(){
         StartCoroutine(OnLogin());
     }
 
-    public IEnumerator OnLogin()
+    public IEnumerator OnLogin() //pdte revisar
     {
-        loginButton.interactable = false;
+        GameData.Instance.startButton.interactable = false;
+        GameData.Instance.dataText.text = "";
 
-        WWWForm form = new WWWForm();
-        if(userInputField.text != "" && passInputField.text != "")
+        UnityWebRequest www = UnityWebRequest.Get(GameData.URL+"verifyConnection");
+        //UnityWebRequest www = UnityWebRequest.Get("http://localhost:5000/verifyConnection");
+
+        www.downloadHandler = new DownloadHandlerBuffer();
+
+        yield return www.SendWebRequest();
+
+        string responseText = www.downloadHandler.text;
+        if (www.isNetworkError || www.isHttpError)
         {
-            form.AddField("cedula", userInputField.text);
-            form.AddField("password", passInputField.text);
+            Debug.Log(www.error);
 
-            //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/authenticatePatient", form);
-            UnityWebRequest www = UnityWebRequest.Post(GameData.URL+"authenticatePatient", form);
-
-            www.downloadHandler = new DownloadHandlerBuffer();
-
-            yield return www.SendWebRequest();
-
-            string responseText = www.downloadHandler.text;
-            if (www.isNetworkError || www.isHttpError)
-            {
-                Debug.Log(www.error);
-                Debug.Log(form.data);
-
-                if(responseText != "")
-                    NotificationsManager.Instance.WarningNotifications(responseText.Replace('"', ' '));
-                else
-                    NotificationsManager.Instance.WarningNotifications("No tienes conexión a internet");
-
-                userInputField.text = "";
-                passInputField.text = "";
-            }
+            if(responseText != "")
+                NotificationsManager.Instance.WarningNotifications(responseText.Replace('"', ' '));
             else
-            {
-                GameData.Instance.jsonObjectUser = JsonUtility.FromJson<Data>(responseText);
-                StopCoroutine(OnLogin());
-                StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.GetExercises());
-                StartCoroutine(GameData.Instance.scriptsGroup.rewardsManager.GetRewards());
-                StartCoroutine(GameData.Instance.scriptsGroup.customizationManager.GetCustomizations());
-                yield return new WaitForSeconds(1f);
-                UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
-            }
+                NotificationsManager.Instance.WarningNotifications("No tienes conexión a internet");
+            
             yield return new WaitForSeconds(2f);
-            loginButton.interactable = true;
-
+            GameData.Instance.startButton.interactable = true;
         }
-        else{
-            loginButton.interactable = true;
-            NotificationsManager.Instance.WarningNotifications("Ingresa los datos");
+        else
+        {
+            GameData.Instance.scriptsGroup.bluetoothPairing.CallOutputTime();
+            GameData.Instance.stopButton.interactable = true;
         }
-
     }
 }

@@ -21,7 +21,7 @@ public class UI_Screen : MonoBehaviour
     #endregion
 
     #region Main Method
-    void Start()
+    void Awake()
     {
         animator = GetComponent<Animator>();
         if(m_StartSelectable)

@@ -5,11 +5,6 @@ using UnityEngine;
 public class ScriptsGroup : MonoBehaviour
 {
     public BluetoothPairing bluetoothPairing;
-    public ExercisesManager exercisesManager;
+    public CalibrationsManager calibrationsManager;
     public Login login;
-    public Obstacles obstacles;
-    public PlayerMovement playerMovement;
-    public RewardsManager rewardsManager;
-    public CustomizationManager customizationManager;
-    public SoundsManager soundsManager;
 }
