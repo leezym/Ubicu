@@ -174,14 +174,13 @@ public class GameData : MonoBehaviour
         // detectar cuando lanzar sonido de motivacion
         if(exerciseMenu_Game.gameObject.GetComponent<CanvasGroup>().alpha != 0)
         {
-            scriptsGroup.soundsManager.StopRandomSound();
+            scriptsGroup.soundsManager.StopMotivationSound();
             scriptsGroup.soundsManager.StopSignalSound();
             
-            if(inspiration && GameData.Instance.scriptsGroup.bluetoothPairing.prom > 200)
-                scriptsGroup.soundsManager.PlayRandomSound();
-            else if(inspiration && GameData.Instance.scriptsGroup.bluetoothPairing.prom < 200)
-                scriptsGroup.soundsManager.PlaySignalSound();
-            else if(!inspiration && apnea)
+            if(inspiration && !apnea)
+                StartCoroutine(scriptsGroup.soundsManager.PlayMotivationSound());
+            
+            if(!inspiration && apnea)
                 scriptsGroup.soundsManager.AddSound();
         }
     }

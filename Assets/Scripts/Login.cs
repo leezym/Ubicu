@@ -35,7 +35,7 @@ public class Login : MonoBehaviour
             yield return www.SendWebRequest();
 
             string responseText = www.downloadHandler.text;
-            if (www.isNetworkError || www.isHttpError)
+            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.Log(www.error);
                 Debug.Log(form.data);

@@ -118,6 +118,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void StartApnea()
     {        
+        GameData.Instance.scriptsGroup.soundsManager.activeSignalSound = true;
+        
         pause.SetActive(true);
         if(apneaCount >= 0)
         {
