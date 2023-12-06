@@ -12,47 +12,52 @@ public class SoundsManager : MonoBehaviour
     public TMP_Text motivationMessage;
     public AudioClip signalAudioClip;
     bool activeMotivationSound;
-    bool activeSignalSound;
+    public bool activeSignalSound;
     int r;
     
-    
-    public void InitializeSound()
+    public void InitializeSounds()
     {
         motivationMessage.text = "";
         r = Random.Range(0, motivationSounds.Count);
         motivationAudioSource.clip = motivationSounds[r].clip;
-        activeMotivationSound = true;
         activeSignalSound = true;
+
+        StartCoroutine(PlaySignalSound());
     }
 
     public void AddSound()
     {
-        activeSignalSound = true;
-        signalAudioSource.mute = false;
-
         r = Random.Range(0, motivationSounds.Count);
         motivationAudioSource.clip = motivationSounds[r].clip;
-        motivationAudioSource.mute = false;
-        activeMotivationSound = true;
     }
 
-    public void PlaySignalSound()
-    {
-        if(activeSignalSound)
+    public IEnumerator PlaySignalSound()
+    { 
+        if(!motivationAudioSource.isPlaying && activeSignalSound)
         {
-            signalAudioSource.PlayOneShot(signalAudioSource.clip);
-            motivationMessage.text = "Toma el aire";
             activeSignalSound = false;
+
+            yield return new WaitForSeconds(1.5f);      
+
+            signalAudioSource.PlayOneShot(signalAudioSource.clip);
+            signalAudioSource.mute = false;
+            motivationMessage.text = "Toma el aire";
+            
+            activeMotivationSound = true;
         }
     }
 
-    public void PlayRandomSound()
+    public IEnumerator PlayMotivationSound()
     {
-        if(activeMotivationSound)
+        if(!signalAudioSource.isPlaying && activeMotivationSound)
         {
-            motivationAudioSource.PlayOneShot(motivationAudioSource.clip);
-            motivationMessage.text = motivationSounds[r].text;
             activeMotivationSound = false;
+
+            yield return new WaitForSeconds(1f);
+
+            motivationAudioSource.PlayOneShot(motivationAudioSource.clip);
+            motivationAudioSource.mute = false;
+            motivationMessage.text = motivationSounds[r].text;
         }
     }
 
@@ -62,11 +67,10 @@ public class SoundsManager : MonoBehaviour
         {
             signalAudioSource.Stop();
             signalAudioSource.mute = true;
-            
         }
     }
 
-    public void StopRandomSound()
+    public void StopMotivationSound()
     {
         if (!motivationAudioSource.isPlaying && !activeMotivationSound)
         {

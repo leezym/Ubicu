@@ -64,7 +64,7 @@ public class RewardsManager : MonoBehaviour
 
         string responseText = www.downloadHandler.text;
 
-        if (www.isNetworkError || www.isHttpError)
+        if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.Log(www.error);
             Debug.Log(form.data);
@@ -92,7 +92,7 @@ public class RewardsManager : MonoBehaviour
 
         yield return www.SendWebRequest();
 
-        if (www.isNetworkError || www.isHttpError)
+        if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.Log(www.error);
             Debug.Log(form.data);

@@ -121,9 +121,11 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator StartApnea()
     {        
+        GameData.Instance.scriptsGroup.soundsManager.activeSignalSound = true;
+
+        pause.SetActive(true);
         if(apneaCount >= 0)
         {
-            pause.SetActive(true);
             apneaCount -= Time.deltaTime;
             pauseText.text = "MANTENGA\nEL AIRE\n" + ((int)apneaCount+1).ToString();
         }

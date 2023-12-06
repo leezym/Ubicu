@@ -116,7 +116,7 @@ public class GameData : MonoBehaviour
     void Start()
     {
         idListHourExercises = -1;
-        scriptsGroup.soundsManager.InitializeSound();
+
         if(PlayerPrefs.GetString("currentExerciseDate") == "") // fecha actual
             PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString("dd/MM/yyyy"));
     }
@@ -176,14 +176,13 @@ public class GameData : MonoBehaviour
         // detectar cuando lanzar sonido de motivacion
         if(exerciseMenu_Game.gameObject.GetComponent<CanvasGroup>().alpha != 0)
         {
-            scriptsGroup.soundsManager.StopRandomSound();
+            scriptsGroup.soundsManager.StopMotivationSound();
             scriptsGroup.soundsManager.StopSignalSound();
+
+            if(inspiration && !scriptsGroup.playerMovement.apneaBool)
+                StartCoroutine(scriptsGroup.soundsManager.PlayMotivationSound());
             
-            if(inspiration && GameData.Instance.scriptsGroup.bluetoothPairing.prom > 200)
-                scriptsGroup.soundsManager.PlayRandomSound();
-            else if(inspiration && GameData.Instance.scriptsGroup.bluetoothPairing.prom < 200)
-                scriptsGroup.soundsManager.PlaySignalSound();
-            else if(!inspiration && scriptsGroup.playerMovement.apneaBool)
+            if(!inspiration && scriptsGroup.playerMovement.apneaBool)
                 scriptsGroup.soundsManager.AddSound();
         }
     }

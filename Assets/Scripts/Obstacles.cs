@@ -38,6 +38,10 @@ public class Obstacles : MonoBehaviour
                 GameData.Instance.resting = true;
                 StopCoroutine(ObstaclesCounter());
             }
+            else
+            {          
+                StartCoroutine(GameData.Instance.scriptsGroup.soundsManager.PlaySignalSound());
+            }
         }
         else
         {
