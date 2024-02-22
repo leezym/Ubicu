@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     public static float LUNG_MINIMUM_SCALE = 0.23f;
     public static float LUNG_MAXIMUM_SCALE = 0.72f;
     public static float LUNG_PLUS_SCALE = 0.76f;
-    public static float POST_APNEA = 3f; // segundos de descanso minimo postapnea antes de comenzar a tomar aire
+    public float POST_APNEA = 0f;
 
     
     [Header("ATTACHED")]
@@ -66,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
     {
         //test
         //GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = "I:"+GameData.Instance.inspiration+"-A:"+apneaBool+"\nMx:"+maxFlow.ToString()+"-Curr:"+GameData.Instance.scriptsGroup.bluetoothPairing.prom.ToString();
+        //GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = "I:"+GameData.Instance.inspiration+"-A:"+apneaBool;
         
         if(GameData.Instance.inspiration && !apneaBool)
         {
@@ -135,7 +136,6 @@ public class PlayerMovement : MonoBehaviour
             yield return new WaitForSeconds(1f);
             StartCoroutine(StopApnea());
         }
-        StopCoroutine(StartApnea());
     }
 
     IEnumerator StopApnea()
@@ -144,7 +144,6 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(POST_APNEA);
         apneaBool = false;
         apneaCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea;
-        StopCoroutine(StopApnea());
     }
 
     public void SaveData(float flow, float time)
@@ -183,11 +182,8 @@ public class PlayerMovement : MonoBehaviour
             float pointGraphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * tempGraphFlow[i] / maxValue;
             graphPrefab[i].transform.localPosition = new Vector2(pointGraphPositionX, pointGraphPositionY);
 
-            if(pointGraphPositionY >= goalGraphPositionY)
-            {
-                Transform checkPrefab = graphPrefab[i].transform.Find("Check");
-                checkPrefab.gameObject.SetActive(true);
-            }
+            Transform checkPrefab = graphPrefab[i].transform.Find("Check");
+            checkPrefab.gameObject.SetActive(pointGraphPositionY >= goalGraphPositionY ? true : false);
 
             Image imageLinePrefab = graphPrefab[i].transform.Find("Line").GetComponent<Image>();
             imageLinePrefab.rectTransform.sizeDelta = new Vector2(imageLinePrefab.rectTransform.sizeDelta.x, pointGraphPositionY);

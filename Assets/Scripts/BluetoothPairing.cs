@@ -80,9 +80,9 @@ public class BluetoothPairing : MonoBehaviour
         // patientData[2] -> frecuencia respiratoria
         
         if(float.TryParse(patientData[0], NumberStyles.Any, CultureInfo.InvariantCulture, out prom))
-        {
-            prom = (GameData.Instance.scriptsGroup.playerMovement.apneaBool ? 0 : prom);
+        {            
             GameData.Instance.scriptsGroup.playerMovement.SaveData(prom, timer);
+            prom = (GameData.Instance.scriptsGroup.playerMovement.apneaBool ? 0 : prom);
             GameData.Instance.inspiration = (prom > 0 ? true : false);
         }
         else
@@ -103,14 +103,8 @@ public class BluetoothPairing : MonoBehaviour
     IEnumerator LoadingScreen(){
         yield return new WaitForSeconds(0.5f);
         bluet.Call("connectToDevice", parameters2);
-        //Debug.Log(connectionStatus);
-        /*BluetoothConnector.Call("PrintOnScreen", context, connectionStatus);
-            if (connectionStatus == "Connected") return true;
-            else return false;*/
         yield return new WaitForSeconds(3f);
-        UI_System.Instance.SwitchScreens(GameData.Instance.loginMenu);
-        StopCoroutine(LoadingScreen());
-        
+        UI_System.Instance.SwitchScreens(GameData.Instance.loginMenu);        
     }    
 
     public void CallOutputTime()

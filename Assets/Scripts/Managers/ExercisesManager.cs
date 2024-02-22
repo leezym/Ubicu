@@ -94,6 +94,11 @@ public class ExercisesManager : MonoBehaviour
                 }
             }
 
+            // POST_APNEA teniendo en cuenta los 8seg del dispositivo UBICU
+            GameData.Instance.scriptsGroup.playerMovement.POST_APNEA = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea == 1 ? 5f 
+            : GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea == 2 ? 4f 
+            : 3f; // segundos de descanso minimo postapnea antes de comenzar a tomar aire
+
             // si la fecha del ejercicio actual es diferente a la ultima almacenada
             if(PlayerPrefs.GetString("currentExerciseFinalDate") != "" && DateTime.ParseExact(PlayerPrefs.GetString("currentExerciseFinalDate"), "dd/MM/yyyy", CultureInfo.InvariantCulture) != DateTime.ParseExact(GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture)) // fecha fin ejercicio actual
             {
@@ -124,7 +129,6 @@ public class ExercisesManager : MonoBehaviour
                     sessionTitlePrefab.GetComponent<TMP_Text>().text = "Sesión " + (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].hora_inicio + (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas * i)) + ":00";
                 }
             }
-            StopCoroutine(GetExercises());
         }
     }
 
@@ -199,9 +203,8 @@ public class ExercisesManager : MonoBehaviour
         {
             GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises] = 0; // si se finalizó se coloca 0
             GameData.Instance.idListHourExercises = -1;
-            GameData.Instance.exerciseSeries = new List<ExerciseData>();        
+            GameData.Instance.exerciseSeries = new List<ExerciseData>();    
         }
-        StopCoroutine(SendResults());
     }
 
     IEnumerator PlayVideo()

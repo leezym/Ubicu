@@ -129,7 +129,7 @@ public class GameData : MonoBehaviour
         if(playing)
         {
             //contador de apnea
-            if(apnea)
+            if(apnea && !scriptsGroup.playerMovement.apneaBool)
                 scriptsGroup.playerMovement.apneaBool = true;
                         
             // contador de inactividad

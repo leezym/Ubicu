@@ -21326,6 +21326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aaf9db3f01f2d04497b669edf1adc40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  POST_APNEA: 0
   minimunScale: 0
   maximunScale: 0
   plusScale: 0
@@ -28822,7 +28823,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "<b>Flujo:</b> Prescipci\xF3n del fisioterapeuta (600, 900, 1200, 1500,
     1800, 2100, 2500).\n\n<b>Duraci\xF3n:</b> N\xFAmero total de d\xEDas realizando
-    la terapia. Por ejemplo, una semana son 8 d\xEDas.\n\n<b>Frecuencia:</b> Cantidad
+    la terapia. Por ejemplo, una semana son 7 d\xEDas.\n\n<b>Frecuencia:</b> Cantidad
     de sesiones al d\xEDa y cu\xE1ntos d\xEDas a la semana.\n\n<b>Repeticiones</b>:
     N\xFAmero de veces seguidas que repite el ejercicio hasta realizar el descanso.\n\n<b>Series:</b>
     Conjunto de repeticiones previas a cada descanso.\n\n<b>Apnea o pausa inspiratoria:</b>

@@ -171,7 +171,6 @@ public class CustomizationManager : MonoBehaviour
             GetAllFondosItems();
             GetAllFigurasItems();
         }
-        StopCoroutine(GetCustomizations());
     }
 
     public IEnumerator SendCustomizations()
@@ -202,8 +201,6 @@ public class CustomizationManager : MonoBehaviour
         {
             Debug.Log("Datos de recompensas actualizados correctamente");
         }
-            
-        StopCoroutine(SendCustomizations());
     }
 
     public void SetTempIdFondosItem(int id)

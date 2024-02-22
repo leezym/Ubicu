@@ -64,6 +64,7 @@ public class Obstacles : MonoBehaviour
         else
         {
             inactivityCounter = 0;
+            NotificationsManager.Instance.WarningNotifications("¡Te has desconectado por inactividad!\nPor favor empieza tu terapia nuevamente");
             ExitGame();
         }
     }
@@ -72,8 +73,9 @@ public class Obstacles : MonoBehaviour
     {
         GameData.Instance.playing = false;
         repCounter = 0;
+        GameData.Instance.exerciseSeries = new List<ExerciseData>();
         GameData.Instance.scriptsGroup.playerMovement.seriesCount = 0;
-        GameData.Instance.scriptsGroup.bluetoothPairing.StopOutputTime();
+        //GameData.Instance.scriptsGroup.bluetoothPairing.StopOutputTime();
         UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
     }
 }

@@ -74,7 +74,6 @@ public class RewardsManager : MonoBehaviour
             GameData.Instance.jsonObjectRewards = JsonConvert.DeserializeObject<Rewards>(responseText);
             GetAllBadges();
         }
-        StopCoroutine(GetRewards());
     }
 
     public IEnumerator SendReward()
@@ -101,8 +100,6 @@ public class RewardsManager : MonoBehaviour
         {
             Debug.Log("Datos de recompensas actualizados correctamente");
         }
-            
-        StopCoroutine(SendReward());
     }
 
     public void CalculateRewards()
