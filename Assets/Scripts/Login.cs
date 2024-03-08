@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Networking;
+using System.IO;
 
 public class Login : MonoBehaviour
 {
@@ -12,12 +13,63 @@ public class Login : MonoBehaviour
     public TMP_InputField userInputField;
     public TMP_InputField passInputField;
     public Button loginButton;
+    public Toggle notInternet;
+    public GameObject passTitle;
 
-    public void LogIn(){
-        StartCoroutine(OnLogin());
+    void Start()
+    {
+        loginButton.GetComponent<Button>().onClick.AddListener(()=>{
+            StartCoroutine(OnLogin());
+        });
     }
 
-    public IEnumerator OnLogin()
+    public void ConexionMode()
+    {
+        if(notInternet.isOn)
+        {
+            passTitle.SetActive(false);
+            loginButton.onClick.RemoveAllListeners();
+            loginButton.GetComponent<Button>().onClick.AddListener(()=>{
+                StartCoroutine(LocalLogin());
+            });
+        }
+        else
+        {
+            passTitle.SetActive(true);
+            loginButton.onClick.RemoveAllListeners();
+            loginButton.GetComponent<Button>().onClick.AddListener(()=>{
+                StartCoroutine(OnLogin());
+            });
+        }
+    }
+
+    IEnumerator LocalLogin()
+    {
+        if(userInputField.text != "")
+        {
+            string rutaArchivo = Path.Combine(Application.persistentDataPath, "localData_"+userInputField.text+".json");
+
+            if (File.Exists(rutaArchivo))
+            {
+                string json = File.ReadAllText(rutaArchivo);
+                GameData.Instance.jsonObjectUser.token = "0";
+                GameData.Instance.jsonObjectUser.user = JsonUtility.FromJson<User>(json);
+                yield return new WaitForSeconds(1f);
+                UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
+            }
+            else
+            {
+                GameData.Instance.jsonObjectUser.user.cedula = userInputField.text;
+                yield return new WaitForSeconds(1f);
+                UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
+            }
+        }
+        else
+            NotificationsManager.Instance.WarningNotifications("Ingresa los datos");
+
+    }
+
+    IEnumerator OnLogin()
     {
         loginButton.interactable = false;
 

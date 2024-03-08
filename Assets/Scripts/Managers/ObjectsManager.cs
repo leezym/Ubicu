@@ -24,7 +24,6 @@ public class User
     public float altura;
     public string direccion;
     public string ciudad;
-    public string __v;
 }
 
 /*[Serializable]
@@ -41,7 +40,6 @@ public class Patient
     public float altura;
     public string direccion;
     public string ciudad;
-    public string __v;
 }*/
 
 [Serializable]
@@ -62,7 +60,6 @@ public class Exercise
     public int flujo;
     public int hora_inicio;
     public string id_patient;
-    public string __v;
 }
 
 [Serializable]
