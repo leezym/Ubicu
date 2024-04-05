@@ -1,0 +1,16 @@
+{
+  "nombre": "Inspiración profunda",
+  "duracion_total": 30,
+  "frecuencia_dias": 7,
+  "frecuencia_horas": 3,
+  "repeticiones": 3,
+  "series": 2,
+  "periodos_descanso": 3,
+  "fecha_inicio": "03/04/2024",
+  "fecha_fin": "09/04/2024",
+  "apnea": 3,
+  "flujo": 600,
+  "hora_inicio": 11,
+  "id_patient": "1107511336",
+  "__v": 0 
+}

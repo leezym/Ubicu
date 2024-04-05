@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Networking;
 using System.IO;
+using Newtonsoft.Json;
+
 
 public class Login : MonoBehaviour
 {
@@ -35,6 +37,7 @@ public class Login : MonoBehaviour
         }
         else
         {
+            // PDTE VALIDAR COMO SUBIR SI EXISTEN DATOS LOCALES: OBTENER EL USUARIO, ACTUALIZAR LOS DATOS EN LA DB Y LEERLOS NUEVAMENTE 
             passTitle.SetActive(true);
             loginButton.onClick.RemoveAllListeners();
             loginButton.GetComponent<Button>().onClick.AddListener(()=>{
@@ -47,21 +50,45 @@ public class Login : MonoBehaviour
     {
         if(userInputField.text != "")
         {
-            string rutaArchivo = Path.Combine(Application.persistentDataPath, "localData_"+userInputField.text+".json");
+            //string rutaArchivo = Path.Combine(Application.persistentDataPath, "localData_"+userInputField.text+".json");
+            string rutaArchivoPaciente = Path.Combine(Application.persistentDataPath, "paciente.txt");
+            string rutaArchivoFisioterapia = Path.Combine(Application.persistentDataPath, "fisioterapia.txt");
+            string rutaArchivoRecompensa = Path.Combine(Application.persistentDataPath, "recompensa.txt");
+            string rutaArchivoPersonalizacion = Path.Combine(Application.persistentDataPath, "personalizacion.txt");
+            
+            GameData.Instance.paciente.text = File.ReadAllText(rutaArchivoPaciente);
+            GameData.Instance.fisioterapia.text = File.ReadAllText(rutaArchivoFisioterapia);
+            GameData.Instance.recompensa.text = File.ReadAllText(rutaArchivoRecompensa);
+            GameData.Instance.personalizacion.text = File.ReadAllText(rutaArchivoPersonalizacion);
 
-            if (File.Exists(rutaArchivo))
+            if (File.Exists(rutaArchivoPaciente) && File.Exists(rutaArchivoFisioterapia) && File.Exists(rutaArchivoRecompensa) && File.Exists(rutaArchivoPersonalizacion))
             {
-                string json = File.ReadAllText(rutaArchivo);
+                string json = File.ReadAllText(rutaArchivoPaciente);
                 GameData.Instance.jsonObjectUser.token = "0";
                 GameData.Instance.jsonObjectUser.user = JsonUtility.FromJson<User>(json);
-                yield return new WaitForSeconds(1f);
-                UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
+
+                if(userInputField.text == GameData.Instance.jsonObjectUser.user.cedula)
+                {
+                    GameData.Instance.jsonObjectExercises = JsonConvert.DeserializeObject<Exercises>("{\"array\": [" + GameData.Instance.fisioterapia + "] }");
+                    GameData.Instance.scriptsGroup.exercisesManager.CreateExercises();
+
+                    GameData.Instance.jsonObjectRewards = JsonConvert.DeserializeObject<Rewards>(GameData.Instance.recompensa.ToString());
+                    GameData.Instance.scriptsGroup.rewardsManager.GetAllBadges();
+
+                    GameData.Instance.jsonObjectCustomizations = JsonConvert.DeserializeObject<Customizations>(GameData.Instance.personalizacion.ToString());
+                    GameData.Instance.scriptsGroup.customizationManager.CreateCustomizations();
+
+                    GameData.Instance.jsonObjectUser.user.cedula = userInputField.text;
+
+                    yield return new WaitForSeconds(1f);
+                    UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
+                }
+                else
+                    NotificationsManager.Instance.WarningNotifications("El usuario no coincide con la fisioterapia asignada");
             }
-            else
+            else // como saber si es un usuario con cuenta en la nube? si tiene cuenta no le crea datos, sino tiene cuenta le crea datos vacios
             {
-                GameData.Instance.jsonObjectUser.user.cedula = userInputField.text;
-                yield return new WaitForSeconds(1f);
-                UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
+                
             }
         }
         else
@@ -71,6 +98,8 @@ public class Login : MonoBehaviour
 
     IEnumerator OnLogin()
     {
+        //si hay data LOCAL se debe actualizar la DB primero y luego leer PDTE
+
         loginButton.interactable = false;
 
         WWWForm form = new WWWForm();

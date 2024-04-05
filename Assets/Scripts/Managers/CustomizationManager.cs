@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
-
+using System.IO;
 
 public class CustomizationManager : MonoBehaviour
 {
@@ -163,43 +163,51 @@ public class CustomizationManager : MonoBehaviour
         else
         {
             GameData.Instance.jsonObjectCustomizations = JsonConvert.DeserializeObject<Customizations>(responseText);
-            SetIdCustomization(GameData.Instance.jsonObjectCustomizations.id_customization);
-            idItemFondosArray = Array.ConvertAll(GameData.Instance.jsonObjectCustomizations.id_item_fondos_array.Split(","), int.Parse);
-            idItemFigurasArray = Array.ConvertAll(GameData.Instance.jsonObjectCustomizations.id_item_figuras_array.Split(","), int.Parse);
-            SetIdFondosItem(idItemFondosArray[GameData.Instance.jsonObjectCustomizations.id_customization]);
-            SetIdFigurasItem(idItemFigurasArray[GameData.Instance.jsonObjectCustomizations.id_customization]);
-            GetAllFondosItems();
-            GetAllFigurasItems();
+            CreateCustomizations();
         }
     }
 
-    public IEnumerator SendCustomizations()
+    public void CreateCustomizations()
     {
-        WWWForm form = new WWWForm();
-        
+        SetIdCustomization(GameData.Instance.jsonObjectCustomizations.id_customization);
+        idItemFondosArray = Array.ConvertAll(GameData.Instance.jsonObjectCustomizations.id_item_fondos_array.Split(","), int.Parse);
+        idItemFigurasArray = Array.ConvertAll(GameData.Instance.jsonObjectCustomizations.id_item_figuras_array.Split(","), int.Parse);
+        SetIdFondosItem(idItemFondosArray[GameData.Instance.jsonObjectCustomizations.id_customization]);
+        SetIdFigurasItem(idItemFigurasArray[GameData.Instance.jsonObjectCustomizations.id_customization]);
+        GetAllFondosItems();
+        GetAllFigurasItems();
+    }
+    public IEnumerator SendCustomizations()
+    {      
         GameData.Instance.jsonObjectCustomizations.id_item_fondos_array = string.Join(",", idItemFondosArray);
         GameData.Instance.jsonObjectCustomizations.id_item_figuras_array = string.Join(",", idItemFigurasArray);
         SetAllFondosItems();
         SetAllFigurasItems();
 
         string jsonData = JsonConvert.SerializeObject(GameData.Instance.jsonObjectCustomizations);
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
-        
-        UnityWebRequest www = UnityWebRequest.Put(GameData.URL+"updateCustomizations", jsonData);
-        //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/updateCustomizations", jsonData);
 
-        www.SetRequestHeader("Content-Type", "application/json");
+        string rutaArchivo = Path.Combine(Application.persistentDataPath, "personalizacion.txt");
+        File.WriteAllText(rutaArchivo, jsonData);
 
-        yield return www.SendWebRequest();
+        Debug.Log("Datos de recompensas locales actualizados correctamente");
 
-        if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
-        {
-            Debug.Log(www.error);
-            Debug.Log(form.data);
-        }
-        else
-        {
-            Debug.Log("Datos de recompensas actualizados correctamente");
+        if(!GameData.Instance.scriptsGroup.login.notInternet.isOn)
+        {            
+            UnityWebRequest www = UnityWebRequest.Put(GameData.URL+"updateCustomizations", jsonData);
+            //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/updateCustomizations", jsonData);
+
+            www.SetRequestHeader("Content-Type", "application/json");
+
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log("Datos de recompensas actualizados correctamente");
+            }
         }
     }
 

@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
+using System.IO;
 
 [System.Serializable]
 public class BadgePointsContainer
@@ -77,28 +78,33 @@ public class RewardsManager : MonoBehaviour
     }
 
     public IEnumerator SendReward()
-    {
-        WWWForm form = new WWWForm();
-        
+    {        
         SetAllBadges();
+
         string jsonData = JsonConvert.SerializeObject(GameData.Instance.jsonObjectRewards);
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
         
-        UnityWebRequest www = UnityWebRequest.Put(GameData.URL+"updateRewards", jsonData);
-        //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/updateRewards", jsonData);
+        string rutaArchivo = Path.Combine(Application.persistentDataPath, "recompensa.txt");
+        File.WriteAllText(rutaArchivo, jsonData);
+        
+        Debug.Log("Datos de ejercicios locales actualizados correctamente");
 
-        www.SetRequestHeader("Content-Type", "application/json");
-
-        yield return www.SendWebRequest();
-
-        if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+        if(!GameData.Instance.scriptsGroup.login.notInternet.isOn)
         {
-            Debug.Log(www.error);
-            Debug.Log(form.data);
-        }
-        else
-        {
-            Debug.Log("Datos de recompensas actualizados correctamente");
+            UnityWebRequest www = UnityWebRequest.Put(GameData.URL+"updateRewards", jsonData);
+            //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/updateRewards", jsonData);
+
+            www.SetRequestHeader("Content-Type", "application/json");
+
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log("Datos de recompensas actualizados correctamente");
+            }
         }
     }
 

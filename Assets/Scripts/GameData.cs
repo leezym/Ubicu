@@ -9,6 +9,10 @@ public class GameData : MonoBehaviour
 {
     public static GameData Instance {get; private set;}
     public static string URL = "https://server.ubicu.co/";
+    public TextAsset paciente;
+    public TextAsset fisioterapia;
+    public TextAsset personalizacion;
+    public TextAsset recompensa;
     public ScriptsGroup scriptsGroup;
     public UI_Screen loginMenu;
     public UI_Screen sessionMenu;

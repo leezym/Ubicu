@@ -1,0 +1,9 @@
+{
+  "id_customization": 4,
+  "id_item_fondos_array": "2,-1,0,-1,2",
+  "id_item_figuras_array": "2,-1,2,-1,1",
+  "all_fondos_items_array": "1,1,1;0,0,0;1,1,0;0,0,0;0,0,1;",
+  "all_figuras_items_array": "1,1,1;0,0,0;0,0,1;0,0,0;0,1,0;",
+  "id_patient": "1107511336",
+  "__v": 0
+}
