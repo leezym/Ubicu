@@ -177,12 +177,19 @@ public class ExercisesManager : MonoBehaviour
         extraMinuteToWaitForExercise = (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas == 1 ? 30f : 59f); // minutos
     }
 
+    public void UpdateLocalExercise(string jsonData)
+    {
+        File.WriteAllText(GameData.Instance.rutaArchivoFisioterapia, jsonData);
+
+        Debug.Log("Datos de fisioterapia locales actualizados correctamente");
+    }
+
     public void SaveExercise()
     {
         PlayerPrefs.SetString("exerciseHourArray", string.Join(",", GameData.Instance.exerciseHourArray));
     }
     
-    public IEnumerator SendResults() //pdte convertir form en json
+    public IEnumerator SendResults()
     {
         Dictionary<string, object> formData = new Dictionary<string, object>();
         formData.Add("id_ejercicio", GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises]._id);
@@ -191,14 +198,12 @@ public class ExercisesManager : MonoBehaviour
         formData.Add("datos", JsonConvert.SerializeObject(GameData.Instance.exerciseSeries));
 
         string jsonData = JsonConvert.SerializeObject(formData);
-        
-        string rutaArchivo = Path.Combine(Application.persistentDataPath, "fisioterapia.txt");
 
         // Verificar si el archivo ya existe
-        if (File.Exists(rutaArchivo))
+        if (File.Exists(GameData.Instance.rutaArchivoResultados))
         {
             // Leer el contenido actual del archivo
-            string contenido = File.ReadAllText(rutaArchivo);
+            string contenido = File.ReadAllText(GameData.Instance.rutaArchivoResultados);
 
             // Verificar si el contenido no está vacío
             if (!string.IsNullOrEmpty(contenido))
@@ -211,15 +216,15 @@ public class ExercisesManager : MonoBehaviour
             }
 
             // Insertar el nuevo JSON en el archivo
-            File.AppendAllText(rutaArchivo, jsonData);
+            File.AppendAllText(GameData.Instance.rutaArchivoResultados, ",\n"+jsonData);
         }
         else
         {
             // Si el archivo no existe, simplemente escribir el nuevo JSON
-            File.WriteAllText(rutaArchivo, jsonData);
+            File.WriteAllText(GameData.Instance.rutaArchivoResultados, jsonData);
         }
 
-        Debug.Log("Datos de ejercicios locales actualizados correctamente");
+        Debug.Log("Datos de resultados locales actualizados correctamente");
 
         if(!GameData.Instance.scriptsGroup.login.notInternet.isOn)
         {
@@ -229,7 +234,7 @@ public class ExercisesManager : MonoBehaviour
             form.AddField("id_ejercicio", GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises]._id);
             form.AddField("fecha", PlayerPrefs.GetString("currentExerciseDate"));
             form.AddField("hora", GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises]);
-            form.AddField("datos", json);            
+            form.AddField("datos", json);
 
             UnityWebRequest www = UnityWebRequest.Post(GameData.URL+"createResult", form);
             //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/createResult", form);
@@ -250,6 +255,40 @@ public class ExercisesManager : MonoBehaviour
                 GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises] = 0; // si se finalizó se coloca 0
                 GameData.Instance.idListHourExercises = -1;
                 GameData.Instance.exerciseSeries = new List<ExerciseData>();    
+            }
+        }
+    }
+
+    public IEnumerator UpdateResults(string filePath)
+    {
+        // Leer el archivo de texto completo
+        string fileContent = File.ReadAllText(filePath);
+
+        // Dividir el contenido del archivo en cada conjunto de datos
+        string[] dataSets = fileContent.Split(new string[] { "}," }, System.StringSplitOptions.RemoveEmptyEntries);
+
+        foreach (string dataSet in dataSets)
+        {
+            // Reemplazar la coma faltante al final de cada conjunto de datos
+            string formattedDataSet = dataSet + "}";
+
+            // Deserializar el conjunto de datos a un objeto ExerciseData
+            //ExerciseData exerciseData = JsonConvert.DeserializeObject<ExerciseData>(formattedDataSet);
+
+            UnityWebRequest www = UnityWebRequest.Post(GameData.URL+"createResult", formattedDataSet);
+            //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/createResult", form);
+
+            www.downloadHandler = new DownloadHandlerBuffer();
+
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log("Datos de ejercicios actualizados correctamente");  
             }
         }
     }

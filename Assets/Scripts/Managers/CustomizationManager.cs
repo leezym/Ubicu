@@ -177,37 +177,51 @@ public class CustomizationManager : MonoBehaviour
         GetAllFondosItems();
         GetAllFigurasItems();
     }
-    public IEnumerator SendCustomizations()
-    {      
+
+    public string GetJsonCustomizations()
+    {
         GameData.Instance.jsonObjectCustomizations.id_item_fondos_array = string.Join(",", idItemFondosArray);
         GameData.Instance.jsonObjectCustomizations.id_item_figuras_array = string.Join(",", idItemFigurasArray);
         SetAllFondosItems();
         SetAllFigurasItems();
 
-        string jsonData = JsonConvert.SerializeObject(GameData.Instance.jsonObjectCustomizations);
+        return JsonConvert.SerializeObject(GameData.Instance.jsonObjectCustomizations);
+    }
+    public void SendCustomizations()
+    {      
+        string jsonData = GetJsonCustomizations();
 
-        string rutaArchivo = Path.Combine(Application.persistentDataPath, "personalizacion.txt");
-        File.WriteAllText(rutaArchivo, jsonData);
-
-        Debug.Log("Datos de recompensas locales actualizados correctamente");
+        UpdateLocalCustomizations(jsonData);
 
         if(!GameData.Instance.scriptsGroup.login.notInternet.isOn)
         {            
-            UnityWebRequest www = UnityWebRequest.Put(GameData.URL+"updateCustomizations", jsonData);
-            //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/updateCustomizations", jsonData);
+            StartCoroutine(UpdateCustomizations(jsonData));
+        }
+    }
 
-            www.SetRequestHeader("Content-Type", "application/json");
+    public void UpdateLocalCustomizations(string jsonData)
+    {
+        File.WriteAllText(GameData.Instance.rutaArchivoPersonalizacion, jsonData);
 
-            yield return www.SendWebRequest();
+        Debug.Log("Datos de personalizaciones locales actualizados correctamente");
+    }
 
-            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.Log(www.error);
-            }
-            else
-            {
-                Debug.Log("Datos de recompensas actualizados correctamente");
-            }
+    public IEnumerator UpdateCustomizations(string jsonData)
+    {
+        UnityWebRequest www = UnityWebRequest.Put(GameData.URL+"updateCustomizations", jsonData);
+        //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/updateCustomizations", jsonData);
+
+        www.SetRequestHeader("Content-Type", "application/json");
+
+        yield return www.SendWebRequest();
+
+        if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            Debug.Log("Datos de recompensas actualizados correctamente");
         }
     }
 
@@ -433,7 +447,6 @@ public class CustomizationManager : MonoBehaviour
     {
         if(priceItemFondosArray[GameData.Instance.jsonObjectCustomizations.id_customization , id] <= GameData.Instance.jsonObjectRewards.total_reward)
         {
-            // notificacion de preguntar pdte
             NotificationsManager.Instance.QuestionNotifications("¿Seguro que quieres obtener este fondo?");
             // si
             NotificationsManager.Instance.SetYesButton(()=>{
@@ -442,7 +455,7 @@ public class CustomizationManager : MonoBehaviour
                 buttonsFondosItemsPreviewArray[0].useButton.SetActive(true);
                 buttonsFondosItemsPreviewArray[0].buyButton.SetActive(false);
                 ValidateFullItems(GameData.Instance.jsonObjectCustomizations.id_customization);
-                StartCoroutine(SendCustomizations());                
+                SendCustomizations();                
             });
         }
         else
@@ -467,7 +480,7 @@ public class CustomizationManager : MonoBehaviour
                 buttonsFigurasItemsPreviewArray[0].useButton.SetActive(true);
                 buttonsFigurasItemsPreviewArray[0].buyButton.SetActive(false);
                 ValidateFullItems(GameData.Instance.jsonObjectCustomizations.id_customization);
-                StartCoroutine(SendCustomizations());
+                SendCustomizations();
             });
         }
         else
@@ -492,7 +505,7 @@ public class CustomizationManager : MonoBehaviour
             //notificacion de tema seleccionado
             NotificationsManager.Instance.WarningNotifications("¡Tema seleccionado!");
             NotificationsManager.Instance.SetCloseFunction(GameData.Instance.customizeMenu_Select);
-            StartCoroutine(SendCustomizations());
+            SendCustomizations();
         }
         else
         {

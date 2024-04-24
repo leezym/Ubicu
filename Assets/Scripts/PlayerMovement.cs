@@ -121,21 +121,20 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public IEnumerator StartApnea()
-    {        
+    {
         GameData.Instance.scriptsGroup.soundsManager.activeSignalSound = true;
-
         pause.SetActive(true);
-        if(apneaCount >= 0)
+
+        while(apneaCount >= 0)
         {
-            apneaCount -= Time.deltaTime;
+            apneaCount --;
             pauseText.text = "MANTENGA\nEL AIRE\n" + ((int)apneaCount+1).ToString();
-        }
-        else
-        {
-            pauseText.text = "BOTA EL AIRE";
             yield return new WaitForSeconds(1f);
-            StartCoroutine(StopApnea());
         }
+
+        pauseText.text = "BOTA EL AIRE";
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(StopApnea());
     }
 
     IEnumerator StopApnea()

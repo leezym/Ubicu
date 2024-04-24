@@ -4,15 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Globalization;
+using Newtonsoft.Json;
+using System.IO;
 
 public class GameData : MonoBehaviour
 {
     public static GameData Instance {get; private set;}
     public static string URL = "https://server.ubicu.co/";
-    public TextAsset paciente;
-    public TextAsset fisioterapia;
-    public TextAsset personalizacion;
-    public TextAsset recompensa;
+
+    public string rutaArchivoPaciente => Path.Combine(Application.persistentDataPath, "paciente.txt");
+    public string rutaArchivoFisioterapia => Path.Combine(Application.persistentDataPath, "fisioterapia.txt");
+    public string rutaArchivoRecompensa => Path.Combine(Application.persistentDataPath, "recompensa.txt");
+    public string rutaArchivoPersonalizacion => Path.Combine(Application.persistentDataPath, "personalizacion.txt");
+    public string rutaArchivoResultados => Path.Combine(Application.persistentDataPath, "resultados.txt");
+
     public ScriptsGroup scriptsGroup;
     public UI_Screen loginMenu;
     public UI_Screen sessionMenu;
@@ -129,7 +134,7 @@ public class GameData : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
             ExitApp();
-       
+
         if(playing)
         {
             //contador de apnea
@@ -191,9 +196,17 @@ public class GameData : MonoBehaviour
         }
     }
 
+    public void UpdateLocalUser(string jsonData)
+    {  
+        File.WriteAllText(rutaArchivoPaciente, jsonData);
+
+        Debug.Log("Datos de paciente locales actualizados correctamente");
+    } 
+
     public void SaveLocalData()
     {
         scriptsGroup.exercisesManager.SaveExercise();
+
         PlayerPrefs.Save();
     }
 

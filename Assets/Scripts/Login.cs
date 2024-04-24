@@ -37,7 +37,6 @@ public class Login : MonoBehaviour
         }
         else
         {
-            // PDTE VALIDAR COMO SUBIR SI EXISTEN DATOS LOCALES: OBTENER EL USUARIO, ACTUALIZAR LOS DATOS EN LA DB Y LEERLOS NUEVAMENTE 
             passTitle.SetActive(true);
             loginButton.onClick.RemoveAllListeners();
             loginButton.GetComponent<Button>().onClick.AddListener(()=>{
@@ -50,32 +49,28 @@ public class Login : MonoBehaviour
     {
         if(userInputField.text != "")
         {
-            //string rutaArchivo = Path.Combine(Application.persistentDataPath, "localData_"+userInputField.text+".json");
-            string rutaArchivoPaciente = Path.Combine(Application.persistentDataPath, "paciente.txt");
-            string rutaArchivoFisioterapia = Path.Combine(Application.persistentDataPath, "fisioterapia.txt");
-            string rutaArchivoRecompensa = Path.Combine(Application.persistentDataPath, "recompensa.txt");
-            string rutaArchivoPersonalizacion = Path.Combine(Application.persistentDataPath, "personalizacion.txt");
-            
-            GameData.Instance.paciente.text = File.ReadAllText(rutaArchivoPaciente);
-            GameData.Instance.fisioterapia.text = File.ReadAllText(rutaArchivoFisioterapia);
-            GameData.Instance.recompensa.text = File.ReadAllText(rutaArchivoRecompensa);
-            GameData.Instance.personalizacion.text = File.ReadAllText(rutaArchivoPersonalizacion);
-
-            if (File.Exists(rutaArchivoPaciente) && File.Exists(rutaArchivoFisioterapia) && File.Exists(rutaArchivoRecompensa) && File.Exists(rutaArchivoPersonalizacion))
+            if (File.Exists(GameData.Instance.rutaArchivoPaciente) && File.Exists(GameData.Instance.rutaArchivoFisioterapia) && File.Exists(GameData.Instance.rutaArchivoRecompensa) && File.Exists(GameData.Instance.rutaArchivoPersonalizacion))
             {
-                string json = File.ReadAllText(rutaArchivoPaciente);
-                GameData.Instance.jsonObjectUser.token = "0";
+                string json = File.ReadAllText(GameData.Instance.rutaArchivoPaciente);
+                //GameData.Instance.jsonObjectUser = JsonUtility.FromJson<Data>(json);
                 GameData.Instance.jsonObjectUser.user = JsonUtility.FromJson<User>(json);
+
+
+                /*if(isGuest)
+                    GameData.Instance.jsonObjectUser.user = JsonUtility.FromJson<User>(json);
+                else
+                    GameData.Instance.jsonObjectUser = JsonUtility.FromJson<Data>(json);       */
+                    Debug.Log(GameData.Instance.jsonObjectUser.user.cedula);
 
                 if(userInputField.text == GameData.Instance.jsonObjectUser.user.cedula)
                 {
-                    GameData.Instance.jsonObjectExercises = JsonConvert.DeserializeObject<Exercises>("{\"array\": [" + GameData.Instance.fisioterapia + "] }");
+                    GameData.Instance.jsonObjectExercises = JsonConvert.DeserializeObject<Exercises>("{\"array\": [" + File.ReadAllText(GameData.Instance.rutaArchivoFisioterapia) + "] }");
                     GameData.Instance.scriptsGroup.exercisesManager.CreateExercises();
 
-                    GameData.Instance.jsonObjectRewards = JsonConvert.DeserializeObject<Rewards>(GameData.Instance.recompensa.ToString());
+                    GameData.Instance.jsonObjectRewards = JsonConvert.DeserializeObject<Rewards>(File.ReadAllText(GameData.Instance.rutaArchivoRecompensa));
                     GameData.Instance.scriptsGroup.rewardsManager.GetAllBadges();
 
-                    GameData.Instance.jsonObjectCustomizations = JsonConvert.DeserializeObject<Customizations>(GameData.Instance.personalizacion.ToString());
+                    GameData.Instance.jsonObjectCustomizations = JsonConvert.DeserializeObject<Customizations>(File.ReadAllText(GameData.Instance.rutaArchivoPersonalizacion));
                     GameData.Instance.scriptsGroup.customizationManager.CreateCustomizations();
 
                     GameData.Instance.jsonObjectUser.user.cedula = userInputField.text;
@@ -86,9 +81,12 @@ public class Login : MonoBehaviour
                 else
                     NotificationsManager.Instance.WarningNotifications("El usuario no coincide con la fisioterapia asignada");
             }
-            else // como saber si es un usuario con cuenta en la nube? si tiene cuenta no le crea datos, sino tiene cuenta le crea datos vacios
+            else
             {
-                
+                /*if(isGuest)
+                    NotificationsManager.Instance.WarningNotifications("¿Cómo obtiene datos? ¿Terapia estandar?");             
+                else*/
+                    NotificationsManager.Instance.WarningNotifications("¡No tienes terapias! Por favor inicia sesión con usuario y contraseña para descargar la terapia");
             }
         }
         else
@@ -98,18 +96,17 @@ public class Login : MonoBehaviour
 
     IEnumerator OnLogin()
     {
-        //si hay data LOCAL se debe actualizar la DB primero y luego leer PDTE
-
         loginButton.interactable = false;
 
         WWWForm form = new WWWForm();
+        
         if(userInputField.text != "" && passInputField.text != "")
         {
             form.AddField("cedula", userInputField.text);
             form.AddField("password", passInputField.text);
 
-            //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/authenticatePatient", form);
             UnityWebRequest www = UnityWebRequest.Post(GameData.URL+"authenticatePatient", form);
+            //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/authenticatePatient", form);
 
             www.downloadHandler = new DownloadHandlerBuffer();
 
@@ -132,20 +129,52 @@ public class Login : MonoBehaviour
             else
             {
                 GameData.Instance.jsonObjectUser = JsonUtility.FromJson<Data>(responseText);
-                yield return StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.GetExercises());
-                yield return StartCoroutine(GameData.Instance.scriptsGroup.rewardsManager.GetRewards());
-                yield return StartCoroutine(GameData.Instance.scriptsGroup.customizationManager.GetCustomizations());
+
+                //Subir data local primero
+                if (File.Exists(GameData.Instance.rutaArchivoPaciente) && File.Exists(GameData.Instance.rutaArchivoFisioterapia) && File.Exists(GameData.Instance.rutaArchivoRecompensa) && File.Exists(GameData.Instance.rutaArchivoPersonalizacion))
+                {
+                    StartCoroutine(GameData.Instance.scriptsGroup.rewardsManager.UpdateReward(GameData.Instance.rutaArchivoRecompensa));
+                    StartCoroutine(GameData.Instance.scriptsGroup.customizationManager.UpdateCustomizations(GameData.Instance.rutaArchivoPersonalizacion));
+                    StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.UpdateResults(GameData.Instance.rutaArchivoResultados));
+
+                    //Load();              
+                }
+                else
+                {
+                    Load();
+
+                    /*GameData.Instance.UpdateLocalUser(JsonConvert.SerializeObject(GameData.Instance.jsonObjectUser));
+                    Debug.Log(GameData.Instance.jsonObjectExercises.array.Count);
+                    Debug.Log(GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises]);
+                    
+                */}
+
+                Debug.Log(GameData.Instance.jsonObjectExercises.array.Count);
+                Debug.Log(GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises]);
+                
                 yield return new WaitForSeconds(1f);
                 UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
             }
+
             yield return new WaitForSeconds(2f);
             loginButton.interactable = true;
-
         }
-        else{
+        else
+        {
             loginButton.interactable = true;
             NotificationsManager.Instance.WarningNotifications("Ingresa los datos");
         }
 
     }
+
+    public IEnumerator Load()
+    {
+        yield return StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.GetExercises());
+        yield return StartCoroutine(GameData.Instance.scriptsGroup.rewardsManager.GetRewards());
+        yield return StartCoroutine(GameData.Instance.scriptsGroup.customizationManager.GetCustomizations());
+
+        GameData.Instance.scriptsGroup.exercisesManager.UpdateLocalExercise(JsonConvert.SerializeObject(GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises]));
+        GameData.Instance.scriptsGroup.rewardsManager.UpdateLocalReward(GameData.Instance.scriptsGroup.rewardsManager.GetJsonRewards());
+        GameData.Instance.scriptsGroup.customizationManager.UpdateLocalCustomizations(GameData.Instance.scriptsGroup.customizationManager.GetJsonCustomizations());
+}
 }

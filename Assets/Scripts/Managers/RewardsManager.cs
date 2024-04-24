@@ -77,34 +77,48 @@ public class RewardsManager : MonoBehaviour
         }
     }
 
-    public IEnumerator SendReward()
-    {        
+    public string GetJsonRewards()
+    {
         SetAllBadges();
 
-        string jsonData = JsonConvert.SerializeObject(GameData.Instance.jsonObjectRewards);
-        
-        string rutaArchivo = Path.Combine(Application.persistentDataPath, "recompensa.txt");
-        File.WriteAllText(rutaArchivo, jsonData);
-        
-        Debug.Log("Datos de ejercicios locales actualizados correctamente");
+        return JsonConvert.SerializeObject(GameData.Instance.jsonObjectRewards);
+    }
 
+    public void SendReward()
+    {
+        string jsonData = GetJsonRewards();
+        
+        UpdateLocalReward(jsonData);
+        
         if(!GameData.Instance.scriptsGroup.login.notInternet.isOn)
         {
-            UnityWebRequest www = UnityWebRequest.Put(GameData.URL+"updateRewards", jsonData);
-            //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/updateRewards", jsonData);
+            StartCoroutine(UpdateReward(jsonData));
+        }
+    }
 
-            www.SetRequestHeader("Content-Type", "application/json");
+    public void UpdateLocalReward(string jsonData)
+    {
+        File.WriteAllText(GameData.Instance.rutaArchivoRecompensa, jsonData);
+        
+        Debug.Log("Datos de recompensas locales actualizados correctamente");
+    }
 
-            yield return www.SendWebRequest();
+    public IEnumerator UpdateReward(string jsonData)
+    {
+        UnityWebRequest www = UnityWebRequest.Put(GameData.URL+"updateRewards", jsonData);
+        //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/updateRewards", jsonData);
 
-            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.Log(www.error);
-            }
-            else
-            {
-                Debug.Log("Datos de recompensas actualizados correctamente");
-            }
+        www.SetRequestHeader("Content-Type", "application/json");
+
+        yield return www.SendWebRequest();
+
+        if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            Debug.Log("Datos de recompensas actualizados correctamente");
         }
     }
 
@@ -138,7 +152,7 @@ public class RewardsManager : MonoBehaviour
         }       
         
         CalculateBadges();
-        StartCoroutine(SendReward());
+        SendReward();
     }
 
     public void CalculateBadges()
