@@ -52,10 +52,10 @@ public class PlayerMovement : MonoBehaviour
     {
         buttonPlayGame.interactable = false;
         player.transform.localScale = new Vector2(minimunScale,minimunScale);
-        restCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso;
-        apneaCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea;
+        restCount = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].periodos_descanso;
+        apneaCount = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].apnea;
         
-        for (int i = 0; i < GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series; i++)
+        for (int i = 0; i < GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].series; i++)
             GameData.Instance.exerciseSeries.Add(new ExerciseData { tiempo = new List<float>(), flujo = new List<float>() });
         
         yield return new WaitForSeconds(2f);
@@ -74,8 +74,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 maxFlow = GameData.Instance.scriptsGroup.bluetoothPairing.prom;
                 timeDuringGame = GameData.Instance.scriptsGroup.bluetoothPairing.timer;
-                if(maxFlow <= GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
-                    maxTargetScale = (maxFlow * maximunScale / GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo) + minimunScale;                    
+                if(maxFlow <= GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].flujo)
+                    maxTargetScale = (maxFlow * maximunScale / GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].flujo) + minimunScale;                    
                 else
                     maxTargetScale = plusScale;
             }
@@ -102,9 +102,9 @@ public class PlayerMovement : MonoBehaviour
     {
         DeleteGraph();
         GameData.Instance.resting = false;
-        restCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso;
+        restCount = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].periodos_descanso;
 
-        if(seriesCount < GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series)
+        if(seriesCount < GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].series)
         {
             GameData.Instance.scriptsGroup.bluetoothPairing.CallOutputTime();
             UI_System.Instance.SwitchScreens(GameData.Instance.exerciseMenu_Game);
@@ -127,9 +127,9 @@ public class PlayerMovement : MonoBehaviour
 
         while(apneaCount >= 0)
         {
-            apneaCount --;
-            pauseText.text = "MANTENGA\nEL AIRE\n" + ((int)apneaCount+1).ToString();
+            pauseText.text = "MANTENGA\nEL AIRE\n" + ((int)apneaCount).ToString();
             yield return new WaitForSeconds(1f);
+            apneaCount --;
         }
 
         pauseText.text = "BOTA EL AIRE";
@@ -142,7 +142,7 @@ public class PlayerMovement : MonoBehaviour
         pause.SetActive(false);
         yield return new WaitForSeconds(POST_APNEA);
         apneaBool = false;
-        apneaCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea;
+        apneaCount = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].apnea;
     }
 
     public void SaveData(float flow, float time)
@@ -164,12 +164,12 @@ public class PlayerMovement : MonoBehaviour
     public void CreateGraph()
     {
         float maxValue = 0;
-        if(Mathf.Max(tempGraphFlow.ToArray()) > GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
+        if(Mathf.Max(tempGraphFlow.ToArray()) > GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].flujo)
             maxValue = Mathf.Max(tempGraphFlow.ToArray());
         else
-            maxValue = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo;
+            maxValue = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].flujo;
         
-        float goalGraphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo / maxValue;
+        float goalGraphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].flujo / maxValue;
         goalGraph.transform.localPosition = new Vector2(0f, goalGraphPositionY);
 
         for(int i = 0; i < tempGraphFlow.Count; i++)

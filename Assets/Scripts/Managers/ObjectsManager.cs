@@ -24,29 +24,13 @@ public class User
     public float altura;
     public string direccion;
     public string ciudad;
+    public string id_user;
 }
-
-/*[Serializable]
-public class Patient
-{
-    public string _id;
-    public string nombre;
-    public string cedula;
-    public string telefono;
-    public string email;
-    public int edad;
-    public string sexo;
-    public float peso;
-    public float altura;
-    public string direccion;
-    public string ciudad;
-}*/
 
 [Serializable]
 public class Exercise
 {
     public string _id;
-    public string id_user;
     public string nombre;
     public int duracion_total;
     public int frecuencia_dias;
@@ -63,12 +47,12 @@ public class Exercise
 }
 
 [Serializable]
-public class Exercises
+/*public class Exercises
 {
     public List<Exercise> array;
 }
 
-[Serializable]
+[Serializable]*/
 public class ExerciseData
 {
     public List<float> tiempo;

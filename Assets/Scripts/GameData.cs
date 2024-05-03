@@ -11,13 +11,16 @@ public class GameData : MonoBehaviour
 {
     public static GameData Instance {get; private set;}
     public static string URL = "https://server.ubicu.co/";
+    //public static string URL = "http://localhost:5000/"; //test local
 
     public string rutaArchivoPaciente => Path.Combine(Application.persistentDataPath, "paciente.txt");
     public string rutaArchivoFisioterapia => Path.Combine(Application.persistentDataPath, "fisioterapia.txt");
+    public string rutaArchivoPredeterminado => Path.Combine(Application.persistentDataPath, "predeterminado.txt");
     public string rutaArchivoRecompensa => Path.Combine(Application.persistentDataPath, "recompensa.txt");
     public string rutaArchivoPersonalizacion => Path.Combine(Application.persistentDataPath, "personalizacion.txt");
     public string rutaArchivoResultados => Path.Combine(Application.persistentDataPath, "resultados.txt");
 
+    [Header("UI")]
     public ScriptsGroup scriptsGroup;
     public UI_Screen loginMenu;
     public UI_Screen sessionMenu;
@@ -28,21 +31,15 @@ public class GameData : MonoBehaviour
     public UI_Screen badgesMenu;
     public UI_Screen infoBadgesMenu;
 
-    private bool m_playing = false;
+    [Header("BOLEAN")]
+    public bool m_playing = false;
     public bool playing
     {
         get { return m_playing; }
         set { m_playing = value; }
     }
 
-    private int m_idJsonObjectExercises;
-    public int idJsonObjectExercises
-    {
-        get { return m_idJsonObjectExercises; }
-        set { m_idJsonObjectExercises = value; }
-    }
-
-    private bool m_resting = false;
+    public bool m_resting = false;
     public bool resting
     {
         get { return m_resting; }
@@ -63,18 +60,13 @@ public class GameData : MonoBehaviour
         set { m_inspiration = value; }
     }
 
-    public Data m_jsonObjectUser;
-    public Data jsonObjectUser
-    {
-        get { return m_jsonObjectUser; }
-        set { m_jsonObjectUser = value; }
-    }
+    [Header("ID")]
 
-    public Exercises m_jsonObjectExercises;
-    public Exercises jsonObjectExercises
+    public int m_idJsonObjectExercises;
+    public int idJsonObjectExercises
     {
-        get { return m_jsonObjectExercises; }
-        set { m_jsonObjectExercises = value; }
+        get { return m_idJsonObjectExercises; }
+        set { m_idJsonObjectExercises = value; }
     }
 
     public int m_idListHourExercises;
@@ -84,11 +76,26 @@ public class GameData : MonoBehaviour
         set { m_idListHourExercises = value; }
     }
 
-    public List<ExerciseData> m_exerciseSeries;
-    public List<ExerciseData> exerciseSeries
+    [Header("JSON")]
+    public Data m_jsonObjectUser;
+    public Data jsonObjectUser
     {
-        get { return m_exerciseSeries; }
-        set { m_exerciseSeries = value; }
+        get { return m_jsonObjectUser; }
+        set { m_jsonObjectUser = value; }
+    }
+
+    public Exercise m_jsonObjectExerciseDefault;
+    public Exercise jsonObjectExerciseDefault
+    {
+        get { return m_jsonObjectExerciseDefault; }
+        set { m_jsonObjectExerciseDefault = value; }
+    }
+
+    public List<Exercise> m_jsonObjectExercises;
+    public List<Exercise> jsonObjectExercises
+    {
+        get { return m_jsonObjectExercises; }
+        set { m_jsonObjectExercises = value; }
     }
 
     public int[] m_exerciseHourArray;
@@ -96,6 +103,13 @@ public class GameData : MonoBehaviour
     {
         get { return m_exerciseHourArray; }
         set { m_exerciseHourArray = value; }
+    }
+
+    public List<ExerciseData> m_exerciseSeries;
+    public List<ExerciseData> exerciseSeries
+    {
+        get { return m_exerciseSeries; }
+        set { m_exerciseSeries = value; }
     }
 
     public Rewards m_jsonObjectRewards;
@@ -124,6 +138,7 @@ public class GameData : MonoBehaviour
 
     void Start()
     {
+        //PlayerPrefs.DeleteAll();
         idListHourExercises = -1;
 
         if(PlayerPrefs.GetString("currentExerciseDate") == "") // fecha actual

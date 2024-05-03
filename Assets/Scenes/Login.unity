@@ -3126,20 +3126,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdc4acca75eee1449bd97d927037258b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fisioterapia: {fileID: 4900000, guid: 450b54c0cdaa6094ba4c8e446e999a2d, type: 3}
-  personalizacion: {fileID: 4900000, guid: dc762a3cdaa1da84bb89a4330d295e9f, type: 3}
-  recompensa: {fileID: 4900000, guid: 6756fa97d76812040ac21f51e8d7968d, type: 3}
   scriptsGroup: {fileID: 801132551}
   loginMenu: {fileID: 403161336}
   sessionMenu: {fileID: 643810922}
   exerciseMenu_Game: {fileID: 618448814}
   serieGraphMenu: {fileID: 1043462109}
   customizeMenu_Select: {fileID: 20110026}
-  customizeMenu_Items: {fileID: 0}
+  customizeMenu_Items: {fileID: 6545675}
   badgesMenu: {fileID: 5277140862175605144}
   infoBadgesMenu: {fileID: 636473425603101224}
+  m_playing: 0
+  m_resting: 0
   m_apnea: 0
   m_inspiration: 0
+  m_idJsonObjectExercises: 0
+  m_idListHourExercises: 0
   m_jsonObjectUser:
     token: 
     user:
@@ -3154,11 +3155,25 @@ MonoBehaviour:
       altura: 0
       direccion: 
       ciudad: 
-  m_jsonObjectExercises:
-    array: []
-  m_idListHourExercises: 0
-  m_exerciseSeries: []
+      id_user: 
+  m_jsonObjectExerciseDefault:
+    _id: 
+    nombre: 
+    duracion_total: 0
+    frecuencia_dias: 0
+    frecuencia_horas: 0
+    repeticiones: 0
+    series: 0
+    periodos_descanso: 0
+    fecha_inicio: 
+    fecha_fin: 
+    apnea: 0
+    flujo: 0
+    hora_inicio: 0
+    id_patient: 
+  m_jsonObjectExercises: []
   m_exerciseHourArray: 
+  m_exerciseSeries: []
   m_jsonObjectRewards:
     _id: 
     all_badges_array: 
@@ -5944,7 +5959,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00008160207}
+  m_AnchoredPosition: {x: 0, y: 0.00038868797}
   m_SizeDelta: {x: 15.8245, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &319122042
@@ -11700,7 +11715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77c9b65285898e84196000b2f1779778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_StartScreen: {fileID: 403161336}
+  m_StartScreen: {fileID: 309271660}
   onSwitchedScreen:
     m_PersistentCalls:
       m_Calls: []
@@ -27195,7 +27210,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 76446689}
   m_HandleRect: {fileID: 76446688}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 1.0000001
   m_Size: 0.51206064
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -28620,19 +28635,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1828910408}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 271504639}
-        m_TargetAssemblyTypeName: Login, Assembly-CSharp
-        m_MethodName: LogIn
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1828910408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29468,7 +29471,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -54.867203}
+  m_AnchoredPosition: {x: 0, y: -54.86725}
   m_SizeDelta: {x: -40, y: -229.7344}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1889300317
@@ -35624,7 +35627,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6605636323702764357, guid: 2ed04f6c1d5bdf045863a5b16a7cc834, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -49
+      value: -48.99994
       objectReference: {fileID: 0}
     - target: {fileID: 6605636323702764357, guid: 2ed04f6c1d5bdf045863a5b16a7cc834, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

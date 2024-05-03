@@ -147,7 +147,6 @@ public class CustomizationManager : MonoBehaviour
         form.AddField("token", GameData.Instance.jsonObjectUser.token);
 
         UnityWebRequest www = UnityWebRequest.Post(GameData.URL+"allCustomizationsByPatient", form);
-        //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/allCustomizationsByPatient", form);
 
         www.downloadHandler = new DownloadHandlerBuffer();
 
@@ -209,7 +208,6 @@ public class CustomizationManager : MonoBehaviour
     public IEnumerator UpdateCustomizations(string jsonData)
     {
         UnityWebRequest www = UnityWebRequest.Put(GameData.URL+"updateCustomizations", jsonData);
-        //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/updateCustomizations", jsonData);
 
         www.SetRequestHeader("Content-Type", "application/json");
 
@@ -221,7 +219,7 @@ public class CustomizationManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Datos de recompensas actualizados correctamente");
+            Debug.Log("Datos de personalización actualizados correctamente");
         }
     }
 

@@ -19,13 +19,13 @@ public class Obstacles : MonoBehaviour
 
     public IEnumerator ObstaclesCounter()
     {
-        //repGameText.text = "REPETICIÓN\n"+repCounter.ToString()+"/"+GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].repeticiones;
+        repGameText.text = "REPETICIÓN\n"+repCounter.ToString()+"/"+GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].repeticiones;
         
         if (!GameData.Instance.scriptsGroup.playerMovement.apneaBool) 
         {
             enabledCounter = true;
             // VERIFICA QUE SE HAYAN ACABADO LAS REPETICIONES
-            if(repCounter == GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].repeticiones)
+            if(repCounter == GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].repeticiones)
             {
                 GameData.Instance.playing = false;
                 GameData.Instance.scriptsGroup.bluetoothPairing.timer = 0;
@@ -46,7 +46,7 @@ public class Obstacles : MonoBehaviour
         else
         {
             // CUENTA LAS REPETICIONES
-            if(enabledCounter && repCounter < GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].repeticiones)
+            if(enabledCounter && repCounter < GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].repeticiones)
             {
                 enabledCounter = false;
                 StartCoroutine(GameData.Instance.scriptsGroup.playerMovement.StartApnea());

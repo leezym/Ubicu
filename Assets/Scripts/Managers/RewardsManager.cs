@@ -57,7 +57,6 @@ public class RewardsManager : MonoBehaviour
         form.AddField("token", GameData.Instance.jsonObjectUser.token);
 
         UnityWebRequest www = UnityWebRequest.Post(GameData.URL+"allRewardsByPatient", form);
-        //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/allRewardsByPatient", form);
 
         www.downloadHandler = new DownloadHandlerBuffer();
 
@@ -106,7 +105,6 @@ public class RewardsManager : MonoBehaviour
     public IEnumerator UpdateReward(string jsonData)
     {
         UnityWebRequest www = UnityWebRequest.Put(GameData.URL+"updateRewards", jsonData);
-        //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/updateRewards", jsonData);
 
         www.SetRequestHeader("Content-Type", "application/json");
 
@@ -124,14 +122,14 @@ public class RewardsManager : MonoBehaviour
 
     public void CalculateRewards()
     {
-        serieReward = (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series * RewardsManager.SERIE_REWARD);
+        serieReward = (GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].series * RewardsManager.SERIE_REWARD);
         GameData.Instance.jsonObjectRewards.session_reward += RewardsManager.SESSION_REWARD;
         GameData.Instance.jsonObjectRewards.total_reward += (serieReward + RewardsManager.SESSION_REWARD);
         
         NotificationsManager.Instance.WarningNotifications("¡FELICITACIONES!\nGanaste <b>"+serieReward+" Ubicoins</b> por cada serie realizada y <b>"+RewardsManager.SESSION_REWARD+" Ubicoins</b> por el ejercicio completo");
         NotificationsManager.Instance.SetCloseFunction(GameData.Instance.sessionMenu);
 
-        GameData.Instance.jsonObjectRewards.total_series += GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series;
+        GameData.Instance.jsonObjectRewards.total_series += GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].series;
         GameData.Instance.jsonObjectRewards.total_sessions++;
 
         if(GameData.Instance.jsonObjectRewards.session_reward == (GameData.Instance.scriptsGroup.exercisesManager.sesiones * RewardsManager.SESSION_REWARD))
@@ -142,7 +140,7 @@ public class RewardsManager : MonoBehaviour
             NotificationsManager.Instance.SetChangeTextFunction("¡FELICITACIONES!\nGanaste <b>"+RewardsManager.DAY_REWARD+" Ubicoins</b> por completar un día de fisioterapias");
             GameData.Instance.jsonObjectRewards.total_days++;
 
-            if(GameData.Instance.jsonObjectRewards.day_reward == (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_dias * RewardsManager.DAY_REWARD) && DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) == DateTime.ParseExact(GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture))
+            if(GameData.Instance.jsonObjectRewards.day_reward == (GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].frecuencia_dias * RewardsManager.DAY_REWARD) && DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) == DateTime.ParseExact(GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture))
             {
                 GameData.Instance.jsonObjectRewards.total_reward += RewardsManager.WEEK_REWARD;
                 GameData.Instance.jsonObjectRewards.day_reward = 0;
