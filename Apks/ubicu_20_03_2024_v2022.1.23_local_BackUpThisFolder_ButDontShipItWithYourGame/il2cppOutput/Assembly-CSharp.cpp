@@ -8482,7 +8482,7 @@ IL_00f9:
 		L_33 = JsonConvert_DeserializeObject_TisExercises_tD1E4C7D61A3870D50AB21486260CB3D637BA413E_m8FFFBF6875827A3D40E046CB87976AA9424CE728(L_32, JsonConvert_DeserializeObject_TisExercises_tD1E4C7D61A3870D50AB21486260CB3D637BA413E_m8FFFBF6875827A3D40E046CB87976AA9424CE728_RuntimeMethod_var);
 		NullCheck(G_B9_2);
 		GameData_set_jsonObjectExercises_m50282080F533562987F5C67C8C3FCC9CC98D6207_inline(G_B9_2, L_33, NULL);
-		// if(userInputField.text == GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].id_patient)
+		// if(userInputField.text == GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].id_patient)
 		Login_t132B7529D2C1B124EDF51FD17712463DC1553E2A* L_34 = V_1;
 		NullCheck(L_34);
 		TMP_InputField_t3488E0EE8C3DF56C6A328EC95D1BEEA2DF4A7D5F* L_35 = L_34->___userInputField_4;
@@ -12629,7 +12629,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ExercisesManager_CreateExercises_m0EA794
 		L_0 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
 		NullCheck(L_0);
 		GameData_set_idJsonObjectExercises_m98422DB6EE6447035C66FF89CD569EBD7BE5F77E_inline(L_0, (-1), NULL);
-		// if(GameData.Instance.jsonObjectExercises.array.Count == 0)
+		// if(GameData.Instance.jsonObjectExercises.Count == 0)
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_1;
 		L_1 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
 		NullCheck(L_1);
@@ -12655,7 +12655,7 @@ IL_002e:
 	{
 		// emptyExercise = false;
 		V_0 = (bool)0;
-		// if(GameData.Instance.jsonObjectExercises.array.Count == 1)
+		// if(GameData.Instance.jsonObjectExercises.Count == 1)
 		il2cpp_codegen_runtime_class_init_inline(GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6_il2cpp_TypeInfo_var);
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_5;
 		L_5 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
@@ -12681,7 +12681,7 @@ IL_002e:
 		L_9 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
 		NullCheck(L_9);
 		GameData_set_idJsonObjectExercises_m98422DB6EE6447035C66FF89CD569EBD7BE5F77E_inline(L_9, 0, NULL);
-		// if (DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) >= DateTime.ParseExact(GameData.Instance.jsonObjectExercises.array[0].fecha_inicio, "dd/MM/yyyy", CultureInfo.InvariantCulture) && DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(GameData.Instance.jsonObjectExercises.array[0].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture))
+		// if (DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) >= DateTime.ParseExact(GameData.Instance.jsonObjectExercises[0].fecha_inicio, "dd/MM/yyyy", CultureInfo.InvariantCulture) && DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(GameData.Instance.jsonObjectExercises[0].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture))
 		il2cpp_codegen_runtime_class_init_inline(DateTime_t66193957C73913903DDAD89FEDC46139BCA5802D_il2cpp_TypeInfo_var);
 		DateTime_t66193957C73913903DDAD89FEDC46139BCA5802D L_10;
 		L_10 = DateTime_get_Today_m35DCF7D5049604AC424A99B7B225BDD067D0D22A(NULL);
@@ -12771,7 +12771,7 @@ IL_0107:
 		V_1 = (bool)0;
 		// currentDate = true;
 		V_2 = (bool)1;
-		// if (DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) >= DateTime.ParseExact(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-1].fecha_inicio, "dd/MM/yyyy", CultureInfo.InvariantCulture) && DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-1].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture))
+		// if (DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) >= DateTime.ParseExact(GameData.Instance.jsonObjectExercises[GameData.Instance.jsonObjectExercises.Count-1].fecha_inicio, "dd/MM/yyyy", CultureInfo.InvariantCulture) && DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(GameData.Instance.jsonObjectExercises[GameData.Instance.jsonObjectExercises.Count-1].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture))
 		il2cpp_codegen_runtime_class_init_inline(DateTime_t66193957C73913903DDAD89FEDC46139BCA5802D_il2cpp_TypeInfo_var);
 		DateTime_t66193957C73913903DDAD89FEDC46139BCA5802D L_34;
 		L_34 = DateTime_get_Today_m35DCF7D5049604AC424A99B7B225BDD067D0D22A(NULL);
@@ -12864,7 +12864,7 @@ IL_0107:
 		}
 	}
 	{
-		// GameData.Instance.idJsonObjectExercises = GameData.Instance.jsonObjectExercises.array.Count-1;
+		// GameData.Instance.idJsonObjectExercises = GameData.Instance.jsonObjectExercises.Count-1;
 		il2cpp_codegen_runtime_class_init_inline(GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6_il2cpp_TypeInfo_var);
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_66;
 		L_66 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
@@ -12885,7 +12885,7 @@ IL_0107:
 
 IL_01ff:
 	{
-		// else if (DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) >= DateTime.ParseExact(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-2].fecha_inicio, "dd/MM/yyyy", CultureInfo.InvariantCulture) && DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(GameData.Instance.jsonObjectExercises.array[GameData.Instance.jsonObjectExercises.array.Count-2].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture))
+		// else if (DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) >= DateTime.ParseExact(GameData.Instance.jsonObjectExercises[GameData.Instance.jsonObjectExercises.Count-2].fecha_inicio, "dd/MM/yyyy", CultureInfo.InvariantCulture) && DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(GameData.Instance.jsonObjectExercises[GameData.Instance.jsonObjectExercises.Count-2].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture))
 		il2cpp_codegen_runtime_class_init_inline(DateTime_t66193957C73913903DDAD89FEDC46139BCA5802D_il2cpp_TypeInfo_var);
 		DateTime_t66193957C73913903DDAD89FEDC46139BCA5802D L_71;
 		L_71 = DateTime_get_Today_m35DCF7D5049604AC424A99B7B225BDD067D0D22A(NULL);
@@ -12978,7 +12978,7 @@ IL_01ff:
 		}
 	}
 	{
-		// GameData.Instance.idJsonObjectExercises = GameData.Instance.jsonObjectExercises.array.Count-2;
+		// GameData.Instance.idJsonObjectExercises = GameData.Instance.jsonObjectExercises.Count-2;
 		il2cpp_codegen_runtime_class_init_inline(GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6_il2cpp_TypeInfo_var);
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_103;
 		L_103 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
@@ -13005,8 +13005,8 @@ IL_02f0:
 
 IL_02f2:
 	{
-		// GameData.Instance.scriptsGroup.playerMovement.POST_APNEA = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea == 1 ? 5f
-		// : GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea == 2 ? 4f
+		// GameData.Instance.scriptsGroup.playerMovement.POST_APNEA = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].apnea == 1 ? 5f
+		// : GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].apnea == 2 ? 4f
 		// : 3f; // segundos de descanso minimo postapnea antes de comenzar a tomar aire
 		il2cpp_codegen_runtime_class_init_inline(GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6_il2cpp_TypeInfo_var);
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_108;
@@ -13088,7 +13088,7 @@ IL_0360:
 	{
 		NullCheck(G_B19_1);
 		G_B19_1->___POST_APNEA_10 = G_B19_0;
-		// if(PlayerPrefs.GetString("currentExerciseFinalDate") != "" && DateTime.ParseExact(PlayerPrefs.GetString("currentExerciseFinalDate"), "dd/MM/yyyy", CultureInfo.InvariantCulture) != DateTime.ParseExact(GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture)) // fecha fin ejercicio actual
+		// if(PlayerPrefs.GetString("currentExerciseFinalDate") != "" && DateTime.ParseExact(PlayerPrefs.GetString("currentExerciseFinalDate"), "dd/MM/yyyy", CultureInfo.InvariantCulture) != DateTime.ParseExact(GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture)) // fecha fin ejercicio actual
 		String_t* L_125;
 		L_125 = PlayerPrefs_GetString_mA4C9F842BF77E5572AB20EA087C7048F870D02AE(_stringLiteral0B2CCA07DCBF528CD1BF354CD4EB2BE6AC906FEB, NULL);
 		bool L_126;
@@ -13163,7 +13163,7 @@ IL_0360:
 		L_146 = GameData_get_jsonObjectRewards_mF8AD08E7033432220DF46CAC4C965915187CEC76_inline(L_145, NULL);
 		NullCheck(L_146);
 		L_146->___day_reward_3 = 0;
-		// PlayerPrefs.SetString("currentExerciseFinalDate", GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].fecha_fin);
+		// PlayerPrefs.SetString("currentExerciseFinalDate", GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].fecha_fin);
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_147;
 		L_147 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
 		NullCheck(L_147);
@@ -13285,7 +13285,7 @@ IL_04ab:
 		L_187 = Transform_Find_m3087032B0E1C5B96A2D2C27020BAEAE2DA08F932(L_186, _stringLiteralF55661DCDE2577277D3BF78895457EAFE20C79B6, NULL);
 		__this->___sessionTitlePrefab_17 = L_187;
 		Il2CppCodeGenWriteBarrier((void**)(&__this->___sessionTitlePrefab_17), (void*)L_187);
-		// sessionTitlePrefab.GetComponent<TMP_Text>().text = "Sesi?n " + (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].hora_inicio + (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas * i)) + ":00";
+		// sessionTitlePrefab.GetComponent<TMP_Text>().text = "Sesi?n " + (GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].hora_inicio + (GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].frecuencia_horas * i)) + ":00";
 		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_188 = __this->___sessionTitlePrefab_17;
 		NullCheck(L_188);
 		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_189;
@@ -13474,7 +13474,7 @@ IL_0022:
 
 IL_002b:
 	{
-		// add = (12/GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas) + 1;
+		// add = (12/GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].frecuencia_horas) + 1;
 		il2cpp_codegen_runtime_class_init_inline(GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6_il2cpp_TypeInfo_var);
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_13;
 		L_13 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
@@ -13534,7 +13534,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ExercisesManager_AddExcersiseData_m694DD
 	float G_B10_0 = 0.0f;
 	ExercisesManager_t865453B81ADAADF17947964F17736C30721856E1* G_B10_1 = NULL;
 	{
-		// exerciseRepPrefab.text = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].repeticiones.ToString();
+		// exerciseRepPrefab.text = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].repeticiones.ToString();
 		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_0 = __this->___exerciseRepPrefab_5;
 		il2cpp_codegen_runtime_class_init_inline(GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6_il2cpp_TypeInfo_var);
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_1;
@@ -13558,7 +13558,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ExercisesManager_AddExcersiseData_m694DD
 		L_8 = Int32_ToString_m030E01C24E294D6762FB0B6F37CB541581F55CA5(L_7, NULL);
 		NullCheck(L_0);
 		VirtualActionInvoker1< String_t* >::Invoke(62 /* System.Void TMPro.TMP_Text::set_text(System.String) */, L_0, L_8);
-		// exerciseSeriePrefab.text = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series.ToString();
+		// exerciseSeriePrefab.text = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].series.ToString();
 		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_9 = __this->___exerciseSeriePrefab_6;
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_10;
 		L_10 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
@@ -13581,7 +13581,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ExercisesManager_AddExcersiseData_m694DD
 		L_17 = Int32_ToString_m030E01C24E294D6762FB0B6F37CB541581F55CA5(L_16, NULL);
 		NullCheck(L_9);
 		VirtualActionInvoker1< String_t* >::Invoke(62 /* System.Void TMPro.TMP_Text::set_text(System.String) */, L_9, L_17);
-		// exerciseApneaPrefab.text = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea.ToString();
+		// exerciseApneaPrefab.text = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].apnea.ToString();
 		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_18 = __this->___exerciseApneaPrefab_7;
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_19;
 		L_19 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
@@ -13604,7 +13604,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ExercisesManager_AddExcersiseData_m694DD
 		L_26 = Int32_ToString_m030E01C24E294D6762FB0B6F37CB541581F55CA5(L_25, NULL);
 		NullCheck(L_18);
 		VirtualActionInvoker1< String_t* >::Invoke(62 /* System.Void TMPro.TMP_Text::set_text(System.String) */, L_18, L_26);
-		// exerciseDescansoPrefab.text = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso.ToString();
+		// exerciseDescansoPrefab.text = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].periodos_descanso.ToString();
 		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_27 = __this->___exerciseDescansoPrefab_8;
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_28;
 		L_28 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
@@ -13627,7 +13627,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ExercisesManager_AddExcersiseData_m694DD
 		L_35 = Int32_ToString_m030E01C24E294D6762FB0B6F37CB541581F55CA5(L_34, NULL);
 		NullCheck(L_27);
 		VirtualActionInvoker1< String_t* >::Invoke(62 /* System.Void TMPro.TMP_Text::set_text(System.String) */, L_27, L_35);
-		// exerciseFlujoPrefab.text = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo.ToString()+"ml";
+		// exerciseFlujoPrefab.text = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].flujo.ToString()+"ml";
 		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_36 = __this->___exerciseFlujoPrefab_9;
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_37;
 		L_37 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
@@ -13705,7 +13705,7 @@ IL_0178:
 		String_t* L_60;
 		L_60 = DateTime_ToString_m6963A84785C320DA776C9FCFFEDAF26C8F1A8D78((&V_0), _stringLiteralD68B342FC478E02B02A83610669ACA863FF4BD6A, NULL);
 		PlayerPrefs_SetString_mF4F457C81BB75F0213547C6287BA36E15E1F0256(_stringLiteral9C4320DE67803FCC28687B359316AF76B9F1DCEC, L_60, NULL);
-		// int hours = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].hora_inicio;
+		// int hours = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].hora_inicio;
 		il2cpp_codegen_runtime_class_init_inline(GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6_il2cpp_TypeInfo_var);
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_61;
 		L_61 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
@@ -13743,7 +13743,7 @@ IL_01bc:
 		int32_t L_71 = V_1;
 		NullCheck(L_69);
 		(L_69)->SetAt(static_cast<il2cpp_array_size_t>(L_70), (int32_t)L_71);
-		// hours += GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas;
+		// hours += GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].frecuencia_horas;
 		int32_t L_72 = V_1;
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_73;
 		L_73 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
@@ -13804,7 +13804,7 @@ IL_01fe:
 
 IL_022e:
 	{
-		// extraMinuteToWaitForExercise = (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_horas == 1 ? 30f : 59f); // minutos
+		// extraMinuteToWaitForExercise = (GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].frecuencia_horas == 1 ? 30f : 59f); // minutos
 		il2cpp_codegen_runtime_class_init_inline(GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6_il2cpp_TypeInfo_var);
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_88;
 		L_88 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
@@ -14254,7 +14254,7 @@ IL_0013:
 		String_t* L_6;
 		L_6 = JsonConvert_SerializeObject_m277670BD344964CB2A61751E5A3D62DB5B1321C7(L_5, NULL);
 		V_1 = L_6;
-		// form.AddField("id_ejercicio", GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises]._id);
+		// form.AddField("id_ejercicio", GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises]._id);
 		WWWForm_t0DAE123504AB1B2BC17C18714741B92AB3B3B045* L_7 = __this->___U3CformU3E5__2_2;
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_8;
 		L_8 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
@@ -15272,7 +15272,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void RewardsManager_CalculateRewards_m32DB69D
 	DateTime_t66193957C73913903DDAD89FEDC46139BCA5802D V_0;
 	memset((&V_0), 0, sizeof(V_0));
 	{
-		// serieReward = (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series * RewardsManager.SERIE_REWARD);
+		// serieReward = (GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].series * RewardsManager.SERIE_REWARD);
 		il2cpp_codegen_runtime_class_init_inline(GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6_il2cpp_TypeInfo_var);
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_0;
 		L_0 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
@@ -15361,7 +15361,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void RewardsManager_CalculateRewards_m32DB69D
 		UI_Screen_t5A931EFCDE0CDDD7DE14FDDDC95CEBA35FA7D878* L_32 = L_31->___sessionMenu_9;
 		NullCheck(L_30);
 		NotificationsManager_SetCloseFunction_m4EF3864EF4C04FD08A91CD635C2C2E7FC92CE824(L_30, L_32, NULL);
-		// GameData.Instance.jsonObjectRewards.total_series += GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series;
+		// GameData.Instance.jsonObjectRewards.total_series += GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].series;
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_33;
 		L_33 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
 		NullCheck(L_33);
@@ -15477,7 +15477,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void RewardsManager_CalculateRewards_m32DB69D
 		int32_t L_74 = L_73->___total_days_7;
 		NullCheck(L_73);
 		L_73->___total_days_7 = ((int32_t)il2cpp_codegen_add(L_74, 1));
-		// if(GameData.Instance.jsonObjectRewards.day_reward == (GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].frecuencia_dias * RewardsManager.DAY_REWARD) && DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) == DateTime.ParseExact(GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture))
+		// if(GameData.Instance.jsonObjectRewards.day_reward == (GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].frecuencia_dias * RewardsManager.DAY_REWARD) && DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) == DateTime.ParseExact(GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture))
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_75;
 		L_75 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
 		NullCheck(L_75);
@@ -18077,7 +18077,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool U3CObstaclesCounterU3Ed__7_MoveNext_mDA4
 IL_001a:
 	{
 		__this->___U3CU3E1__state_0 = (-1);
-		// repGameText.text = "REPETICI?N\n"+repCounter.ToString()+"/"+GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].repeticiones;
+		// repGameText.text = "REPETICI?N\n"+repCounter.ToString()+"/"+GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].repeticiones;
 		Obstacles_tA13448F0963AA3C6F5B30286080FF90A5A7E2D86* L_4 = V_1;
 		NullCheck(L_4);
 		TMP_Text_tE8D677872D43AD4B2AAF0D6101692A17D0B251A9* L_5 = L_4->___repGameText_8;
@@ -18129,7 +18129,7 @@ IL_001a:
 		Obstacles_tA13448F0963AA3C6F5B30286080FF90A5A7E2D86* L_22 = V_1;
 		NullCheck(L_22);
 		L_22->___enabledCounter_5 = (bool)1;
-		// if(repCounter == GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].repeticiones)
+		// if(repCounter == GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].repeticiones)
 		Obstacles_tA13448F0963AA3C6F5B30286080FF90A5A7E2D86* L_23 = V_1;
 		NullCheck(L_23);
 		int32_t L_24 = L_23->___repCounter_9;
@@ -18274,7 +18274,7 @@ IL_018a:
 		NullCheck(L_58);
 		Coroutine_t85EA685566A254C23F3FD77AB5BDFFFF8799596B* L_63;
 		L_63 = MonoBehaviour_StartCoroutine_m4CAFF732AA28CD3BDC5363B44A863575530EC812(L_58, L_62, NULL);
-		// if(enabledCounter && repCounter < GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].repeticiones)
+		// if(enabledCounter && repCounter < GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].repeticiones)
 		Obstacles_tA13448F0963AA3C6F5B30286080FF90A5A7E2D86* L_64 = V_1;
 		NullCheck(L_64);
 		bool L_65 = L_64->___enabledCounter_5;
@@ -18480,7 +18480,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void PlayerMovement_Movement_m17E9539338D5CB2
 		NullCheck(L_14);
 		float L_15 = L_14->___timer_13;
 		__this->___timeDuringGame_31 = L_15;
-		// if(maxFlow <= GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
+		// if(maxFlow <= GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].flujo)
 		float L_16 = __this->___maxFlow_26;
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_17;
 		L_17 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
@@ -18505,7 +18505,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void PlayerMovement_Movement_m17E9539338D5CB2
 		}
 	}
 	{
-		// maxTargetScale = (maxFlow * maximunScale / GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo) + minimunScale;
+		// maxTargetScale = (maxFlow * maximunScale / GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].flujo) + minimunScale;
 		float L_24 = __this->___maxFlow_26;
 		float L_25 = __this->___maximunScale_12;
 		il2cpp_codegen_runtime_class_init_inline(GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6_il2cpp_TypeInfo_var);
@@ -18689,7 +18689,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void PlayerMovement_ContinueGame_mD54D0955194
 		L_0 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
 		NullCheck(L_0);
 		GameData_set_resting_m174B71CECE5794BB801FD6D0C9D77B57434E029E_inline(L_0, (bool)0, NULL);
-		// restCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso;
+		// restCount = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].periodos_descanso;
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_1;
 		L_1 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
 		NullCheck(L_1);
@@ -18708,7 +18708,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void PlayerMovement_ContinueGame_mD54D0955194
 		NullCheck(L_6);
 		int32_t L_7 = L_6->___periodos_descanso_8;
 		__this->___restCount_29 = ((float)L_7);
-		// if(seriesCount < GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series)
+		// if(seriesCount < GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].series)
 		int32_t L_8 = __this->___seriesCount_30;
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_9;
 		L_9 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
@@ -18959,7 +18959,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void PlayerMovement_CreateGraph_m8E7A382CFEF8
 	{
 		// float maxValue = 0;
 		V_0 = (0.0f);
-		// if(Mathf.Max(tempGraphFlow.ToArray()) > GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo)
+		// if(Mathf.Max(tempGraphFlow.ToArray()) > GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].flujo)
 		List_1_t0D1C46FD8DDDE974D93CA4F3474EEC05AF950918* L_0 = __this->___tempGraphFlow_32;
 		NullCheck(L_0);
 		SingleU5BU5D_t89DEFE97BCEDB5857010E79ECE0F52CF6E93B87C* L_1;
@@ -19003,7 +19003,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void PlayerMovement_CreateGraph_m8E7A382CFEF8
 
 IL_004f:
 	{
-		// maxValue = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo;
+		// maxValue = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].flujo;
 		il2cpp_codegen_runtime_class_init_inline(GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6_il2cpp_TypeInfo_var);
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_13;
 		L_13 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
@@ -19027,7 +19027,7 @@ IL_004f:
 
 IL_0074:
 	{
-		// float goalGraphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].flujo / maxValue;
+		// float goalGraphPositionY = graphStructure.GetComponent<RectTransform>().rect.height * GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].flujo / maxValue;
 		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_20 = __this->___graphStructure_19;
 		NullCheck(L_20);
 		RectTransform_t6C5DA5E41A89E0F488B001E45E58963480E543A5* L_21;
@@ -19503,7 +19503,7 @@ IL_001a:
 		L_14 = Vector2_op_Implicit_m6D9CABB2C791A192867D7A4559D132BE86DD3EB7_inline(L_13, NULL);
 		NullCheck(L_8);
 		Transform_set_localScale_mBA79E811BAF6C47B80FF76414C12B47B3CD03633(L_8, L_14, NULL);
-		// restCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].periodos_descanso;
+		// restCount = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].periodos_descanso;
 		PlayerMovement_t4A0A0A8C937BC1D4FC570D1B5B50847338423351* L_15 = V_1;
 		il2cpp_codegen_runtime_class_init_inline(GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6_il2cpp_TypeInfo_var);
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_16;
@@ -19525,7 +19525,7 @@ IL_001a:
 		int32_t L_22 = L_21->___periodos_descanso_8;
 		NullCheck(L_15);
 		L_15->___restCount_29 = ((float)L_22);
-		// apneaCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea;
+		// apneaCount = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].apnea;
 		PlayerMovement_t4A0A0A8C937BC1D4FC570D1B5B50847338423351* L_23 = V_1;
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_24;
 		L_24 = GameData_get_Instance_m74942306B5C246578CE7846C78F36EF4C98558C0_inline(NULL);
@@ -19546,7 +19546,7 @@ IL_001a:
 		int32_t L_30 = L_29->___apnea_11;
 		NullCheck(L_23);
 		L_23->___apneaCount_28 = ((float)L_30);
-		// for (int i = 0; i < GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series; i++)
+		// for (int i = 0; i < GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].series; i++)
 		V_2 = 0;
 		goto IL_00d9;
 	}
@@ -19579,14 +19579,14 @@ IL_00ab:
 		Il2CppCodeGenWriteBarrier((void**)(&L_36->___flujo_1), (void*)L_37);
 		NullCheck(L_32);
 		List_1_Add_m7FBB28A34176E5BD546DB6B2C6434986240BEC84_inline(L_32, L_36, List_1_Add_m7FBB28A34176E5BD546DB6B2C6434986240BEC84_RuntimeMethod_var);
-		// for (int i = 0; i < GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series; i++)
+		// for (int i = 0; i < GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].series; i++)
 		int32_t L_38 = V_2;
 		V_2 = ((int32_t)il2cpp_codegen_add(L_38, 1));
 	}
 
 IL_00d9:
 	{
-		// for (int i = 0; i < GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].series; i++)
+		// for (int i = 0; i < GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].series; i++)
 		int32_t L_39 = V_2;
 		il2cpp_codegen_runtime_class_init_inline(GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6_il2cpp_TypeInfo_var);
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_40;
@@ -19931,7 +19931,7 @@ IL_0044:
 		PlayerMovement_t4A0A0A8C937BC1D4FC570D1B5B50847338423351* L_9 = V_1;
 		NullCheck(L_9);
 		L_9->___apneaBool_27 = (bool)0;
-		// apneaCount = GameData.Instance.jsonObjectExercises.array[GameData.Instance.idJsonObjectExercises].apnea;
+		// apneaCount = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].apnea;
 		PlayerMovement_t4A0A0A8C937BC1D4FC570D1B5B50847338423351* L_10 = V_1;
 		il2cpp_codegen_runtime_class_init_inline(GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6_il2cpp_TypeInfo_var);
 		GameData_t857DCFA51343FE2611A88BE4D943BDA16FBCE8B6* L_11;

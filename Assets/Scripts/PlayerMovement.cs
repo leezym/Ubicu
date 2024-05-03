@@ -90,8 +90,9 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public void RestingPlayer()
-    {        
-        restText.text = "Descansa por " + (int)restCount + " segundos...";
+    {
+        float count = restCount + 1;
+        restText.text = "Descansa por " + (int)count + " segundos...";
         if(restCount >= 0)
             restCount -= Time.deltaTime;
         else

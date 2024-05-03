@@ -10,8 +10,8 @@ using System.IO;
 public class GameData : MonoBehaviour
 {
     public static GameData Instance {get; private set;}
-    public static string URL = "https://server.ubicu.co/";
-    //public static string URL = "http://localhost:5000/"; //test local
+    //public static string URL = "https://server.ubicu.co/";
+    public static string URL = "http://localhost:5000/";
 
     public string rutaArchivoPaciente => Path.Combine(Application.persistentDataPath, "paciente.txt");
     public string rutaArchivoFisioterapia => Path.Combine(Application.persistentDataPath, "fisioterapia.txt");

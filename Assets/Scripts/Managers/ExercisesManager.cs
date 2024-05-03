@@ -248,6 +248,7 @@ public class ExercisesManager : MonoBehaviour
         {
             WWWForm form = new WWWForm();
 
+            form.AddField("token", GameData.Instance.jsonObjectUser.token);
             form.AddField("id_ejercicio", GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises]._id);
             form.AddField("fecha", PlayerPrefs.GetString("currentExerciseDate"));
             form.AddField("hora", GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises]);
@@ -293,7 +294,7 @@ public class ExercisesManager : MonoBehaviour
                 File.WriteAllText(GameData.Instance.rutaArchivoResultados, jsonData+",");
             }
 
-            Debug.Log("Datos de resultados locales actualizados correctamente");
+            Debug.Log("Datos de resultados locales creados correctamente");
             
             GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises] = 0; // si se finalizó se coloca 0
             GameData.Instance.idListHourExercises = -1;
@@ -318,6 +319,8 @@ public class ExercisesManager : MonoBehaviour
                 jsonObject["id_ejercicio"] = id_ejercicio;
 
             WWWForm form = new WWWForm();
+
+            form.AddField("token", GameData.Instance.jsonObjectUser.token);
             form.AddField("id_ejercicio", jsonObject["id_ejercicio"].ToString());
             form.AddField("fecha", jsonObject["fecha"].ToString());
             form.AddField("hora", jsonObject["hora"].ToString());

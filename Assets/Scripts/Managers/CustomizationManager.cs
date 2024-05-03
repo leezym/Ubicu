@@ -210,6 +210,7 @@ public class CustomizationManager : MonoBehaviour
         UnityWebRequest www = UnityWebRequest.Put(GameData.URL+"updateCustomizations", jsonData);
 
         www.SetRequestHeader("Content-Type", "application/json");
+        www.SetRequestHeader("x-access-token", GameData.Instance.jsonObjectUser.token);
 
         yield return www.SendWebRequest();
 
