@@ -11,6 +11,12 @@ using System.IO;
 
 public class CustomizationManager : MonoBehaviour
 {
+    public static CustomizationManager Instance {get; private set;}
+
+    [Header("UI")]
+    public UI_Screen customizeMenu_Select;
+    public UI_Screen customizeMenu_Items;
+
     [Header("CHECK POSITIONS")]
     public Transform[] fondosItemTransform = new Transform[0];
     public Transform[] figurasItemTransform = new Transform[0];
@@ -140,6 +146,14 @@ public class CustomizationManager : MonoBehaviour
     public string[] descriptionsFondosAnatomia = new string[0];
     public string[] descriptionsFigurasAnatomia = new string[0];
 
+    private void Awake()
+    {
+        if(Instance != null && Instance != this)
+            Destroy(this);
+        else
+            Instance = this;
+    }
+
     public IEnumerator GetCustomizations()
     {
         WWWForm form = new WWWForm();
@@ -192,7 +206,7 @@ public class CustomizationManager : MonoBehaviour
 
         UpdateLocalCustomizations(jsonData);
 
-        if(!GameData.Instance.scriptsGroup.login.notInternet.isOn)
+        if(!Login.Instance.notInternet.isOn)
         {            
             StartCoroutine(UpdateCustomizations(jsonData));
         }
@@ -346,19 +360,19 @@ public class CustomizationManager : MonoBehaviour
         {
             playerGameObject[0].SetActive(false); //circle
             playerGameObject[1].SetActive(true); //lung
-            GameData.Instance.scriptsGroup.playerMovement.minimunScale = PlayerMovement.LUNG_MINIMUM_SCALE;
-            GameData.Instance.scriptsGroup.playerMovement.maximunScale = PlayerMovement.LUNG_MAXIMUM_SCALE;
-            GameData.Instance.scriptsGroup.playerMovement.plusScale = PlayerMovement.LUNG_PLUS_SCALE;
-            GameData.Instance.scriptsGroup.playerMovement.player = playerGameObject[1].transform.Find("Lung").gameObject;
+            PlayerMovement.Instance.minimunScale = PlayerMovement.LUNG_MINIMUM_SCALE;
+            PlayerMovement.Instance.maximunScale = PlayerMovement.LUNG_MAXIMUM_SCALE;
+            PlayerMovement.Instance.plusScale = PlayerMovement.LUNG_PLUS_SCALE;
+            PlayerMovement.Instance.player = playerGameObject[1].transform.Find("Lung").gameObject;
         }
         else
         {
             playerGameObject[0].SetActive(true); //circle
             playerGameObject[1].SetActive(false); //lung
-            GameData.Instance.scriptsGroup.playerMovement.minimunScale = PlayerMovement.CIRCLE_MINIMUM_SCALE;
-            GameData.Instance.scriptsGroup.playerMovement.maximunScale = PlayerMovement.CIRCLE_MAXIMUM_SCALE;
-            GameData.Instance.scriptsGroup.playerMovement.plusScale = PlayerMovement.CIRCLE_PLUS_SCALE;
-            GameData.Instance.scriptsGroup.playerMovement.player = playerGameObject[0].transform.Find("Circle").gameObject;
+            PlayerMovement.Instance.minimunScale = PlayerMovement.CIRCLE_MINIMUM_SCALE;
+            PlayerMovement.Instance.maximunScale = PlayerMovement.CIRCLE_MAXIMUM_SCALE;
+            PlayerMovement.Instance.plusScale = PlayerMovement.CIRCLE_PLUS_SCALE;
+            PlayerMovement.Instance.player = playerGameObject[0].transform.Find("Circle").gameObject;
         }
         this.fondosSprites = fondosSprites.Clone() as Sprite[];
         this.circuloSprites = circuloSprites.Clone() as Sprite[];
@@ -496,14 +510,14 @@ public class CustomizationManager : MonoBehaviour
         {
             // notificacion de no poder colocar el tema por UbiCoins
             NotificationsManager.Instance.WarningNotifications("No tienes UbiCoins suficientes para completar el tema.\n¡Sigue haciendo tu fisioterapia!");
-            NotificationsManager.Instance.SetCloseFunction(GameData.Instance.customizeMenu_Select);
+            NotificationsManager.Instance.SetCloseFunction(customizeMenu_Select);
             GameData.Instance.jsonObjectCustomizations.id_customization = tempIdCustomization;
         }
         else if (idItemFondosArray[GameData.Instance.jsonObjectCustomizations.id_customization] >= 0 && idItemFigurasArray [GameData.Instance.jsonObjectCustomizations.id_customization] >= 0)
         {
             //notificacion de tema seleccionado
             NotificationsManager.Instance.WarningNotifications("¡Tema seleccionado!");
-            NotificationsManager.Instance.SetCloseFunction(GameData.Instance.customizeMenu_Select);
+            NotificationsManager.Instance.SetCloseFunction(customizeMenu_Select);
             SendCustomizations();
         }
         else

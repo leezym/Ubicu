@@ -7,6 +7,8 @@ using TMPro;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public static PlayerMovement Instance {get; private set;}
+
     public static float CIRCLE_MINIMUM_SCALE = 0.08f;
     public static float CIRCLE_MAXIMUM_SCALE = 0.75f;
     public static float CIRCLE_PLUS_SCALE = 0.83f;
@@ -15,7 +17,6 @@ public class PlayerMovement : MonoBehaviour
     public static float LUNG_PLUS_SCALE = 0.76f;
     public float POST_APNEA = 0f;
 
-    
     [Header("ATTACHED")]
     public float minimunScale;
     public float maximunScale;
@@ -43,6 +44,14 @@ public class PlayerMovement : MonoBehaviour
     public List<float> tempGraphFlow;
     public List<float> tempGraphTime;
 
+    private void Awake()
+    {
+        if(Instance != null && Instance != this)
+            Destroy(this);
+        else
+            Instance = this;
+    }
+
     public void InitializeLevel()
     {
         StartCoroutine(CallInitializeLevel());
@@ -65,15 +74,15 @@ public class PlayerMovement : MonoBehaviour
     public void Movement()
     {
         //test
-        //GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = "I:"+GameData.Instance.inspiration+"-A:"+apneaBool+"\nMx:"+maxFlow.ToString()+"-Curr:"+GameData.Instance.scriptsGroup.bluetoothPairing.prom.ToString();
-        //GameData.Instance.scriptsGroup.exercisesManager.exerciseFlujoPrefab.text = "I:"+GameData.Instance.inspiration+"-A:"+apneaBool;
+        //ExercisesManager.Instance.exerciseFlujoPrefab.text = "I:"+GameData.Instance.inspiration+"-A:"+apneaBool+"\nMx:"+maxFlow.ToString()+"-Curr:"+BluetoothPairing.Instance.prom.ToString();
+        //ExercisesManager.Instance.exerciseFlujoPrefab.text = "I:"+GameData.Instance.inspiration+"-A:"+apneaBool;
         
         if(GameData.Instance.inspiration && !apneaBool)
         {
-            if(GameData.Instance.scriptsGroup.bluetoothPairing.prom > maxFlow)
+            if(BluetoothPairing.Instance.prom > maxFlow)
             {
-                maxFlow = GameData.Instance.scriptsGroup.bluetoothPairing.prom;
-                timeDuringGame = GameData.Instance.scriptsGroup.bluetoothPairing.timer;
+                maxFlow = BluetoothPairing.Instance.prom;
+                timeDuringGame = BluetoothPairing.Instance.timer;
                 if(maxFlow <= GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].flujo)
                     maxTargetScale = (maxFlow * maximunScale / GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].flujo) + minimunScale;                    
                 else
@@ -107,8 +116,8 @@ public class PlayerMovement : MonoBehaviour
 
         if(seriesCount < GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].series)
         {
-            GameData.Instance.scriptsGroup.bluetoothPairing.CallOutputTime();
-            UI_System.Instance.SwitchScreens(GameData.Instance.exerciseMenu_Game);
+            BluetoothPairing.Instance.CallOutputTime();
+            UI_System.Instance.SwitchScreens(ExercisesManager.Instance.exerciseMenu_Game);
             GameData.Instance.playing = true;
             seriesTextGame.text = "SERIE "+ (seriesCount+1);
             seriesTextGraph.text = "SERIE "+ (seriesCount+1);
@@ -116,14 +125,14 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             seriesCount = 0;
-            StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.SendResults());
-            GameData.Instance.scriptsGroup.rewardsManager.CalculateRewards();
+            StartCoroutine(ExercisesManager.Instance.SendResults());
+            RewardsManager.Instance.CalculateRewards();
         }
     }
 
     public IEnumerator StartApnea()
     {
-        GameData.Instance.scriptsGroup.soundsManager.activeSignalSound = true;
+        SoundsManager.Instance.activeSignalSound = true;
         pause.SetActive(true);
 
         while(apneaCount >= 0)

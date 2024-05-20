@@ -7,7 +7,7 @@ using TMPro;
 
 public class NotificationsManager : MonoBehaviour
 {
-    public static NotificationsManager Instance{get; private set;}
+    public static NotificationsManager Instance {get; private set;}
     public GameObject notificationsMenu;
     public TMP_Text notificationsText;
     public Button notificationsNextButton;
@@ -33,6 +33,7 @@ public class NotificationsManager : MonoBehaviour
         notificationsCloseButton.gameObject.SetActive(true);
         notificationsNextButton.gameObject.SetActive(false);
     }
+    
     public void QuestionNotifications(string text)
     {
         notificationsMenu.SetActive(true);

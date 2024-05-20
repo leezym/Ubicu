@@ -18,10 +18,16 @@ public class BadgePointsContainer
 
 public class RewardsManager : MonoBehaviour
 {
+    public static RewardsManager Instance {get; private set;}
+    
     public static int SERIE_REWARD = 25;
     public static int SESSION_REWARD = 100;
     public static int DAY_REWARD = 150;
     public static int WEEK_REWARD = 300;
+    
+    [Header("UI")]
+    public UI_Screen badgesMenu;
+    public UI_Screen infoBadgesMenu;
     
     [Header("ATTACHED")]
     public TMP_Text[] textReward;
@@ -43,13 +49,20 @@ public class RewardsManager : MonoBehaviour
     public TMP_Text badgesTitle;
     public TMP_Text badgesSubTitle;
     public Image badgesBigImage;
-    public TMP_Text badgesDescription;
-    
+    public TMP_Text badgesDescription;    
 
     [Header("IN GAME")]
     public int serieReward;
     public AllItems[] allBadgesArray = new AllItems[4]; // cuales insignias se han ganado
 
+    private void Awake()
+    {
+        if(Instance != null && Instance != this)
+            Destroy(this);
+        else
+            Instance = this;
+    }
+    
     public IEnumerator GetRewards()
     {
         WWWForm form = new WWWForm();
@@ -89,7 +102,7 @@ public class RewardsManager : MonoBehaviour
         
         UpdateLocalReward(jsonData);
         
-        if(!GameData.Instance.scriptsGroup.login.notInternet.isOn)
+        if(!Login.Instance.notInternet.isOn)
         {
             StartCoroutine(UpdateReward(jsonData));
         }
@@ -128,12 +141,12 @@ public class RewardsManager : MonoBehaviour
         GameData.Instance.jsonObjectRewards.total_reward += (serieReward + RewardsManager.SESSION_REWARD);
         
         NotificationsManager.Instance.WarningNotifications("¡FELICITACIONES!\nGanaste <b>"+serieReward+" Ubicoins</b> por cada serie realizada y <b>"+RewardsManager.SESSION_REWARD+" Ubicoins</b> por el ejercicio completo");
-        NotificationsManager.Instance.SetCloseFunction(GameData.Instance.sessionMenu);
+        NotificationsManager.Instance.SetCloseFunction(ExercisesManager.Instance.sessionMenu);
 
         GameData.Instance.jsonObjectRewards.total_series += GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].series;
         GameData.Instance.jsonObjectRewards.total_sessions++;
 
-        if(GameData.Instance.jsonObjectRewards.session_reward == (GameData.Instance.scriptsGroup.exercisesManager.sesiones * RewardsManager.SESSION_REWARD))
+        if(GameData.Instance.jsonObjectRewards.session_reward == (ExercisesManager.Instance.sesiones * RewardsManager.SESSION_REWARD))
         {
             GameData.Instance.jsonObjectRewards.day_reward += RewardsManager.DAY_REWARD;
             GameData.Instance.jsonObjectRewards.total_reward += RewardsManager.DAY_REWARD;
@@ -219,7 +232,7 @@ public class RewardsManager : MonoBehaviour
         }
         
         if(allBadgesArray[j].item[i] == 1) //si tienes la insignia muestras la info
-            UI_System.Instance.SwitchScreens(GameData.Instance.infoBadgesMenu);
+            UI_System.Instance.SwitchScreens(infoBadgesMenu);
         else
         {
             NotificationsManager.Instance.WarningNotifications("Aún no tienes la insignia <b>"+badgesTitle.text+" "+badgesSubTitle.text+"</b>");

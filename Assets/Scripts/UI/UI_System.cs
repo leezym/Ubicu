@@ -51,7 +51,8 @@ public class UI_System : MonoBehaviour
         }
         FadeIn();
 
-        videoPlayer.loopPointReached += VideoPlayer_loopPointReached;
+        if(videoPlayer != null)
+            videoPlayer.loopPointReached += VideoPlayer_loopPointReached;
     }
     #endregion
 

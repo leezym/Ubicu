@@ -5,6 +5,8 @@ using TMPro;
 
 public class SoundsManager : MonoBehaviour
 {
+    public static SoundsManager Instance {get; private set;}
+
     [Header("ATTACHED")]
     public List<MotivationSound> motivationSounds;
     public AudioSource motivationAudioSource;
@@ -14,6 +16,14 @@ public class SoundsManager : MonoBehaviour
     bool activeMotivationSound;
     public bool activeSignalSound;
     int r;
+
+    private void Awake()
+    {
+        if(Instance != null && Instance != this)
+            Destroy(this);
+        else
+            Instance = this;
+    }
     
     public void InitializeSounds()
     {

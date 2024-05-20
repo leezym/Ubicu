@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Globalization;
-using Newtonsoft.Json;
 using System.IO;
 
 public class GameData : MonoBehaviour
@@ -19,17 +18,6 @@ public class GameData : MonoBehaviour
     public string rutaArchivoRecompensa => Path.Combine(Application.persistentDataPath, "recompensa.txt");
     public string rutaArchivoPersonalizacion => Path.Combine(Application.persistentDataPath, "personalizacion.txt");
     public string rutaArchivoResultados => Path.Combine(Application.persistentDataPath, "resultados.txt");
-
-    [Header("UI")]
-    public ScriptsGroup scriptsGroup;
-    public UI_Screen loginMenu;
-    public UI_Screen sessionMenu;
-    public UI_Screen exerciseMenu_Game;
-    public UI_Screen serieGraphMenu;
-    public UI_Screen customizeMenu_Select;
-    public UI_Screen customizeMenu_Items;
-    public UI_Screen badgesMenu;
-    public UI_Screen infoBadgesMenu;
 
     [Header("BOLEAN")]
     public bool m_playing = false;
@@ -153,21 +141,21 @@ public class GameData : MonoBehaviour
         if(playing)
         {
             //contador de apnea
-            if(apnea && !scriptsGroup.playerMovement.apneaBool)
-                scriptsGroup.playerMovement.apneaBool = true;
+            if(apnea && !PlayerMovement.Instance.apneaBool)
+                PlayerMovement.Instance.apneaBool = true;
                         
             // contador de inactividad
-            scriptsGroup.obstacles.DetectInactivity();
+            Obstacles.Instance.DetectInactivity();
 
-            scriptsGroup.playerMovement.Movement();
-            StartCoroutine(scriptsGroup.obstacles.ObstaclesCounter());
+            PlayerMovement.Instance.Movement();
+            StartCoroutine(Obstacles.Instance.ObstaclesCounter());
         }
 
         if(resting)
-            scriptsGroup.playerMovement.RestingPlayer();
+            PlayerMovement.Instance.RestingPlayer();
         
         // seleccionar sesion disponible
-        if(sessionMenu.gameObject.GetComponent<CanvasGroup>().alpha != 0)
+        if(ExercisesManager.Instance.sessionMenu.gameObject.GetComponent<CanvasGroup>().alpha != 0)
         {
             for(int i = 0; i < exerciseHourArray.Length; i++)
             {
@@ -175,39 +163,39 @@ public class GameData : MonoBehaviour
                 int minutoActual = int.Parse(DateTime.Now.Minute.ToString(CultureInfo.InvariantCulture));
                 
                 // detectar cual ejercicio se debe activar
-                if(horaActual == exerciseHourArray[i] && minutoActual <= scriptsGroup.exercisesManager.extraMinuteToWaitForExercise)
+                if(horaActual == exerciseHourArray[i] && minutoActual <= ExercisesManager.Instance.extraMinuteToWaitForExercise)
                 {
-                    scriptsGroup.exercisesManager.sessionPrefab[i].GetComponent<Button>().interactable = true;
-                    scriptsGroup.exercisesManager.sessionPrefab[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.currentSessionSprite;
+                    ExercisesManager.Instance.sessionPrefab[i].GetComponent<Button>().interactable = true;
+                    ExercisesManager.Instance.sessionPrefab[i].GetComponent<Image>().sprite = ExercisesManager.Instance.currentSessionSprite;
                     // almacenar el id del ejercicio activado
                     idListHourExercises = i;
                 }
                 
-                if ((exerciseHourArray[i] < horaActual) || (horaActual == exerciseHourArray[i] && minutoActual > scriptsGroup.exercisesManager.extraMinuteToWaitForExercise))
+                if ((exerciseHourArray[i] < horaActual) || (horaActual == exerciseHourArray[i] && minutoActual > ExercisesManager.Instance.extraMinuteToWaitForExercise))
                 {
-                    scriptsGroup.exercisesManager.sessionPrefab[i].GetComponent<Button>().interactable = false;
+                    ExercisesManager.Instance.sessionPrefab[i].GetComponent<Button>().interactable = false;
                     
                     // pregunta si ya finalizó los ejercicios pasados
                     if (exerciseHourArray[i] == 0)
-                        scriptsGroup.exercisesManager.sessionPrefab[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.finishedSessionSprite;
+                        ExercisesManager.Instance.sessionPrefab[i].GetComponent<Image>().sprite = ExercisesManager.Instance.finishedSessionSprite;
                     // pregunta si esta disponible los ejercicios pasados y coloca que no se finalizó
                     else
-                        scriptsGroup.exercisesManager.sessionPrefab[i].GetComponent<Image>().sprite = scriptsGroup.exercisesManager.notFinishedSessionSprite;
+                        ExercisesManager.Instance.sessionPrefab[i].GetComponent<Image>().sprite = ExercisesManager.Instance.notFinishedSessionSprite;
                 }         
             }
         }
 
         // detectar cuando lanzar sonido de motivacion
-        if(exerciseMenu_Game.gameObject.GetComponent<CanvasGroup>().alpha != 0)
+        if(ExercisesManager.Instance.exerciseMenu_Game.gameObject.GetComponent<CanvasGroup>().alpha != 0)
         {
-            scriptsGroup.soundsManager.StopMotivationSound();
-            scriptsGroup.soundsManager.StopSignalSound();
+            SoundsManager.Instance.StopMotivationSound();
+            SoundsManager.Instance.StopSignalSound();
 
-            if(inspiration && !scriptsGroup.playerMovement.apneaBool)
-                StartCoroutine(scriptsGroup.soundsManager.PlayMotivationSound());
+            if(inspiration && !PlayerMovement.Instance.apneaBool)
+                StartCoroutine(SoundsManager.Instance.PlayMotivationSound());
             
-            if(!inspiration && scriptsGroup.playerMovement.apneaBool)
-                scriptsGroup.soundsManager.AddSound();
+            if(!inspiration && PlayerMovement.Instance.apneaBool)
+                SoundsManager.Instance.AddSound();
         }
     }
 
@@ -220,7 +208,7 @@ public class GameData : MonoBehaviour
 
     public void SaveLocalData()
     {
-        scriptsGroup.exercisesManager.SaveExercise();
+        ExercisesManager.Instance.SaveExercise();
 
         PlayerPrefs.Save();
     }

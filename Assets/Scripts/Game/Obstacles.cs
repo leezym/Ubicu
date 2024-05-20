@@ -5,6 +5,8 @@ using TMPro;
 
 public class Obstacles : MonoBehaviour
 {
+    public static Obstacles Instance {get; private set;}
+
     public static int INACTIVITY = 60 * 2; //60 segs x 2 min
 
     [Header("ATTACHED")]
@@ -17,30 +19,38 @@ public class Obstacles : MonoBehaviour
     public int repCounter;
     public float inactivityCounter;
 
+    private void Awake()
+    {
+        if(Instance != null && Instance != this)
+            Destroy(this);
+        else
+            Instance = this;
+    }
+
     public IEnumerator ObstaclesCounter()
     {
-        repGameText.text = "REPETICIÓN\n"+repCounter.ToString()+"/"+GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].repeticiones;
+        //repGameText.text = "REPETICIÓN\n"+repCounter.ToString()+"/"+GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].repeticiones;
         
-        if (!GameData.Instance.scriptsGroup.playerMovement.apneaBool) 
+        if (!PlayerMovement.Instance.apneaBool) 
         {
             enabledCounter = true;
             // VERIFICA QUE SE HAYAN ACABADO LAS REPETICIONES
             if(repCounter == GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].repeticiones)
             {
                 GameData.Instance.playing = false;
-                GameData.Instance.scriptsGroup.bluetoothPairing.timer = 0;
-                GameData.Instance.scriptsGroup.playerMovement.CreateGraph();
-                GameData.Instance.scriptsGroup.bluetoothPairing.StopOutputTime();
+                BluetoothPairing.Instance.timer = 0;
+                PlayerMovement.Instance.CreateGraph();
+                BluetoothPairing.Instance.StopOutputTime();
                 yield return new WaitForSeconds(1.5f);                
                 inactivityCounter = 0;
                 repCounter = 0;
-                UI_System.Instance.SwitchScreens(GameData.Instance.serieGraphMenu);
+                UI_System.Instance.SwitchScreens(ExercisesManager.Instance.serieGraphMenu);
                 GameData.Instance.resting = true;
                 StopCoroutine(ObstaclesCounter());
             }
             else
             {          
-                StartCoroutine(GameData.Instance.scriptsGroup.soundsManager.PlaySignalSound());
+                StartCoroutine(SoundsManager.Instance.PlaySignalSound());
             }
         }
         else
@@ -49,8 +59,8 @@ public class Obstacles : MonoBehaviour
             if(enabledCounter && repCounter < GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].repeticiones)
             {
                 enabledCounter = false;
-                StartCoroutine(GameData.Instance.scriptsGroup.playerMovement.StartApnea());
-                GameData.Instance.scriptsGroup.playerMovement.SaveGraphData();
+                StartCoroutine(PlayerMovement.Instance.StartApnea());
+                PlayerMovement.Instance.SaveGraphData();
                 repCounter ++;
                 inactivityCounter = 0;
             }
@@ -74,8 +84,8 @@ public class Obstacles : MonoBehaviour
         GameData.Instance.playing = false;
         repCounter = 0;
         GameData.Instance.exerciseSeries = new List<ExerciseData>();
-        GameData.Instance.scriptsGroup.playerMovement.seriesCount = 0;
-        //GameData.Instance.scriptsGroup.bluetoothPairing.StopOutputTime();
-        UI_System.Instance.SwitchScreens(GameData.Instance.sessionMenu);
+        PlayerMovement.Instance.seriesCount = 0;
+        //BluetoothPairing.Instance.StopOutputTime();
+        UI_System.Instance.SwitchScreens(ExercisesManager.Instance.sessionMenu);
     }
 }

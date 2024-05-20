@@ -14,6 +14,13 @@ using System.Linq;
 
 public class ExercisesManager : MonoBehaviour
 {
+    public static ExercisesManager Instance {get; private set;}
+
+    [Header("UI")]
+    public UI_Screen sessionMenu;
+    public UI_Screen exerciseMenu_Game;
+    public UI_Screen serieGraphMenu;
+
     [Header("ATTACHED")]
     public GameObject sessionContent;
     public TMP_Text exerciseRepPrefab;
@@ -27,12 +34,20 @@ public class ExercisesManager : MonoBehaviour
     public Sprite notFinishedSessionSprite;
     public VideoPlayer tutorialVideo;
     public GameObject buttonPlayVideo;
+    public GameObject[] sessionPrefab = new GameObject[13];
 
     [Header("IN GAME")]
-    public GameObject[] sessionPrefab;
     public Transform sessionTitlePrefab;
     public int sesiones;
     public float extraMinuteToWaitForExercise;
+
+    private void Awake()
+    {
+        if(Instance != null && Instance != this)
+            Destroy(this);
+        else
+            Instance = this;
+    }
 
     public IEnumerator CreateDefaultExercise(Exercise exercise)
     {
@@ -70,7 +85,7 @@ public class ExercisesManager : MonoBehaviour
             Debug.Log("Datos de ejercicio predeterminado creado correctamente");
             exercise = JsonUtility.FromJson<Exercise>(responseText);
 
-            StartCoroutine(GameData.Instance.scriptsGroup.exercisesManager.CreateResults(id_ejercicio: exercise._id));
+            StartCoroutine(CreateResults(id_ejercicio: exercise._id));
         }
     }
 
@@ -163,23 +178,23 @@ public class ExercisesManager : MonoBehaviour
         else
         {
             // POST_APNEA teniendo en cuenta los 8seg del dispositivo UBICU
-            GameData.Instance.scriptsGroup.playerMovement.POST_APNEA = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].apnea == 1 ? 5f 
+            PlayerMovement.Instance.POST_APNEA = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].apnea == 1 ? 5f 
             : GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].apnea == 2 ? 4f 
             : 3f; // segundos de descanso minimo postapnea antes de comenzar a tomar aire
 
             // si la fecha del ejercicio actual es diferente a la ultima almacenada
             if(PlayerPrefs.GetString("currentExerciseFinalDate") != "" && DateTime.ParseExact(PlayerPrefs.GetString("currentExerciseFinalDate"), "dd/MM/yyyy", CultureInfo.InvariantCulture) != DateTime.ParseExact(GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture)) // fecha fin ejercicio actual
             {
-                GameData.Instance.scriptsGroup.rewardsManager.serieReward = 0;
+                RewardsManager.Instance.serieReward = 0;
                 GameData.Instance.jsonObjectRewards.session_reward = 0;
                 GameData.Instance.jsonObjectRewards.day_reward = 0;
                 PlayerPrefs.SetString("currentExerciseFinalDate", GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].fecha_fin);
             }
 
             AddExcersiseData();
-
             for(int i = 0; i < sesiones; i++)
             {
+                Debug.Log(sessionPrefab[i].name);
                 sessionPrefab[i].SetActive(true);
                 sessionPrefab[i].GetComponent<Button>().interactable = false;
                 sessionTitlePrefab = sessionPrefab[i].transform.Find("TitleText");
@@ -244,7 +259,7 @@ public class ExercisesManager : MonoBehaviour
     
     public IEnumerator SendResults()
     {
-        if(!GameData.Instance.scriptsGroup.login.notInternet.isOn)
+        if(!Login.Instance.notInternet.isOn)
         {
             WWWForm form = new WWWForm();
 

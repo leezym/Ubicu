@@ -10,6 +10,8 @@ using System.Globalization;
 
 public class BluetoothPairing : MonoBehaviour
 {
+    public static BluetoothPairing Instance {get; private set;}
+
     AndroidJavaObject bluet;
     AndroidJavaObject alert;
     AndroidJavaClass unityPlayerClass;
@@ -26,6 +28,14 @@ public class BluetoothPairing : MonoBehaviour
     [Header("IN GAME")]
     public float prom = 0;
     public float timer = 0;
+
+    private void Awake()
+    {
+        if(Instance != null && Instance != this)
+            Destroy(this);
+        else
+            Instance = this;
+    }
     
     void Start()
     {
@@ -81,8 +91,8 @@ public class BluetoothPairing : MonoBehaviour
         
         if(float.TryParse(patientData[0], NumberStyles.Any, CultureInfo.InvariantCulture, out prom))
         {            
-            GameData.Instance.scriptsGroup.playerMovement.SaveData(prom, timer);
-            prom = (GameData.Instance.scriptsGroup.playerMovement.apneaBool ? 0 : prom);
+            PlayerMovement.Instance.SaveData(prom, timer);
+            prom = (PlayerMovement.Instance.apneaBool ? 0 : prom);
             GameData.Instance.inspiration = (prom > 0 ? true : false);
         }
         else
@@ -104,7 +114,7 @@ public class BluetoothPairing : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         bluet.Call("connectToDevice", parameters2);
         yield return new WaitForSeconds(3f);
-        UI_System.Instance.SwitchScreens(GameData.Instance.loginMenu);        
+        UI_System.Instance.SwitchScreens(Login.Instance.loginMenu);        
     }    
 
     public void CallOutputTime()
