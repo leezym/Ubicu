@@ -10,6 +10,8 @@ public class GameData : MonoBehaviour
 {
     public static GameData Instance {get; private set;}
     public static string URL = "https://server.ubicu.co/";
+    //public static string URL = "http://localhost:5000/";
+    
     public ScriptsGroup scriptsGroup;
     public UI_Screen dataMenu;
 
@@ -44,11 +46,22 @@ public class GameData : MonoBehaviour
         stopButton.interactable = false;
     }
 
-    public void StartToAdd(float flow, float time)
+    /*public void StartToAdd(float flow, float time) //JUAN DAVID
     {
         dataText.text += flow.ToString()+"\n";
         scrollRectData.verticalNormalizedPosition = 0;
+
         exerciseSeries.flujo.Add(flow);
+        exerciseSeries.tiempo.Add(time);
+    }*/
+
+    public void StartToAdd(float flow, float volume, float time) //ISABELLA
+    {
+        dataText.text += flow.ToString()+", "+volume.ToString()+"\n";
+        scrollRectData.verticalNormalizedPosition = 0;
+        
+        exerciseSeries.flujo.Add(flow);
+        exerciseSeries.volumen.Add(volume);
         exerciseSeries.tiempo.Add(time);
     }
 

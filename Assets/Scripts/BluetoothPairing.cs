@@ -24,12 +24,14 @@ public class BluetoothPairing : MonoBehaviour
     public TMP_Text stringConnection;
 
     [Header("IN GAME")]
-    public float prom = 0;
+    public float flow = 0;
+    public float vol = 0; //ISABELLA
     public float timer = 0;
     
     void Start()
     {
-        GameData.Instance.StartToAdd(0, 0);
+        //GameData.Instance.StartToAdd(0, 0); //JUAN DAVID
+        GameData.Instance.StartToAdd(0, 0, 0); //ISABELLA
         CallNativePlugin();
     }
 
@@ -69,7 +71,7 @@ public class BluetoothPairing : MonoBehaviour
         }
     }
     
-    public void OutputTime()
+    /*public void OutputTime() //JUAN DAVID
     {
         timer += Time.deltaTime;
         
@@ -79,13 +81,34 @@ public class BluetoothPairing : MonoBehaviour
         // patientData[1] -> apnea
         // patientData[2] -> frecuencia respiratoria
         
-        if(float.TryParse(patientData[0], NumberStyles.Any, CultureInfo.InvariantCulture, out prom))
+        if(float.TryParse(patientData[0], NumberStyles.Any, CultureInfo.InvariantCulture, out flow))
         {
-            GameData.Instance.StartToAdd(prom, timer);
+            GameData.Instance.StartToAdd(flow, timer);
         }
         else
         {
             Console.WriteLine("error parse data {0}", patientData[0]);
+        }
+    }*/
+
+    public void OutputTime() //ISABELLA
+    {
+        timer += Time.deltaTime;
+        
+        string data = bluet.Call<string>("getData");
+        string[] patientData = Regex.Split(data, ",");
+        // patientData[0] -> flujo
+        // patientData[1] -> volumen
+    
+        
+        if(float.TryParse(patientData[0], NumberStyles.Any, CultureInfo.InvariantCulture, out flow) && float.TryParse(patientData[1], NumberStyles.Any, CultureInfo.InvariantCulture, out vol))
+        {
+            GameData.Instance.StartToAdd(flow, vol, timer);
+        }
+        else
+        {
+            Console.WriteLine("error parse data {0}", patientData[0]);
+            Console.WriteLine("error parse data {1}", patientData[1]);
         }
     }
 

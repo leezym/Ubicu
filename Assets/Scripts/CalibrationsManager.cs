@@ -22,13 +22,12 @@ public class CalibrationsManager : MonoBehaviour
         form.AddField("datos", json);
 
         UnityWebRequest www = UnityWebRequest.Post(GameData.URL+"createCalibration", form);
-        //UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/createCalibration", form);
 
         www.downloadHandler = new DownloadHandlerBuffer();
 
         yield return www.SendWebRequest();
 
-        if (www.isNetworkError || www.isHttpError)
+        if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.Log(www.error);
             Debug.Log(form.data);
@@ -37,6 +36,5 @@ public class CalibrationsManager : MonoBehaviour
         {
             GameData.Instance.exerciseSeries = new ExerciseData();
         }
-        StopCoroutine(SendCalibrations());
     }
 }

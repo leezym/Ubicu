@@ -18,14 +18,13 @@ public class Login : MonoBehaviour
         GameData.Instance.dataText.text = "";
 
         UnityWebRequest www = UnityWebRequest.Get(GameData.URL+"verifyConnection");
-        //UnityWebRequest www = UnityWebRequest.Get("http://localhost:5000/verifyConnection");
 
         www.downloadHandler = new DownloadHandlerBuffer();
 
         yield return www.SendWebRequest();
 
         string responseText = www.downloadHandler.text;
-        if (www.isNetworkError || www.isHttpError)
+        if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.Log(www.error);
 
