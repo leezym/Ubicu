@@ -1,7 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using TMPro;
@@ -12,13 +10,15 @@ public class BluetoothPairing : MonoBehaviour
 {
     public static BluetoothPairing Instance {get; private set;}
 
+    [Header("BLUETOOTH")]
     AndroidJavaObject bluet;
-    AndroidJavaObject alert;
     AndroidJavaClass unityPlayerClass;
     AndroidJavaObject unityActivity;
     object[] parameters2 = new object[2];
+    bool isConnected;
 
     [Header("ATTACHED")]
+    public UI_Screen bluetoothMenu;
     public GameObject[] prefabTextBluetooth;
     public GameObject bluetoothContent;
 
@@ -115,7 +115,21 @@ public class BluetoothPairing : MonoBehaviour
         bluet.Call("connectToDevice", parameters2);
         yield return new WaitForSeconds(3f);
         UI_System.Instance.SwitchScreens(Login.Instance.loginMenu);        
-    }    
+    }
+
+    /*IEnumerator LoadingScreen(){
+        yield return new WaitForSeconds(0.5f);
+        isConnected = bluet.Call<bool>("connectToDevice", parameters2);
+        yield return new WaitForSeconds(3f);
+        
+        if(isConnected)
+            UI_System.Instance.SwitchScreens(Login.Instance.loginMenu);        
+        else
+        {
+            UI_System.Instance.SwitchScreens(bluetoothMenu); 
+            NotificationsManager.Instance.WarningNotifications("No se puede conectar al dispositivo. Intente nuevamente."); 
+        }
+    }    */
 
     public void CallOutputTime()
     {

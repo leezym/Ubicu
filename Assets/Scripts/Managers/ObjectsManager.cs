@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class Data
+public struct Data
 {
     public string token;
     public User user;
@@ -47,27 +47,21 @@ public class Exercise
 }
 
 [Serializable]
-/*public class Exercises
-{
-    public List<Exercise> array;
-}
-
-[Serializable]*/
-public class ExerciseData
+public struct ExerciseData
 {
     public List<float> tiempo;
     public List<float> flujo;
 }
 
 [Serializable]
-public class MotivationSound
+public struct MotivationSound
 {
     public string text;
     public AudioClip clip;
 }
 
-[System.Serializable]
-public class ButtonsItems
+[Serializable]
+public struct ButtonsItems
 {
     public GameObject useButton;
     public GameObject buyButton;

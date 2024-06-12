@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
 using System.IO;
+using System.Text;
 
 [System.Serializable]
 public class BadgePointsContainer
@@ -52,6 +53,7 @@ public class RewardsManager : MonoBehaviour
     public TMP_Text badgesDescription;    
 
     [Header("IN GAME")]
+    StringBuilder sb = new StringBuilder();
     public int serieReward;
     public AllItems[] allBadgesArray = new AllItems[4]; // cuales insignias se han ganado
 
@@ -102,7 +104,7 @@ public class RewardsManager : MonoBehaviour
         
         UpdateLocalReward(jsonData);
         
-        if(!Login.Instance.notInternet.isOn)
+        if(Login.Instance.internet.isOn)
         {
             StartCoroutine(UpdateReward(jsonData));
         }
@@ -196,40 +198,45 @@ public class RewardsManager : MonoBehaviour
 
     public void ShowInfoBadges(string insignia)
     {
+        sb.Clear();
+
         string[] info = Regex.Split(insignia, ","); // item(0), valor(1)
         int i = int.Parse(info[1]);
         int j = 0;
+
         badgesTitle.text = badgesNames[i];
-        badgesDescription.text = "Esta medalla se le otorga a aquellos que lograron completar <b>";
+        sb.Append("Esta medalla se le otorga a aquellos que lograron completar <b>");        
         
         if(info[0] == "series")
         {
             j = 0;
             badgesSubTitle.text = "en Series";
             badgesBigImage.sprite = seriesBadgesBigSprite[i];
-            badgesDescription.text += badgesPoints[0].badgesPoints[i]+"</b> series";
+            sb.Append(badgesPoints[0].badgesPoints[i]+"</b> series");
         }
         else if(info[0] == "sesiones")
         {
             j = 1;
             badgesSubTitle.text = "en Sesiones";
             badgesBigImage.sprite = sessionsBadgesBigSprite[i];
-            badgesDescription.text += badgesPoints[1].badgesPoints[i]+"</b> sesiones";
+            sb.Append(badgesPoints[1].badgesPoints[i]+"</b> sesiones");
         }
         else if(info[0] == "dias")
         {
             j = 2;
             badgesSubTitle.text = "en Días";
             badgesBigImage.sprite = daysBadgesBigSprite[i];
-            badgesDescription.text += badgesPoints[2].badgesPoints[i]+"</b> días";
+            sb.Append(badgesPoints[2].badgesPoints[i]+"</b> días");
         }
         else if(info[0] == "semanas")
         {
             j = 3;
             badgesSubTitle.text = "en Semanas";
             badgesBigImage.sprite = weeksBadgesBigSprite[i];
-            badgesDescription.text += badgesPoints[3].badgesPoints[i]+"</b> semanas";
+            sb.Append(badgesPoints[3].badgesPoints[i]+"</b> semanas");
         }
+
+        badgesDescription.text = sb.ToString();
         
         if(allBadgesArray[j].item[i] == 1) //si tienes la insignia muestras la info
             UI_System.Instance.SwitchScreens(infoBadgesMenu);

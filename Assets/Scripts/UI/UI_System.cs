@@ -15,6 +15,7 @@ public class UI_System : MonoBehaviour
 
     [Header("SYSTEM EVENTS")]
     public UnityEvent onSwitchedScreen = new UnityEvent();
+
     [Header("FADER PROPERTIES")]
     public Image m_Fader;
     public float m_FadeInDuration = 1f;
@@ -28,6 +29,8 @@ public class UI_System : MonoBehaviour
     [Header("VIDEO PROPERTIES")]
     public UnityEvent OnEndReached;
     public VideoPlayer videoPlayer;
+    public GameObject buttonPlayVideo;
+
     #endregion
 
     #region Main Method
@@ -39,7 +42,10 @@ public class UI_System : MonoBehaviour
             Instance = this;
     }
     void Start()
-    {
+    {                
+        // Iniciar preparación del video
+        videoPlayer.Prepare();
+
         screens = GetComponentsInChildren<UI_Screen>(true);
         if(m_StartScreen)
         {
@@ -110,6 +116,27 @@ public class UI_System : MonoBehaviour
     {
         yield return null;
     }
+
+    public void CallPlayVideo()
+    {
+        if (videoPlayer.isPrepared)
+        {
+            StartCoroutine(UI_System.Instance.PlayVideo());
+            Debug.Log("Reproduciendo video.");
+        }
+        else
+        {
+            Debug.LogWarning("El video no está preparado todavía.");
+        }
+    }
+
+    public IEnumerator PlayVideo()
+    {
+        videoPlayer.Play();
+        yield return new WaitForSeconds(5f);
+        buttonPlayVideo.SetActive(true);
+    }
+
     private void VideoPlayer_loopPointReached(VideoPlayer source)
     {
         OnEndReached.Invoke();

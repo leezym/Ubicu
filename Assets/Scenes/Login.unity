@@ -1232,7 +1232,7 @@ MonoBehaviour:
   userInputField: {fileID: 1997993793}
   passInputField: {fileID: 175539327}
   loginButton: {fileID: 1828910407}
-  notInternet: {fileID: 502270763}
+  internet: {fileID: 502270763}
   passTitle: {fileID: 1399730884}
 --- !u!1 &66518428
 GameObject:
@@ -1464,7 +1464,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bac174667f64be44e8239f124d536be0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9fbb547d53cc41a47b63453e069f31f5, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1833,7 +1833,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &99052420
 RectTransform:
@@ -2302,7 +2302,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 29187d5501ba0084ebf89b9333b9eceb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 321480da4fcf2674b853875b0432e3a0, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -3024,11 +3024,11 @@ GameObject:
   - component: {fileID: 156498280}
   - component: {fileID: 156498279}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: UseText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &156498278
 RectTransform:
@@ -3247,7 +3247,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &168950326
 GameObject:
@@ -3260,7 +3260,7 @@ GameObject:
   - component: {fileID: 168950327}
   - component: {fileID: 168950328}
   m_Layer: 0
-  m_Name: Bluetooth
+  m_Name: Bluetooth Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3293,6 +3293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 068ccc92b38373a4f9ede629e99632a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bluetoothMenu: {fileID: 309271660}
   prefabTextBluetooth:
   - {fileID: 9173042573358382550}
   - {fileID: 1258581788}
@@ -3325,11 +3326,11 @@ GameObject:
   - component: {fileID: 173356273}
   - component: {fileID: 173356272}
   m_Layer: 5
-  m_Name: No_Internet
+  m_Name: NoInternetText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &173356271
 RectTransform:
@@ -4901,7 +4902,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -0.00013164547}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &267838247
@@ -5159,8 +5160,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ExercisesManager, Assembly-CSharp
+      - m_Target: {fileID: 793086686}
+        m_TargetAssemblyTypeName: UI_System, Assembly-CSharp
         m_MethodName: CallPlayVideo
         m_Mode: 1
         m_Arguments:
@@ -5266,8 +5267,6 @@ MonoBehaviour:
   currentSessionSprite: {fileID: 21300000, guid: 1124c7f8db6c4c5489342a21afce1d15, type: 3}
   finishedSessionSprite: {fileID: 21300000, guid: e459cfb717902e54c8b250b829c1f757, type: 3}
   notFinishedSessionSprite: {fileID: 21300000, guid: 063ff61656bded341b384468e6613cb8, type: 3}
-  tutorialVideo: {fileID: 3054861187902605922}
-  buttonPlayVideo: {fileID: 1528128297}
   sessionPrefab:
   - {fileID: 2880321361476470614}
   - {fileID: 1148155498}
@@ -6028,7 +6027,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00038868797}
+  m_AnchoredPosition: {x: 0, y: 0.000030517578}
   m_SizeDelta: {x: 15.8245, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &319122042
@@ -6220,7 +6219,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &328772548
 RectTransform:
@@ -7677,7 +7676,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 65920258}
         m_TargetAssemblyTypeName: Login, Assembly-CSharp
         m_MethodName: ConexionMode
         m_Mode: 1
@@ -7941,7 +7940,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 29187d5501ba0084ebf89b9333b9eceb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 321480da4fcf2674b853875b0432e3a0, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -8134,8 +8133,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ExercisesManager, Assembly-CSharp
+      - m_Target: {fileID: 793086686}
+        m_TargetAssemblyTypeName: UI_System, Assembly-CSharp
         m_MethodName: CallPlayVideo
         m_Mode: 1
         m_Arguments:
@@ -8278,7 +8277,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 168950328}
         m_TargetAssemblyTypeName: BluetoothPairing, Assembly-CSharp
         m_MethodName: Refresh
         m_Mode: 1
@@ -8596,139 +8595,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 545472182}
-  m_CullTransparentMesh: 1
---- !u!1 &566218616
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 566218617}
-  - component: {fileID: 566218620}
-  - component: {fileID: 566218619}
-  - component: {fileID: 566218618}
-  m_Layer: 5
-  m_Name: SettingsButton
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &566218617
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 566218616}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 618448813}
-  m_RootOrder: -2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -78, y: -84}
-  m_SizeDelta: {x: 80, y: 80}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &566218618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 566218616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 566218619}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Obstacles, Assembly-CSharp
-        m_MethodName: Clic
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &566218619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 566218616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3698af9022d677a44a66bc25e2355f61, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 1
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &566218620
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 566218616}
   m_CullTransparentMesh: 1
 --- !u!1 &568331386
 GameObject:
@@ -9399,7 +9265,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9e4a909254fb2c547b13ff170d99b9be, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 58914055807918249878ff734bf7100c, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -9433,7 +9299,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &611517377
 RectTransform:
@@ -9453,7 +9319,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -90}
-  m_SizeDelta: {x: 800, y: 70}
+  m_SizeDelta: {x: 530, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &611517378
 MonoBehaviour:
@@ -9797,7 +9663,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 991357408}
-  - {fileID: 566218617}
   - {fileID: 857755604}
   - {fileID: 1089974106}
   - {fileID: 1991717225}
@@ -9900,6 +9765,134 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &627556677
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 627556678}
+  - component: {fileID: 627556679}
+  m_Layer: 0
+  m_Name: VideoAudioSource
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &627556678
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 627556677}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 897870082}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &627556679
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 627556677}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &634619572
 GameObject:
   m_ObjectHideFlags: 0
@@ -10345,8 +10338,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ExercisesManager, Assembly-CSharp
+      - m_Target: {fileID: 793086686}
+        m_TargetAssemblyTypeName: UI_System, Assembly-CSharp
         m_MethodName: CallPlayVideo
         m_Mode: 1
         m_Arguments:
@@ -10411,7 +10404,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &662480728
 RectTransform:
@@ -10701,7 +10694,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &671616376
 RectTransform:
@@ -10844,6 +10837,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1528128297}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 793086686}
         m_TargetAssemblyTypeName: UI_System, Assembly-CSharp
         m_MethodName: SwitchScreens
@@ -10859,6 +10864,18 @@ MonoBehaviour:
       - m_Target: {fileID: 3054861187902605922}
         m_TargetAssemblyTypeName: UnityEngine.Video.VideoPlayer, UnityEngine
         m_MethodName: Stop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3054861187902605922}
+        m_TargetAssemblyTypeName: UnityEngine.Video.VideoPlayer, UnityEngine
+        m_MethodName: Prepare
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11098,7 +11115,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 29187d5501ba0084ebf89b9333b9eceb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 321480da4fcf2674b853875b0432e3a0, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -11152,7 +11169,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -245.01994}
-  m_SizeDelta: {x: 800, y: 70}
+  m_SizeDelta: {x: 530, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &719477094
 MonoBehaviour:
@@ -11174,7 +11191,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Abstracto
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 02c49d5f695eb8145add5935efc8e691, type: 2}
   m_sharedMaterial: {fileID: 1024440909760231760, guid: 02c49d5f695eb8145add5935efc8e691, type: 2}
@@ -11433,7 +11450,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -245.01994}
-  m_SizeDelta: {x: 800, y: 70}
+  m_SizeDelta: {x: 530, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &752131998
 MonoBehaviour:
@@ -11455,7 +11472,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Abstracto
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 02c49d5f695eb8145add5935efc8e691, type: 2}
   m_sharedMaterial: {fileID: 1024440909760231760, guid: 02c49d5f695eb8145add5935efc8e691, type: 2}
@@ -11784,7 +11801,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77c9b65285898e84196000b2f1779778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_StartScreen: {fileID: 403161336}
+  m_StartScreen: {fileID: 309271660}
   onSwitchedScreen:
     m_PersistentCalls:
       m_Calls: []
@@ -11807,7 +11824,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 3054861187902605922}
+        m_TargetAssemblyTypeName: UnityEngine.Video.VideoPlayer, UnityEngine
+        m_MethodName: Prepare
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   videoPlayer: {fileID: 3054861187902605922}
+  buttonPlayVideo: {fileID: 1528128297}
 --- !u!1 &798850952
 GameObject:
   m_ObjectHideFlags: 0
@@ -11936,14 +11966,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 0.754717, g: 0.754717, b: 0.754717, a: 0.392}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 3}
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12399,7 +12429,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bac174667f64be44e8239f124d536be0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9fbb547d53cc41a47b63453e069f31f5, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -12509,7 +12539,6 @@ MonoBehaviour:
   - {fileID: 908234387}
   - {fileID: 113992458}
   backgroundImage: {fileID: 618448815}
-  settingsImage: {fileID: 566218619}
   backButtonImage: {fileID: 991357410}
   textsArray:
   - {fileID: 857755605}
@@ -12540,7 +12569,6 @@ MonoBehaviour:
   - {fileID: 752131998}
   fondosSprites: []
   circuloSprites: []
-  velocimetroSprites: []
   settingsSprites: []
   colorText: []
   circuloPreviewSprites: []
@@ -12554,10 +12582,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: da43397bf212e4648b7a61b79c96a8a7, type: 3}
   - {fileID: 21300000, guid: f9b72df99b13e1547bed7baba0146b04, type: 3}
   - {fileID: 21300000, guid: d585dc36713238d4b8db1b6167a39934, type: 3}
-  velocimetroSpritesAbstracto:
-  - {fileID: 21300000, guid: 0e431c21b87bd6546bea324191f07706, type: 3}
-  - {fileID: 21300000, guid: 2ed042f50111be7499a8cba6de4b30c4, type: 3}
-  - {fileID: 21300000, guid: b35d06658d1ec08448c78a8a748c017b, type: 3}
   settingsSpritesAbstracto:
   - {fileID: 21300000, guid: 3698af9022d677a44a66bc25e2355f61, type: 3}
   - {fileID: 21300000, guid: 84ed2914d1ffb1049aae3ccb94d01120, type: 3}
@@ -12605,10 +12629,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: cba66b8305828bf4f878bd7f2d1939ab, type: 3}
   - {fileID: 21300000, guid: 6204307606bef3949a7cdcd434bd5d1f, type: 3}
   - {fileID: 21300000, guid: 0009ec47d8a60f14faa20a5efbba421e, type: 3}
-  velocimetroSpritesAstral:
-  - {fileID: 21300000, guid: 17e3f06a8130e2d478b1c22bce56bcfd, type: 3}
-  - {fileID: 21300000, guid: cb0646fbde48e8d4c9506070960281a3, type: 3}
-  - {fileID: 21300000, guid: 2b61f4bf4ca70d3489a56c45b5ea1781, type: 3}
   settingsSpritesAstral:
   - {fileID: 21300000, guid: af6c63b37f07c594d9bf5a30871b0981, type: 3}
   - {fileID: 21300000, guid: af6c63b37f07c594d9bf5a30871b0981, type: 3}
@@ -12662,10 +12682,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 25e0573dba0862c43a66401e4db3bc13, type: 3}
   - {fileID: 21300000, guid: b94416c14212dfe4cb52c0fa0e5fa602, type: 3}
   - {fileID: 21300000, guid: 794b035ce14a1ba478e82ea96d3b7d5c, type: 3}
-  velocimetroSpritesNaturaleza:
-  - {fileID: 21300000, guid: 9e86ebd4f1be9d44b9e7e18792437fb9, type: 3}
-  - {fileID: 21300000, guid: 2680de24129f5834dbe77a8a4cae06ab, type: 3}
-  - {fileID: 21300000, guid: 4960cd9a6b5668743a0c91e17f324867, type: 3}
   settingsSpritesNaturaleza:
   - {fileID: 21300000, guid: 3698af9022d677a44a66bc25e2355f61, type: 3}
   - {fileID: 21300000, guid: 3698af9022d677a44a66bc25e2355f61, type: 3}
@@ -12711,10 +12727,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 193194ca00d689b4ba112e446c71f649, type: 3}
   - {fileID: 21300000, guid: ac215dcc0e84ee54398ac1c2b70f08b6, type: 3}
   - {fileID: 21300000, guid: c0cc620e3b4b7b04da6bedf30ea8d0d5, type: 3}
-  velocimetroSpritesMar:
-  - {fileID: 21300000, guid: d5f6444893a449841929ba2c8107db9b, type: 3}
-  - {fileID: 21300000, guid: 1d8d76ae5c82442438289c20fad327a8, type: 3}
-  - {fileID: 21300000, guid: 3ff18344d69c4474ca21634501255e18, type: 3}
   settingsSpritesMar:
   - {fileID: 21300000, guid: a4ebbeefcaa4cbe429a637a14080d573, type: 3}
   - {fileID: 21300000, guid: a4ebbeefcaa4cbe429a637a14080d573, type: 3}
@@ -12767,10 +12779,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 36e508d081d461548914dd2653fdbf6c, type: 3}
   - {fileID: 21300000, guid: 515d50af232c30a46aa31fa22e23429b, type: 3}
   - {fileID: 21300000, guid: c33e81e7658d5004da1f474ea574869f, type: 3}
-  velocimetroSpritesAnatomia:
-  - {fileID: 21300000, guid: c404caca69c38e94c994da2d6952ce28, type: 3}
-  - {fileID: 21300000, guid: dbd1b33355fdfef4a81ee0a7617a8fa8, type: 3}
-  - {fileID: 21300000, guid: 0421934af0f41a742a8edf54cbdf9866, type: 3}
   settingsSpritesAnatomia:
   - {fileID: 21300000, guid: e38dc55e838b9514184951432759b903, type: 3}
   - {fileID: 21300000, guid: e38dc55e838b9514184951432759b903, type: 3}
@@ -13381,6 +13389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6db7e0bf63dfde4cabd55eb88f20bf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  signalAudioClip: {fileID: 8300000, guid: cd46ebb2b960eb249b3c2f7334bada2e, type: 3}
   motivationSounds:
   - text: "\xA1As\xED es, vamos bien!"
     clip: {fileID: 8300000, guid: c844a61d83da2f24899aa0653ff6dbb4, type: 3}
@@ -13393,7 +13402,6 @@ MonoBehaviour:
   motivationAudioSource: {fileID: 425867060}
   signalAudioSource: {fileID: 1619210511}
   motivationMessage: {fileID: 1068620967}
-  signalAudioClip: {fileID: 8300000, guid: cd46ebb2b960eb249b3c2f7334bada2e, type: 3}
   activeSignalSound: 0
 --- !u!4 &897870082
 Transform:
@@ -13409,6 +13417,7 @@ Transform:
   m_Children:
   - {fileID: 425867061}
   - {fileID: 1619210512}
+  - {fileID: 627556678}
   m_Father: {fileID: 858530930}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14526,11 +14535,11 @@ GameObject:
   - component: {fileID: 957118323}
   - component: {fileID: 957118322}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: UseText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &957118321
 RectTransform:
@@ -14800,7 +14809,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &972919265
 RectTransform:
@@ -14820,7 +14829,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -90}
-  m_SizeDelta: {x: 800, y: 70}
+  m_SizeDelta: {x: 530, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &972919266
 MonoBehaviour:
@@ -15002,7 +15011,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1151922321}
         m_TargetAssemblyTypeName: Obstacles, Assembly-CSharp
         m_MethodName: ExitGame
         m_Mode: 1
@@ -15198,11 +15207,11 @@ GameObject:
   - component: {fileID: 999635674}
   - component: {fileID: 999635673}
   m_Layer: 5
-  m_Name: Figuras
+  m_Name: FigurasText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &999635672
 RectTransform:
@@ -16221,11 +16230,11 @@ GameObject:
   - component: {fileID: 1051902031}
   - component: {fileID: 1051902030}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: UseText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &1051902029
 RectTransform:
@@ -16589,7 +16598,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -245.01994}
-  m_SizeDelta: {x: 800, y: 70}
+  m_SizeDelta: {x: 530, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1067432885
 MonoBehaviour:
@@ -16611,7 +16620,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Abstracto
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 02c49d5f695eb8145add5935efc8e691, type: 2}
   m_sharedMaterial: {fileID: 1024440909760231760, guid: 02c49d5f695eb8145add5935efc8e691, type: 2}
@@ -17463,7 +17472,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bac174667f64be44e8239f124d536be0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9fbb547d53cc41a47b63453e069f31f5, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -17787,9 +17796,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1341589186}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-        m_MethodName: ContinueGame
+      - m_Target: {fileID: 168950328}
+        m_TargetAssemblyTypeName: BluetoothPairing, Assembly-CSharp
+        m_MethodName: CallOutputTime
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 897870081}
+        m_TargetAssemblyTypeName: SoundsManager, Assembly-CSharp
+        m_MethodName: InitializeSounds
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -17811,21 +17832,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BluetoothPairing, Assembly-CSharp
-        m_MethodName: CallOutputTime
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 897870081}
-        m_TargetAssemblyTypeName: SoundsManager, Assembly-CSharp
-        m_MethodName: InitializeSounds
+      - m_Target: {fileID: 1341589186}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: ContinueGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18045,8 +18054,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ExercisesManager, Assembly-CSharp
+      - m_Target: {fileID: 793086686}
+        m_TargetAssemblyTypeName: UI_System, Assembly-CSharp
         m_MethodName: CallPlayVideo
         m_Mode: 1
         m_Arguments:
@@ -18106,7 +18115,7 @@ GameObject:
   - component: {fileID: 1151922320}
   - component: {fileID: 1151922321}
   m_Layer: 0
-  m_Name: Obstacles
+  m_Name: Obstacles Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18949,7 +18958,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 29187d5501ba0084ebf89b9333b9eceb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 321480da4fcf2674b853875b0432e3a0, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -19239,7 +19248,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &1232312434
 RectTransform:
@@ -19259,7 +19268,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -90}
-  m_SizeDelta: {x: 800, y: 70}
+  m_SizeDelta: {x: 530, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1232312435
 MonoBehaviour:
@@ -20069,7 +20078,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 29187d5501ba0084ebf89b9333b9eceb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 321480da4fcf2674b853875b0432e3a0, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -20155,11 +20164,11 @@ GameObject:
   - component: {fileID: 1284209940}
   - component: {fileID: 1284209939}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: UseText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &1284209938
 RectTransform:
@@ -21442,8 +21451,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ExercisesManager, Assembly-CSharp
+      - m_Target: {fileID: 793086686}
+        m_TargetAssemblyTypeName: UI_System, Assembly-CSharp
         m_MethodName: CallPlayVideo
         m_Mode: 1
         m_Arguments:
@@ -21654,7 +21663,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 908234388}
   - {fileID: 113992459}
@@ -21692,7 +21701,7 @@ MonoBehaviour:
   minimunScale: 0
   maximunScale: 0
   plusScale: 0
-  speedStandarScale: 3
+  speedStandarScale: 2
   pause: {fileID: 1622353318}
   pauseText: {fileID: 110329460}
   graphPrefab:
@@ -22290,7 +22299,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -20.000053, y: 0.000061035156}
+  m_AnchoredPosition: {x: -20.000053, y: -0.0001814804}
   m_SizeDelta: {x: 36.8384, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1387718049
@@ -22601,7 +22610,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bac174667f64be44e8239f124d536be0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9fbb547d53cc41a47b63453e069f31f5, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -22770,7 +22779,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &1399730885
 RectTransform:
@@ -22927,8 +22936,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ExercisesManager, Assembly-CSharp
+      - m_Target: {fileID: 793086686}
+        m_TargetAssemblyTypeName: UI_System, Assembly-CSharp
         m_MethodName: CallPlayVideo
         m_Mode: 1
         m_Arguments:
@@ -23522,7 +23531,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &1438095227
 RectTransform:
@@ -23542,7 +23551,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -170}
-  m_SizeDelta: {x: 800, y: 70}
+  m_SizeDelta: {x: 540, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1438095228
 MonoBehaviour:
@@ -24135,7 +24144,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &1486471607
 RectTransform:
@@ -24155,7 +24164,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -170.01994}
-  m_SizeDelta: {x: 800, y: 70}
+  m_SizeDelta: {x: 540, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1486471608
 MonoBehaviour:
@@ -24350,8 +24359,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ExercisesManager, Assembly-CSharp
+      - m_Target: {fileID: 793086686}
+        m_TargetAssemblyTypeName: UI_System, Assembly-CSharp
         m_MethodName: CallPlayVideo
         m_Mode: 1
         m_Arguments:
@@ -24559,6 +24568,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1528128297}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 793086686}
         m_TargetAssemblyTypeName: UI_System, Assembly-CSharp
         m_MethodName: SwitchScreens
@@ -24583,10 +24604,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1528128297}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 3054861187902605922}
+        m_TargetAssemblyTypeName: UnityEngine.Video.VideoPlayer, UnityEngine
+        m_MethodName: Prepare
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -24780,11 +24801,11 @@ GameObject:
   - component: {fileID: 1552308253}
   - component: {fileID: 1552308252}
   m_Layer: 5
-  m_Name: Fondos
+  m_Name: FondosText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &1552308251
 RectTransform:
@@ -25032,7 +25053,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &1560103954
 RectTransform:
@@ -25052,7 +25073,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -170.01994}
-  m_SizeDelta: {x: 800, y: 70}
+  m_SizeDelta: {x: 540, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1560103955
 MonoBehaviour:
@@ -25282,7 +25303,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -25312,7 +25333,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1588632028
 GameObject:
@@ -25740,7 +25761,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: cd46ebb2b960eb249b3c2f7334bada2e, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -26349,8 +26370,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ExercisesManager, Assembly-CSharp
+      - m_Target: {fileID: 793086686}
+        m_TargetAssemblyTypeName: UI_System, Assembly-CSharp
         m_MethodName: CallPlayVideo
         m_Mode: 1
         m_Arguments:
@@ -26749,8 +26770,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ExercisesManager, Assembly-CSharp
+      - m_Target: {fileID: 793086686}
+        m_TargetAssemblyTypeName: UI_System, Assembly-CSharp
         m_MethodName: CallPlayVideo
         m_Mode: 1
         m_Arguments:
@@ -26811,11 +26832,11 @@ GameObject:
   - component: {fileID: 1683141487}
   - component: {fileID: 1683141486}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: LoadingText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &1683141485
 RectTransform:
@@ -26857,7 +26878,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: CARGANDO...
+  m_text: CARGANDO
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8d545f0fe48ff1a45896fc89982edfe2, type: 2}
   m_sharedMaterial: {fileID: 5957190584159594898, guid: 8d545f0fe48ff1a45896fc89982edfe2, type: 2}
@@ -27098,7 +27119,7 @@ GameObject:
   - component: {fileID: 1714853369}
   - component: {fileID: 1714853368}
   m_Layer: 5
-  m_Name: Description
+  m_Name: DescriptionFiguras
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27144,8 +27165,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<b>\xCDndigo</b>\nDisfruta de este color azulado, este te proporcionar\xE1
-    un espacio de relajaci\xF3n para llevar a cabo tu proceso de sanaci\xF3n interior."
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7c3a8d93d1cd85d499c4ca3b38140286, type: 2}
   m_sharedMaterial: {fileID: -478290740747207354, guid: 7c3a8d93d1cd85d499c4ca3b38140286, type: 2}
@@ -27381,7 +27401,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 76446689}
   m_HandleRect: {fileID: 76446688}
   m_Direction: 2
-  m_Value: 1.0000001
+  m_Value: 1.0000002
   m_Size: 0.51206064
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -27437,7 +27457,7 @@ GameObject:
   - component: {fileID: 1740831823}
   - component: {fileID: 1740831822}
   m_Layer: 5
-  m_Name: Description
+  m_Name: DescriptionFondos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27483,8 +27503,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<b>\xCDndigo</b>\nDisfruta de este color azulado, este te proporcionar\xE1
-    un espacio de relajaci\xF3n para llevar a cabo tu proceso de sanaci\xF3n interior."
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7c3a8d93d1cd85d499c4ca3b38140286, type: 2}
   m_sharedMaterial: {fileID: -478290740747207354, guid: 7c3a8d93d1cd85d499c4ca3b38140286, type: 2}
@@ -27728,11 +27747,11 @@ GameObject:
   - component: {fileID: 1766800557}
   - component: {fileID: 1766800556}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: UseText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &1766800555
 RectTransform:
@@ -28350,8 +28369,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ExercisesManager, Assembly-CSharp
+      - m_Target: {fileID: 793086686}
+        m_TargetAssemblyTypeName: UI_System, Assembly-CSharp
         m_MethodName: CallPlayVideo
         m_Mode: 1
         m_Arguments:
@@ -29341,11 +29360,11 @@ GameObject:
   - component: {fileID: 1867835440}
   - component: {fileID: 1867835439}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: GlossaryText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &1867835438
 RectTransform:
@@ -29483,11 +29502,11 @@ GameObject:
   - component: {fileID: 1871643748}
   - component: {fileID: 1871643747}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: UseText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &1871643746
 RectTransform:
@@ -29852,7 +29871,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 29187d5501ba0084ebf89b9333b9eceb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 321480da4fcf2674b853875b0432e3a0, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -30711,11 +30730,11 @@ GameObject:
   - component: {fileID: 1945997640}
   - component: {fileID: 1945997639}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: UseText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &1945997638
 RectTransform:
@@ -31459,7 +31478,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9e4a909254fb2c547b13ff170d99b9be, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 58914055807918249878ff734bf7100c, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -32019,8 +32038,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ExercisesManager, Assembly-CSharp
+      - m_Target: {fileID: 793086686}
+        m_TargetAssemblyTypeName: UI_System, Assembly-CSharp
         m_MethodName: CallPlayVideo
         m_Mode: 1
         m_Arguments:
@@ -32300,8 +32319,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ExercisesManager, Assembly-CSharp
+      - m_Target: {fileID: 793086686}
+        m_TargetAssemblyTypeName: UI_System, Assembly-CSharp
         m_MethodName: CallPlayVideo
         m_Mode: 1
         m_Arguments:
@@ -32574,11 +32593,11 @@ GameObject:
   - component: {fileID: 2039034376}
   - component: {fileID: 2039034375}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: UseText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &2039034374
 RectTransform:
@@ -33323,7 +33342,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &2115970774
 RectTransform:
@@ -33343,7 +33362,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -170.01994}
-  m_SizeDelta: {x: 800, y: 70}
+  m_SizeDelta: {x: 540, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2115970775
 MonoBehaviour:
@@ -33785,7 +33804,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bac174667f64be44e8239f124d536be0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9fbb547d53cc41a47b63453e069f31f5, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -34116,7 +34135,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ACERO
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8d545f0fe48ff1a45896fc89982edfe2, type: 2}
   m_sharedMaterial: {fileID: 5957190584159594898, guid: 8d545f0fe48ff1a45896fc89982edfe2, type: 2}
@@ -34203,7 +34222,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -170}
-  m_SizeDelta: {x: 800, y: 70}
+  m_SizeDelta: {x: 530, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &636473425373778919
 GameObject:
@@ -34379,8 +34398,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Esta medalla se le otorga a aquellos que lograron completar <b>300</b>
-    series
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7c3a8d93d1cd85d499c4ca3b38140286, type: 2}
   m_sharedMaterial: {fileID: -478290740747207354, guid: 7c3a8d93d1cd85d499c4ca3b38140286, type: 2}
@@ -34489,7 +34507,7 @@ GameObject:
   - component: {fileID: 636473425645471027}
   - component: {fileID: 636473425645471024}
   m_Layer: 5
-  m_Name: Description
+  m_Name: DescriptionInsignias
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34541,7 +34559,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: en Series
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 02c49d5f695eb8145add5935efc8e691, type: 2}
   m_sharedMaterial: {fileID: 1024440909760231760, guid: 02c49d5f695eb8145add5935efc8e691, type: 2}
@@ -34628,7 +34646,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -245}
-  m_SizeDelta: {x: 800, y: 70}
+  m_SizeDelta: {x: 530, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &636473425911833024
 CanvasRenderer:
@@ -35047,8 +35065,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ExercisesManager, Assembly-CSharp
+      - m_Target: {fileID: 793086686}
+        m_TargetAssemblyTypeName: UI_System, Assembly-CSharp
         m_MethodName: CallPlayVideo
         m_Mode: 1
         m_Arguments:
@@ -35485,7 +35503,7 @@ VideoPlayer:
   m_VideoClip: {fileID: 32900000, guid: 549098e9a5d647a4eaeaed7d26050401, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
-  m_TargetCamera: {fileID: 0}
+  m_TargetCamera: {fileID: 1575997176}
   m_TargetTexture: {fileID: 8400000, guid: 485435933f45e654f9519e59271ebe44, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
@@ -35494,9 +35512,9 @@ VideoPlayer:
   m_AspectRatio: 2
   m_DataSource: 0
   m_PlaybackSpeed: 1
-  m_AudioOutputMode: 2
+  m_AudioOutputMode: 1
   m_TargetAudioSources:
-  - {fileID: 0}
+  - {fileID: 627556679}
   m_DirectAudioVolumes:
   - 1
   m_Url: 
@@ -35991,8 +36009,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5277140863130468814}
   m_HandleRect: {fileID: 5277140863130468801}
   m_Direction: 2
-  m_Value: 1.0000004
-  m_Size: 0.5136596
+  m_Value: 1
+  m_Size: 0.51365966
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -36298,7 +36316,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &5277140861871410349
 RectTransform:
@@ -36344,7 +36362,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!222 &5277140861928596212
 CanvasRenderer:
@@ -38759,7 +38777,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00041408965}
+  m_AnchoredPosition: {x: 0, y: -0.000022213057}
   m_SizeDelta: {x: 15.8245, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &5277140862774332928
@@ -38895,7 +38913,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!222 &5277140862774332942
 CanvasRenderer:
@@ -39227,7 +39245,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!222 &5277140862936729736
 CanvasRenderer:
@@ -41129,7 +41147,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &5277140863861955831
 RectTransform:
@@ -41149,7 +41167,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -170.01994}
-  m_SizeDelta: {x: 800, y: 70}
+  m_SizeDelta: {x: 530, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5277140863879923450
 CanvasRenderer:

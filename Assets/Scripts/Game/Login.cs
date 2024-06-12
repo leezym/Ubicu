@@ -18,7 +18,7 @@ public class Login : MonoBehaviour
     public TMP_InputField userInputField;
     public TMP_InputField passInputField;
     public Button loginButton;
-    public Toggle notInternet;
+    public Toggle internet;
     public GameObject passTitle;
 
     private void Awake()
@@ -31,28 +31,28 @@ public class Login : MonoBehaviour
 
     void Start()
     {
-        loginButton.GetComponent<Button>().onClick.AddListener(()=>{
+        loginButton.GetComponent<Button>().onClick.AddListener(()=> {
             StartCoroutine(OnLogin());
         });
     }
 
     public void ConexionMode()
     {
-        if(notInternet.isOn)
-        {
-            passTitle.SetActive(false);
-            loginButton.onClick.RemoveAllListeners();
-            loginButton.GetComponent<Button>().onClick.AddListener(()=>{
-                StartCoroutine(LocalLogin());
-            });
-        }
-        else
+        if(internet.isOn)
         {
             passTitle.SetActive(true);
             loginButton.onClick.RemoveAllListeners();
             loginButton.GetComponent<Button>().onClick.AddListener(()=>{
                 StartCoroutine(OnLogin());
             });
+        }
+        else
+        {
+            passTitle.SetActive(false);
+            loginButton.onClick.RemoveAllListeners();
+            loginButton.GetComponent<Button>().onClick.AddListener(()=>{
+                StartCoroutine(LocalLogin());
+            });            
         }
     }
 
@@ -105,6 +105,7 @@ public class Login : MonoBehaviour
 
     IEnumerator OnLogin()
     {
+
         loginButton.interactable = false;
 
         WWWForm form = new WWWForm();
@@ -147,10 +148,10 @@ public class Login : MonoBehaviour
                         yield return StartCoroutine(ExercisesManager.Instance.CreateDefaultExercise(exercise));
                     else                    
                         yield return StartCoroutine(ExercisesManager.Instance.CreateResults());
+                
+                    yield return StartCoroutine(RewardsManager.Instance.UpdateReward(File.ReadAllText(GameData.Instance.rutaArchivoRecompensa)));
+                    yield return StartCoroutine(CustomizationManager.Instance.UpdateCustomizations(File.ReadAllText(GameData.Instance.rutaArchivoPersonalizacion)));
                 }
-
-                yield return StartCoroutine(RewardsManager.Instance.UpdateReward(File.ReadAllText(GameData.Instance.rutaArchivoRecompensa)));
-                yield return StartCoroutine(CustomizationManager.Instance.UpdateCustomizations(File.ReadAllText(GameData.Instance.rutaArchivoPersonalizacion)));
 
                 yield return StartCoroutine(ExercisesManager.Instance.GetExercises());
                 yield return StartCoroutine(RewardsManager.Instance.GetRewards());

@@ -9,12 +9,12 @@ public class PlayerMovement : MonoBehaviour
 {
     public static PlayerMovement Instance {get; private set;}
 
-    public static float CIRCLE_MINIMUM_SCALE = 0.08f;
-    public static float CIRCLE_MAXIMUM_SCALE = 0.75f;
+    public static float CIRCLE_MINIMUM_SCALE = 0.07f;
+    public static float CIRCLE_MAXIMUM_SCALE = 0.74f;
     public static float CIRCLE_PLUS_SCALE = 0.83f;
     public static float LUNG_MINIMUM_SCALE = 0.23f;
-    public static float LUNG_MAXIMUM_SCALE = 0.72f;
-    public static float LUNG_PLUS_SCALE = 0.76f;
+    public static float LUNG_MAXIMUM_SCALE = 0.71f;
+    public static float LUNG_PLUS_SCALE = 0.77f;
     public float POST_APNEA = 0f;
 
     [Header("ATTACHED")]
@@ -76,6 +76,7 @@ public class PlayerMovement : MonoBehaviour
         //test
         //ExercisesManager.Instance.exerciseFlujoPrefab.text = "I:"+GameData.Instance.inspiration+"-A:"+apneaBool+"\nMx:"+maxFlow.ToString()+"-Curr:"+BluetoothPairing.Instance.prom.ToString();
         //ExercisesManager.Instance.exerciseFlujoPrefab.text = "I:"+GameData.Instance.inspiration+"-A:"+apneaBool;
+        //ExercisesManager.Instance.exerciseFlujoPrefab.text = maxFlow.ToString();
         
         if(GameData.Instance.inspiration && !apneaBool)
         {
@@ -203,8 +204,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void DeleteGraph()
     {        
-        tempGraphFlow = new List<float>();
-        tempGraphTime = new List<float>();
+        tempGraphFlow.Clear(); // = new List<float>();
+        tempGraphTime.Clear(); // = new List<float>();
+        Debug.Log("tempGraphFlow.Count: "+tempGraphFlow.Count);
+        Debug.Log("tempGraphTime.Count: "+tempGraphTime.Count);
 
         foreach (Transform point in graphStructure.transform)
         {

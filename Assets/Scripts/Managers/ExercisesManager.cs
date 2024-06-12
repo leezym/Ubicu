@@ -10,7 +10,6 @@ using System.Globalization;
 using Newtonsoft.Json;
 using System.IO;
 using Newtonsoft.Json.Linq;
-using System.Linq;
 
 public class ExercisesManager : MonoBehaviour
 {
@@ -32,8 +31,6 @@ public class ExercisesManager : MonoBehaviour
     public Sprite currentSessionSprite;
     public Sprite finishedSessionSprite;
     public Sprite notFinishedSessionSprite;
-    public VideoPlayer tutorialVideo;
-    public GameObject buttonPlayVideo;
     public GameObject[] sessionPrefab = new GameObject[13];
 
     [Header("IN GAME")]
@@ -110,8 +107,24 @@ public class ExercisesManager : MonoBehaviour
         else
         {
             List<Exercise> exercisesData = JsonConvert.DeserializeObject<List<Exercise>>(responseText);
-            GameData.Instance.jsonObjectExercises = exercisesData.Where(exercise => exercise.nombre != "Predeterminado").ToList();
-            GameData.Instance.jsonObjectExerciseDefault = exercisesData.FirstOrDefault(exercise => exercise.nombre == "Predeterminado" && exercise.fecha_inicio == null && exercise.fecha_fin == null);
+
+            List<Exercise> nonDefaultExercises = new List<Exercise>();
+            Exercise defaultExercise = null;
+
+            foreach (var exercise in exercisesData)
+            {
+                if (exercise.nombre == "Predeterminado" && exercise.fecha_inicio == null && exercise.fecha_fin == null)
+                {
+                    defaultExercise = exercise;
+                }
+                else if(exercise.nombre != "Predeterminado")
+                {
+                    nonDefaultExercises.Add(exercise);
+                }
+            }
+
+            GameData.Instance.jsonObjectExercises = nonDefaultExercises;
+            GameData.Instance.jsonObjectExerciseDefault = defaultExercise;
             
             CreateExercisesSesions();
         }
@@ -194,7 +207,6 @@ public class ExercisesManager : MonoBehaviour
             AddExcersiseData();
             for(int i = 0; i < sesiones; i++)
             {
-                Debug.Log(sessionPrefab[i].name);
                 sessionPrefab[i].SetActive(true);
                 sessionPrefab[i].GetComponent<Button>().interactable = false;
                 sessionTitlePrefab = sessionPrefab[i].transform.Find("TitleText");
@@ -259,7 +271,7 @@ public class ExercisesManager : MonoBehaviour
     
     public IEnumerator SendResults()
     {
-        if(!Login.Instance.notInternet.isOn)
+        if(Login.Instance.internet.isOn)
         {
             WWWForm form = new WWWForm();
 
@@ -315,7 +327,8 @@ public class ExercisesManager : MonoBehaviour
             GameData.Instance.idListHourExercises = -1;
         }
 
-        GameData.Instance.exerciseSeries = new List<ExerciseData>();
+        GameData.Instance.exerciseSeries.Clear(); //= new List<ExerciseData>();
+        Debug.Log("GameData.Instance.exerciseSeries.Count: "+GameData.Instance.exerciseSeries.Count);
     }
 
     public IEnumerator CreateResults(string id_ejercicio = "")
@@ -357,17 +370,5 @@ public class ExercisesManager : MonoBehaviour
                 Debug.Log("Datos de resultados creados correctamente (locales)");
             }
         }
-    }
-
-    IEnumerator PlayVideo()
-    {
-        tutorialVideo.Play();
-        yield return new WaitForSeconds(5f);
-        buttonPlayVideo.SetActive(true);
-    }
-
-    public void CallPlayVideo()
-    {
-        StartCoroutine(PlayVideo());
-    }
+    }    
 }

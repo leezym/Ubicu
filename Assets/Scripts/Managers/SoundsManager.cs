@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Text;
 
 public class SoundsManager : MonoBehaviour
 {
     public static SoundsManager Instance {get; private set;}
 
     [Header("ATTACHED")]
+    public AudioClip signalAudioClip;
     public List<MotivationSound> motivationSounds;
     public AudioSource motivationAudioSource;
     public AudioSource signalAudioSource;
     public TMP_Text motivationMessage;
-    public AudioClip signalAudioClip;
+
+    [Header("IN GAME")]
     bool activeMotivationSound;
     public bool activeSignalSound;
     int r;
@@ -24,13 +27,25 @@ public class SoundsManager : MonoBehaviour
         else
             Instance = this;
     }
+
+    private void Start()
+    {
+        DisableAudioReverbFilter(motivationAudioSource);
+        DisableAudioReverbFilter(signalAudioSource);
+    }
     
     public void InitializeSounds()
     {
         motivationMessage.text = "";
         r = Random.Range(0, motivationSounds.Count);
         motivationAudioSource.clip = motivationSounds[r].clip;
+        
+        signalAudioSource.clip = signalAudioClip;
         activeSignalSound = true;
+
+        // Set audio sources to stream for longer clips
+        motivationAudioSource.clip.LoadAudioData();
+        signalAudioSource.clip.LoadAudioData();
 
         StartCoroutine(PlaySignalSound());
     }
@@ -39,6 +54,9 @@ public class SoundsManager : MonoBehaviour
     {
         r = Random.Range(0, motivationSounds.Count);
         motivationAudioSource.clip = motivationSounds[r].clip;
+
+        // Load audio data for the new clip
+        motivationAudioSource.clip.LoadAudioData();
     }
 
     public IEnumerator PlaySignalSound()
@@ -87,5 +105,14 @@ public class SoundsManager : MonoBehaviour
             motivationAudioSource.Stop();
             motivationAudioSource.mute = true;
         }        
+    }
+
+    private void DisableAudioReverbFilter(AudioSource audioSource)
+    {
+        var reverbFilter = audioSource.GetComponent<AudioReverbFilter>();
+        if (reverbFilter != null)
+        {
+            reverbFilter.enabled = false;
+        }
     }
 }

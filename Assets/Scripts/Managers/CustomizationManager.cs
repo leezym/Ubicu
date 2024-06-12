@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -57,7 +56,6 @@ public class CustomizationManager : MonoBehaviour
     [Header("CUSTOMIZABLE OBJECTS")]
     public GameObject[] playerGameObject = new GameObject[2]; // jugadores
     public Image backgroundImage; // fondo del juego
-    public Image settingsImage; // boton configuracion
     public Image backButtonImage; // boton regresar
     public TMP_Text[] textsArray = new TMP_Text[0]; // textos del juego
     public Image playerPreviewFondos; // preview jugador pantalla Fondos
@@ -74,7 +72,6 @@ public class CustomizationManager : MonoBehaviour
     [Header("GENERAL")]
     public Sprite[] fondosSprites = new Sprite[0];
     public Sprite[] circuloSprites = new Sprite[0];
-    public Sprite[] velocimetroSprites = new Sprite[0];
     public Sprite[] settingsSprites = new Sprite[0];
     public Color[] colorText = new Color[0];
     public Sprite[] circuloPreviewSprites = new Sprite[0];
@@ -84,7 +81,6 @@ public class CustomizationManager : MonoBehaviour
     [Header("ABSTRACTO")]
     public Sprite[] fondosSpritesAbstracto = new Sprite[0];
     public Sprite[] circuloSpritesAbstracto = new Sprite[0];
-    public Sprite[] velocimetroSpritesAbstracto = new Sprite[0];
     public Sprite[] settingsSpritesAbstracto = new Sprite[0];
     public Color[] colorTextAbstracto = new Color[0];// {new Color(5,84,195), new Color(0,104,55), new Color(81,0,148)};
     public Sprite[] fondosItemSpritesAbstracto = new Sprite[0];
@@ -97,7 +93,6 @@ public class CustomizationManager : MonoBehaviour
     [Header("ASTRAL")]
     public Sprite[] fondosSpritesAstral = new Sprite[0];
     public Sprite[] circuloSpritesAstral = new Sprite[0];
-    public Sprite[] velocimetroSpritesAstral = new Sprite[0];
     public Sprite[] settingsSpritesAstral = new Sprite[0];
     public Color[] colorTextAstral = new Color[0];// {new Color(255,242,42)};
     public Sprite[] fondosItemSpritesAstral = new Sprite[0];
@@ -110,7 +105,6 @@ public class CustomizationManager : MonoBehaviour
     [Header("NATURALEZA")]
     public Sprite[] fondosSpritesNaturaleza = new Sprite[0];
     public Sprite[] circuloSpritesNaturaleza = new Sprite[0];
-    public Sprite[] velocimetroSpritesNaturaleza = new Sprite[0];
     public Sprite[] settingsSpritesNaturaleza = new Sprite[0];
     public Color[] colorTextNaturaleza = new Color[0];// {new Color(5,84,195)};
     public Sprite[] fondosItemSpritesNaturaleza = new Sprite[0];
@@ -123,7 +117,6 @@ public class CustomizationManager : MonoBehaviour
     [Header("MAR")]
     public Sprite[] fondosSpritesMar = new Sprite[0];
     public Sprite[] circuloSpritesMar = new Sprite[0];
-    public Sprite[] velocimetroSpritesMar = new Sprite[0];
     public Sprite[] settingsSpritesMar = new Sprite[0];
     public Color[] colorTextMar = new Color[0];// {new Color(255,255,255)};
     public Sprite[] fondosItemSpritesMar = new Sprite[0];
@@ -136,7 +129,6 @@ public class CustomizationManager : MonoBehaviour
     [Header("ANATOMIA")]
     public Sprite[] fondosSpritesAnatomia = new Sprite[0];
     public Sprite[] circuloSpritesAnatomia = new Sprite[0];
-    public Sprite[] velocimetroSpritesAnatomia = new Sprite[0];
     public Sprite[] settingsSpritesAnatomia = new Sprite[0];
     public Color[] colorTextAnatomia = new Color[0];// {new Color(241,25,102)};
     public Sprite[] fondosItemSpritesAnatomia = new Sprite[0];
@@ -206,7 +198,7 @@ public class CustomizationManager : MonoBehaviour
 
         UpdateLocalCustomizations(jsonData);
 
-        if(!Login.Instance.notInternet.isOn)
+        if(Login.Instance.internet.isOn)
         {            
             StartCoroutine(UpdateCustomizations(jsonData));
         }
@@ -291,7 +283,6 @@ public class CustomizationManager : MonoBehaviour
         if(id >= 0)
         {
             backgroundImage.sprite = fondosSprites[id];
-            settingsImage.sprite = settingsSprites[id];
             backButtonImage.color = colorText[id];
             foreach(TMP_Text t in textsArray)
                 t.color = colorText[id];
@@ -330,17 +321,17 @@ public class CustomizationManager : MonoBehaviour
         GameData.Instance.jsonObjectCustomizations.id_customization = id;
 
         if(id == 0)
-            SetArrayCustomization("Abstracto", headerSpriteAbstracto, fondosItemSpritesAbstracto, figurasItemSpritesAbstracto, fondosSpritesAbstracto, circuloSpritesAbstracto, velocimetroSpritesAbstracto, settingsSpritesAbstracto, colorTextAbstracto, circuloPreviewSpritesAbstracto, descriptionsFondosAbstracto, descriptionsFigurasAbstracto);
+            SetArrayCustomization("Abstracto", headerSpriteAbstracto, fondosItemSpritesAbstracto, figurasItemSpritesAbstracto, fondosSpritesAbstracto, circuloSpritesAbstracto, settingsSpritesAbstracto, colorTextAbstracto, circuloPreviewSpritesAbstracto, descriptionsFondosAbstracto, descriptionsFigurasAbstracto);
         else if (id == 1)
-            SetArrayCustomization("Astral", headerSpriteAstral, fondosItemSpritesAstral, figurasItemSpritesAstral, fondosSpritesAstral, circuloSpritesAstral, velocimetroSpritesAstral, settingsSpritesAstral, colorTextAstral, circuloPreviewSpritesAstral, descriptionsFondosAstral, descriptionsFigurasAstral);
+            SetArrayCustomization("Astral", headerSpriteAstral, fondosItemSpritesAstral, figurasItemSpritesAstral, fondosSpritesAstral, circuloSpritesAstral, settingsSpritesAstral, colorTextAstral, circuloPreviewSpritesAstral, descriptionsFondosAstral, descriptionsFigurasAstral);
         else if (id == 2)
-            SetArrayCustomization("Naturaleza", headerSpriteNaturaleza, fondosItemSpritesNaturaleza, figurasItemSpritesNaturaleza, fondosSpritesNaturaleza, circuloSpritesNaturaleza, velocimetroSpritesNaturaleza, settingsSpritesNaturaleza, colorTextNaturaleza, circuloPreviewSpritesNaturaleza, descriptionsFondosNaturaleza, descriptionsFigurasNaturaleza);        
+            SetArrayCustomization("Naturaleza", headerSpriteNaturaleza, fondosItemSpritesNaturaleza, figurasItemSpritesNaturaleza, fondosSpritesNaturaleza, circuloSpritesNaturaleza, settingsSpritesNaturaleza, colorTextNaturaleza, circuloPreviewSpritesNaturaleza, descriptionsFondosNaturaleza, descriptionsFigurasNaturaleza);        
         else if (id == 3)
-            SetArrayCustomization("Mar", headerSpriteMar, fondosItemSpritesMar, figurasItemSpritesMar, fondosSpritesMar, circuloSpritesMar, velocimetroSpritesMar, settingsSpritesMar, colorTextMar, circuloPreviewSpritesMar, descriptionsFondosMar, descriptionsFigurasMar);
+            SetArrayCustomization("Mar", headerSpriteMar, fondosItemSpritesMar, figurasItemSpritesMar, fondosSpritesMar, circuloSpritesMar, settingsSpritesMar, colorTextMar, circuloPreviewSpritesMar, descriptionsFondosMar, descriptionsFigurasMar);
         else if (id == 4)
-            SetArrayCustomization("Anatomía", headerSpriteAnatomia, fondosItemSpritesAnatomia, figurasItemSpritesAnatomia, fondosSpritesAnatomia, circuloSpritesAnatomia, velocimetroSpritesAnatomia, settingsSpritesAnatomia, colorTextAnatomia, circuloPreviewSpritesAnatomia, descriptionsFondosAnatomia, descriptionsFigurasAnatomia);
+            SetArrayCustomization("Anatomía", headerSpriteAnatomia, fondosItemSpritesAnatomia, figurasItemSpritesAnatomia, fondosSpritesAnatomia, circuloSpritesAnatomia, settingsSpritesAnatomia, colorTextAnatomia, circuloPreviewSpritesAnatomia, descriptionsFondosAnatomia, descriptionsFigurasAnatomia);
 
-        ValidateFullItems(id);  
+        ValidateFullItems(id);
 
         if (idItemFondosArray.Length > 0) SetIdFondosItem(idItemFondosArray[id]);
         if (idItemFigurasArray.Length > 0) SetIdFigurasItem(idItemFigurasArray[id]);
@@ -353,7 +344,7 @@ public class CustomizationManager : MonoBehaviour
         }        
     }
 
-    public void SetArrayCustomization(string subtitleHeaderText, Sprite headerSprite, Sprite[] fondosItemSprites, Sprite[] figurasItemSprites, Sprite[] fondosSprites, Sprite[] circuloSprites, Sprite[] velocimetroSprites, Sprite[] settingsSprites, 
+    public void SetArrayCustomization(string subtitleHeaderText, Sprite headerSprite, Sprite[] fondosItemSprites, Sprite[] figurasItemSprites, Sprite[] fondosSprites, Sprite[] circuloSprites, Sprite[] settingsSprites, 
                                     Color[] colorText, Sprite[] circuloPreviewSprites, string[] descriptionsFondos, string[] descriptionsFiguras)
     {
         if(subtitleHeaderText == "Anatomía")
@@ -374,9 +365,9 @@ public class CustomizationManager : MonoBehaviour
             PlayerMovement.Instance.plusScale = PlayerMovement.CIRCLE_PLUS_SCALE;
             PlayerMovement.Instance.player = playerGameObject[0].transform.Find("Circle").gameObject;
         }
+
         this.fondosSprites = fondosSprites.Clone() as Sprite[];
         this.circuloSprites = circuloSprites.Clone() as Sprite[];
-        this.velocimetroSprites = velocimetroSprites.Clone() as Sprite[];
         this.settingsSprites = settingsSprites.Clone() as Sprite[];
         this.colorText = colorText.Clone() as Color[];
         this.circuloPreviewSprites = circuloPreviewSprites.Clone() as Sprite[];
@@ -386,8 +377,10 @@ public class CustomizationManager : MonoBehaviour
         // Set Custom Item Menu
         foreach(Image i in headerImage)
             i.sprite = headerSprite;
+
         foreach(TMP_Text t in subtitleHeader)
             t.text = subtitleHeaderText;
+
         for(int i = 0; i < fondosItemImageArray.Length; i++) //or figurasItemImageArray.Length
         {
             fondosItemImageArray[i].sprite = fondosItemSprites[i];
@@ -506,12 +499,27 @@ public class CustomizationManager : MonoBehaviour
 
     public void VerifyCompleteTheme()
     {
-        if (allFondosItemsArray[GameData.Instance.jsonObjectCustomizations.id_customization].item.Sum() == 0 || allFigurasItemsArray[GameData.Instance.jsonObjectCustomizations.id_customization].item.Sum() == 0)
+        int fondoSum = 0;
+        int[] fondoItems = allFondosItemsArray[GameData.Instance.jsonObjectCustomizations.id_customization].item;
+        for (int i = 0; i < fondoItems.Length; i++)
+        {
+            fondoSum += fondoItems[i];
+        }
+
+        int figuraSum = 0;
+        int[] figuraItems = allFigurasItemsArray[GameData.Instance.jsonObjectCustomizations.id_customization].item;
+        for (int i = 0; i < figuraItems.Length; i++)
+        {
+            figuraSum += figuraItems[i];
+        }
+
+        if (fondoSum == 0 || figuraSum == 0)
         {
             // notificacion de no poder colocar el tema por UbiCoins
             NotificationsManager.Instance.WarningNotifications("No tienes UbiCoins suficientes para completar el tema.\n¡Sigue haciendo tu fisioterapia!");
             NotificationsManager.Instance.SetCloseFunction(customizeMenu_Select);
             GameData.Instance.jsonObjectCustomizations.id_customization = tempIdCustomization;
+            SetIdCustomization(tempIdCustomization);
         }
         else if (idItemFondosArray[GameData.Instance.jsonObjectCustomizations.id_customization] >= 0 && idItemFigurasArray [GameData.Instance.jsonObjectCustomizations.id_customization] >= 0)
         {

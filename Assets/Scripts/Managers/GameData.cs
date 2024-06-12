@@ -9,8 +9,8 @@ using System.IO;
 public class GameData : MonoBehaviour
 {
     public static GameData Instance {get; private set;}
-    //public static string URL = "https://server.ubicu.co/";
-    public static string URL = "http://localhost:5000/";
+    public static string URL = "https://server.ubicu.co/";
+    //public static string URL = "http://localhost:5000/";
 
     public string rutaArchivoPaciente => Path.Combine(Application.persistentDataPath, "paciente.txt");
     public string rutaArchivoFisioterapia => Path.Combine(Application.persistentDataPath, "fisioterapia.txt");
@@ -19,7 +19,7 @@ public class GameData : MonoBehaviour
     public string rutaArchivoPersonalizacion => Path.Combine(Application.persistentDataPath, "personalizacion.txt");
     public string rutaArchivoResultados => Path.Combine(Application.persistentDataPath, "resultados.txt");
 
-    [Header("BOLEAN")]
+    [Header("BOOLEAN")]
     public bool m_playing = false;
     public bool playing
     {
@@ -139,7 +139,7 @@ public class GameData : MonoBehaviour
             ExitApp();
         if(playing)
         {
-            //contador de apnea
+            //bool de apnea
             if(apnea && !PlayerMovement.Instance.apneaBool)
                 PlayerMovement.Instance.apneaBool = true;
                         

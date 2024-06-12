@@ -46,7 +46,6 @@ public class Obstacles : MonoBehaviour
                 repCounter = 0;
                 UI_System.Instance.SwitchScreens(ExercisesManager.Instance.serieGraphMenu);
                 GameData.Instance.resting = true;
-                StopCoroutine(ObstaclesCounter());
             }
             else
             {          
@@ -83,7 +82,8 @@ public class Obstacles : MonoBehaviour
     {
         GameData.Instance.playing = false;
         repCounter = 0;
-        GameData.Instance.exerciseSeries = new List<ExerciseData>();
+        GameData.Instance.exerciseSeries.Clear(); //= new List<ExerciseData>();
+        Debug.Log("GameData.Instance.exerciseSeries.Count: "+GameData.Instance.exerciseSeries.Count);
         PlayerMovement.Instance.seriesCount = 0;
         //BluetoothPairing.Instance.StopOutputTime();
         UI_System.Instance.SwitchScreens(ExercisesManager.Instance.sessionMenu);
