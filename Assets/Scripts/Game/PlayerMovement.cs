@@ -72,12 +72,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public void Movement()
-    {
-        //test
-        //ExercisesManager.Instance.exerciseFlujoPrefab.text = "I:"+GameData.Instance.inspiration+"-A:"+apneaBool+"\nMx:"+maxFlow.ToString()+"-Curr:"+BluetoothPairing.Instance.prom.ToString();
-        //ExercisesManager.Instance.exerciseFlujoPrefab.text = "I:"+GameData.Instance.inspiration+"-A:"+apneaBool;
-        //ExercisesManager.Instance.exerciseFlujoPrefab.text = maxFlow.ToString();
-        
+    {        
         if(GameData.Instance.inspiration && !apneaBool)
         {
             if(BluetoothPairing.Instance.prom > maxFlow)

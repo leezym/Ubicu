@@ -29,7 +29,7 @@ public class Obstacles : MonoBehaviour
 
     public IEnumerator ObstaclesCounter()
     {
-        //repGameText.text = "REPETICIÓN\n"+repCounter.ToString()+"/"+GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].repeticiones;
+        repGameText.text = "REPETICIÓN\n"+repCounter.ToString()+"/"+GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].repeticiones;
         
         if (!PlayerMovement.Instance.apneaBool) 
         {
