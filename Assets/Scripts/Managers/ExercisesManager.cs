@@ -46,14 +46,6 @@ public class ExercisesManager : MonoBehaviour
             Instance = this;
     }
 
-    public void AddDefaultExercise()
-    {
-        Exercise e = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoPredeterminado));
-        
-        if (GetJsonExercise(e) != null) 
-            GameData.Instance.jsonObjectExerciseDefault = e;
-    }
-
     public IEnumerator CreateDefaultExercise(Exercise exercise)
     {
         WWWForm form = new WWWForm();
@@ -116,29 +108,25 @@ public class ExercisesManager : MonoBehaviour
         {
             List<Exercise> exercisesData = JsonConvert.DeserializeObject<List<Exercise>>(responseText);
 
-            List<Exercise> nonDefaultExercises = new List<Exercise>();
-            Exercise defaultExercise = null;
-
             foreach (var exercise in exercisesData)
             {
                 if (exercise.nombre == "Predeterminado" && exercise.fecha_inicio == null && exercise.fecha_fin == null)
                 {
-                    defaultExercise = exercise;
+                    GameData.Instance.jsonObjectExerciseDefault = exercise;
                 }
                 else if(exercise.nombre != "Predeterminado")
                 {
-                    nonDefaultExercises.Add(exercise);
+                    GameData.Instance.jsonObjectExercises.Add(exercise);
                 }
             }
 
-            GameData.Instance.jsonObjectExercises = nonDefaultExercises;
-            GameData.Instance.jsonObjectExerciseDefault = defaultExercise;
-            
-            if(GetJsonExercise(defaultExercise) != null)
-                UpdateLocalExercise(GameData.Instance.rutaArchivoPredeterminado, GetJsonExercise(defaultExercise));
-            else
+            Debug.Log(GetJsonExercise(GameData.Instance.jsonObjectExerciseDefault));
+
+            if(GameData.Instance.jsonObjectExerciseDefault.nombre == "")
                 NotificationsManager.Instance.WarningNotifications("¡No tienes un ejercicio predeterminado! Por favor dile a tu fisioterapeuta que te cree uno.\nEste ejercicio te permite trabajar sin conexión a internet.");
             
+            UpdateLocalExercise(GameData.Instance.rutaArchivoPredeterminado, GetJsonExercise(GameData.Instance.jsonObjectExerciseDefault));
+
             CreateExercisesSesions();
         }
     }
