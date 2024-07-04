@@ -1,29 +1,41 @@
 {
     "m_SelectedDeviceId": "14a0d8850507",
     "m_SelectedPackage": {
-        "deviceId": "",
-        "name": "",
-        "processId": 0,
+        "deviceId": "14a0d8850507",
+        "name": "com.PUJ.Ubicu",
+        "processId": 25565,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
         {
             "deviceId": "14a0d8850507",
-            "name": "com.android.settings",
-            "processId": 12906,
+            "name": "com.PUJ.Ubicu",
+            "processId": 4638,
             "exited": true
         },
         {
             "deviceId": "14a0d8850507",
             "name": "com.PUJ.Ubicu",
-            "processId": 11224,
+            "processId": 11174,
             "exited": true
         },
         {
             "deviceId": "14a0d8850507",
             "name": "com.PUJ.Ubicu",
-            "processId": 13700,
+            "processId": 30996,
+            "exited": true
+        },
+        {
+            "deviceId": "14a0d8850507",
+            "name": "com.PUJ.Ubicu",
+            "processId": 9326,
+            "exited": true
+        },
+        {
+            "deviceId": "14a0d8850507",
+            "name": "com.PUJ.Ubicu",
+            "processId": 25565,
             "exited": false
         }
     ],

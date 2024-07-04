@@ -46,6 +46,14 @@ public class ExercisesManager : MonoBehaviour
             Instance = this;
     }
 
+    public void AddDefaultExercise()
+    {
+        Exercise e = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoPredeterminado));
+        
+        if (GetJsonExercise(e) != null) 
+            GameData.Instance.jsonObjectExerciseDefault = e;
+    }
+
     public IEnumerator CreateDefaultExercise(Exercise exercise)
     {
         WWWForm form = new WWWForm();
@@ -125,6 +133,11 @@ public class ExercisesManager : MonoBehaviour
 
             GameData.Instance.jsonObjectExercises = nonDefaultExercises;
             GameData.Instance.jsonObjectExerciseDefault = defaultExercise;
+            
+            if(GetJsonExercise(defaultExercise) != null)
+                UpdateLocalExercise(GameData.Instance.rutaArchivoPredeterminado, GetJsonExercise(defaultExercise));
+            else
+                NotificationsManager.Instance.WarningNotifications("¡No tienes un ejercicio predeterminado! Por favor dile a tu fisioterapeuta que te cree uno.\nEste ejercicio te permite trabajar sin conexión a internet.");
             
             CreateExercisesSesions();
         }
@@ -212,6 +225,8 @@ public class ExercisesManager : MonoBehaviour
                 sessionTitlePrefab = sessionPrefab[i].transform.Find("TitleText");
                 sessionTitlePrefab.GetComponent<TMP_Text>().text = "Sesión " + (GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].hora_inicio + (GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].frecuencia_horas * i)) + ":00";
             }
+
+            UpdateLocalExercise(GameData.Instance.rutaArchivoFisioterapia, GetJsonExercise(GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises]));
         }      
     }
 
@@ -271,7 +286,7 @@ public class ExercisesManager : MonoBehaviour
     
     public IEnumerator SendResults()
     {
-        if(Login.Instance.internet.isOn)
+        if(!Login.Instance.notInternet.isOn)
         {
             WWWForm form = new WWWForm();
 

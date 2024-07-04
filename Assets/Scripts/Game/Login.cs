@@ -18,7 +18,7 @@ public class Login : MonoBehaviour
     public TMP_InputField userInputField;
     public TMP_InputField passInputField;
     public Button loginButton;
-    public Toggle internet;
+    public Toggle notInternet;
     public GameObject passTitle;
 
     private void Awake()
@@ -38,15 +38,7 @@ public class Login : MonoBehaviour
 
     public void ConexionMode()
     {
-        if(internet.isOn)
-        {
-            passTitle.SetActive(true);
-            loginButton.onClick.RemoveAllListeners();
-            loginButton.GetComponent<Button>().onClick.AddListener(()=>{
-                StartCoroutine(OnLogin());
-            });
-        }
-        else
+        if(notInternet.isOn)
         {
             passTitle.SetActive(false);
             loginButton.onClick.RemoveAllListeners();
@@ -54,17 +46,25 @@ public class Login : MonoBehaviour
                 StartCoroutine(LocalLogin());
             });            
         }
+        else
+        {
+            passTitle.SetActive(true);
+            loginButton.onClick.RemoveAllListeners();
+            loginButton.GetComponent<Button>().onClick.AddListener(()=>{
+                StartCoroutine(OnLogin());
+            });
+        }
     }
 
     public IEnumerator LocalLogin()
     {
         if(userInputField.text != "")
         {
-            if (File.Exists(GameData.Instance.rutaArchivoFisioterapia) && File.Exists(GameData.Instance.rutaArchivoPredeterminado) && File.Exists(GameData.Instance.rutaArchivoPaciente))
+            if (File.Exists(GameData.Instance.rutaArchivoFisioterapia) && File.Exists(GameData.Instance.rutaArchivoPaciente))
             {
-                Exercise exercise = JsonUtility.FromJson<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoFisioterapia));
-                GameData.Instance.jsonObjectExerciseDefault = JsonUtility.FromJson<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoPredeterminado));
-                GameData.Instance.jsonObjectUser = JsonUtility.FromJson<Data>(File.ReadAllText(GameData.Instance.rutaArchivoPaciente));
+                Exercise exercise = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoFisioterapia));
+                ExercisesManager.Instance.AddDefaultExercise();
+                GameData.Instance.jsonObjectUser = JsonConvert.DeserializeObject<Data>(File.ReadAllText(GameData.Instance.rutaArchivoPaciente));
 
                 if(userInputField.text == GameData.Instance.jsonObjectUser.user.cedula)
                 {
@@ -78,20 +78,27 @@ public class Login : MonoBehaviour
                         yield return new WaitForSeconds(1f);
                         UI_System.Instance.SwitchScreens(ExercisesManager.Instance.sessionMenu);
                     }
-                    else if(!active && GameData.Instance.jsonObjectExerciseDefault.nombre != exercise.nombre)
+                    else if(!active)
                     {
-                        exercise = GameData.Instance.jsonObjectExerciseDefault;
-                        exercise._id = "";
-                        exercise.fecha_inicio = DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
-                        exercise.fecha_fin = DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture).AddDays(exercise.frecuencia_dias - 1).ToString("dd/MM/yyyy");
+                        if(GameData.Instance.jsonObjectExerciseDefault.nombre != exercise.nombre)
+                        {
+                            exercise = GameData.Instance.jsonObjectExerciseDefault;
+                            exercise._id = "";
+                            exercise.fecha_inicio = DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
+                            exercise.fecha_fin = DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture).AddDays(exercise.frecuencia_dias - 1).ToString("dd/MM/yyyy");
 
-                        LoadLocalData(exercise);
+                            LoadLocalData(exercise);
 
-                        yield return new WaitForSeconds(1f);
-                        UI_System.Instance.SwitchScreens(ExercisesManager.Instance.sessionMenu);
+                            yield return new WaitForSeconds(1f);
+                            UI_System.Instance.SwitchScreens(ExercisesManager.Instance.sessionMenu);
+                        }
+                        else if(GameData.Instance.jsonObjectExerciseDefault.nombre == exercise.nombre)
+                        {
+                            NotificationsManager.Instance.WarningNotifications("¡No tienes terapias! Por favor inicia sesión con usuario y contraseña para descargar la terapia");
+                        }
+                        else
+                            NotificationsManager.Instance.WarningNotifications("¡No tienes un ejercicio predeterminado! Por favor dile a tu fisioterapeuta que te cree uno.\nEste ejercicio te permite trabajar sin conexión a internet.");
                     }
-                    else if(!active && GameData.Instance.jsonObjectExerciseDefault.nombre == exercise.nombre)
-                        NotificationsManager.Instance.WarningNotifications("¡No tienes terapias! Por favor inicia sesión con usuario y contraseña para descargar la terapia");
                 } 
                 else
                     NotificationsManager.Instance.WarningNotifications("El usuario no coincide con la fisioterapia asignada");
@@ -105,7 +112,6 @@ public class Login : MonoBehaviour
 
     IEnumerator OnLogin()
     {
-
         loginButton.interactable = false;
 
         WWWForm form = new WWWForm();
@@ -137,18 +143,21 @@ public class Login : MonoBehaviour
             }
             else
             {
-                GameData.Instance.jsonObjectUser = JsonUtility.FromJson<Data>(responseText);
+                GameData.Instance.jsonObjectUser = JsonConvert.DeserializeObject<Data>(responseText);
+                UpdateLocalUser(responseText);
                 
-                if(File.Exists(GameData.Instance.rutaArchivoFisioterapia) && File.Exists(GameData.Instance.rutaArchivoPredeterminado) && File.Exists(GameData.Instance.rutaArchivoResultados))
+                if(File.Exists(GameData.Instance.rutaArchivoResultados))
                 {
-                    Exercise exercise = JsonUtility.FromJson<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoFisioterapia));
-                    GameData.Instance.jsonObjectExerciseDefault = JsonUtility.FromJson<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoPredeterminado));
+                    Exercise exercise = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoFisioterapia));
+                    ExercisesManager.Instance.AddDefaultExercise();
 
                     if(GameData.Instance.jsonObjectExerciseDefault.nombre == exercise.nombre)
                         yield return StartCoroutine(ExercisesManager.Instance.CreateDefaultExercise(exercise));
-                    else                    
+                    else if(GameData.Instance.jsonObjectExerciseDefault.nombre != exercise.nombre)
                         yield return StartCoroutine(ExercisesManager.Instance.CreateResults());
-                
+                    else
+                        NotificationsManager.Instance.WarningNotifications("¡No tienes un ejercicio predeterminado! Por favor dile a tu fisioterapeuta que te cree uno.\nEste ejercicio te permite trabajar sin conexión a internet.");
+
                     yield return StartCoroutine(RewardsManager.Instance.UpdateReward(File.ReadAllText(GameData.Instance.rutaArchivoRecompensa)));
                     yield return StartCoroutine(CustomizationManager.Instance.UpdateCustomizations(File.ReadAllText(GameData.Instance.rutaArchivoPersonalizacion)));
                 }
@@ -156,13 +165,6 @@ public class Login : MonoBehaviour
                 yield return StartCoroutine(ExercisesManager.Instance.GetExercises());
                 yield return StartCoroutine(RewardsManager.Instance.GetRewards());
                 yield return StartCoroutine(CustomizationManager.Instance.GetCustomizations());
-
-                UpdateLocalUser(JsonConvert.SerializeObject(GameData.Instance.jsonObjectUser));
-                if(GameData.Instance.idJsonObjectExercises != -1)
-                    ExercisesManager.Instance.UpdateLocalExercise(GameData.Instance.rutaArchivoFisioterapia, ExercisesManager.Instance.GetJsonExercise(GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises]));
-                ExercisesManager.Instance.UpdateLocalExercise(GameData.Instance.rutaArchivoPredeterminado, ExercisesManager.Instance.GetJsonExercise(GameData.Instance.jsonObjectExerciseDefault));
-                RewardsManager.Instance.UpdateLocalReward(RewardsManager.Instance.GetJsonRewards());
-                CustomizationManager.Instance.UpdateLocalCustomizations(CustomizationManager.Instance.GetJsonCustomizations());
                 
                 yield return new WaitForSeconds(1f);
                 UI_System.Instance.SwitchScreens(ExercisesManager.Instance.sessionMenu);

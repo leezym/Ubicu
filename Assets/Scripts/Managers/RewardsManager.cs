@@ -87,6 +87,8 @@ public class RewardsManager : MonoBehaviour
         else
         {
             GameData.Instance.jsonObjectRewards = JsonConvert.DeserializeObject<Rewards>(responseText);
+            UpdateLocalReward(responseText);
+            
             GetAllBadges();
         }
     }
@@ -104,7 +106,7 @@ public class RewardsManager : MonoBehaviour
         
         UpdateLocalReward(jsonData);
         
-        if(Login.Instance.internet.isOn)
+        if(!Login.Instance.notInternet.isOn)
         {
             StartCoroutine(UpdateReward(jsonData));
         }

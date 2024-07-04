@@ -168,6 +168,8 @@ public class CustomizationManager : MonoBehaviour
         else
         {
             GameData.Instance.jsonObjectCustomizations = JsonConvert.DeserializeObject<Customizations>(responseText);
+            UpdateLocalCustomizations(responseText);
+            
             CreateCustomizations();
         }
     }
@@ -198,7 +200,7 @@ public class CustomizationManager : MonoBehaviour
 
         UpdateLocalCustomizations(jsonData);
 
-        if(Login.Instance.internet.isOn)
+        if(!Login.Instance.notInternet.isOn)
         {            
             StartCoroutine(UpdateCustomizations(jsonData));
         }

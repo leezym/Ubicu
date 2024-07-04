@@ -1232,7 +1232,7 @@ MonoBehaviour:
   userInputField: {fileID: 1997993793}
   passInputField: {fileID: 175539327}
   loginButton: {fileID: 1828910407}
-  internet: {fileID: 502270763}
+  notInternet: {fileID: 502270763}
   passTitle: {fileID: 1399730884}
 --- !u!1 &66518428
 GameObject:
@@ -7601,7 +7601,7 @@ GameObject:
   - component: {fileID: 502270762}
   - component: {fileID: 502270763}
   m_Layer: 5
-  m_Name: Toggle
+  m_Name: NotInternetToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
