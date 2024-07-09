@@ -12,12 +12,12 @@ public class GameData : MonoBehaviour
     public static string URL = "https://server.ubicu.co/";
     //public static string URL = "http://localhost:5000/";
 
-    public string rutaArchivoPaciente => Path.Combine(Application.persistentDataPath, "paciente.txt");
-    public string rutaArchivoFisioterapia => Path.Combine(Application.persistentDataPath, "fisioterapia.txt");
-    public string rutaArchivoPredeterminado => Path.Combine(Application.persistentDataPath, "predeterminado.txt");
-    public string rutaArchivoRecompensa => Path.Combine(Application.persistentDataPath, "recompensa.txt");
-    public string rutaArchivoPersonalizacion => Path.Combine(Application.persistentDataPath, "personalizacion.txt");
-    public string rutaArchivoResultados => Path.Combine(Application.persistentDataPath, "resultados.txt");
+    public string rutaArchivoPaciente => Path.Combine(Application.temporaryCachePath, "paciente.txt");
+    public string rutaArchivoFisioterapia => Path.Combine(Application.temporaryCachePath, "fisioterapia.txt");
+    public string rutaArchivoPredeterminado => Path.Combine(Application.temporaryCachePath, "predeterminado.txt");
+    public string rutaArchivoRecompensa => Path.Combine(Application.temporaryCachePath, "recompensa.txt");
+    public string rutaArchivoPersonalizacion => Path.Combine(Application.temporaryCachePath, "personalizacion.txt");
+    public string rutaArchivoResultados => Path.Combine(Application.temporaryCachePath, "resultados.txt");
 
     [Header("BOOLEAN")]
     public bool m_playing = false;
@@ -126,7 +126,12 @@ public class GameData : MonoBehaviour
 
     void Start()
     {
-        //PlayerPrefs.DeleteAll();
+        string[] archivosPersistentData = Directory.GetFiles(Application.persistentDataPath);
+        foreach (string archivo in archivosPersistentData)
+        {
+            File.Delete(archivo);
+        }
+
         idListHourExercises = -1;
 
         if(PlayerPrefs.GetString("currentExerciseDate") == "") // fecha actual
