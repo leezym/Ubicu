@@ -257,7 +257,7 @@ public class ExercisesManager : MonoBehaviour
             GameData.Instance.exerciseHourArray = Array.ConvertAll(PlayerPrefs.GetString("exerciseHourArray").Split(","), int.Parse);
         }
 
-        extraMinuteToWaitForExercise = (GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].frecuencia_horas == 1 ? 58f : 59f); // minutos
+        extraMinuteToWaitForExercise = (GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].frecuencia_horas == 1 ? 58f /*30f*/ : 59f); // minutos
     }
 
     public void UpdateLocalExercise(string path, string jsonData)
