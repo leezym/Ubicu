@@ -151,22 +151,18 @@ public class Login : MonoBehaviour
                 GameData.Instance.jsonObjectUser = JsonConvert.DeserializeObject<Data>(responseText);
                 UpdateLocalUser(responseText);
                 
+                Exercise exerciseDefault = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoPredeterminado));
+                if(exerciseDefault.nombre == "")
+                    NotificationsManager.Instance.WarningNotifications("¡No tienes un ejercicio predeterminado! Por favor dile a tu fisioterapeuta que te cree uno.\nEste ejercicio te permite trabajar sin conexión a internet.");
+                
                 if(File.Exists(GameData.Instance.rutaArchivoResultados))
                 {
                     Exercise exercise = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoFisioterapia));
-                    GameData.Instance.jsonObjectExerciseDefault = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoPredeterminado));
 
-                    if(GameData.Instance.jsonObjectExerciseDefault.nombre == "")
-                    {
-                        NotificationsManager.Instance.WarningNotifications("¡No tienes un ejercicio predeterminado! Por favor dile a tu fisioterapeuta que te cree uno.\nEste ejercicio te permite trabajar sin conexión a internet.");
-                    }
-                    else
-                    {
-                        if(GameData.Instance.jsonObjectExerciseDefault.nombre == exercise.nombre)
-                            yield return StartCoroutine(ExercisesManager.Instance.CreateDefaultExercise(exercise));
-                        else if(GameData.Instance.jsonObjectExerciseDefault.nombre != exercise.nombre)
-                            yield return StartCoroutine(ExercisesManager.Instance.CreateResults());
-                    }
+                    if(exerciseDefault.nombre == exercise.nombre)
+                        yield return StartCoroutine(ExercisesManager.Instance.CreateDefaultExercise(exercise));
+                    else if(exerciseDefault.nombre != exercise.nombre)
+                        yield return StartCoroutine(ExercisesManager.Instance.CreateResults());
 
                     yield return StartCoroutine(RewardsManager.Instance.UpdateReward(File.ReadAllText(GameData.Instance.rutaArchivoRecompensa)));
                     yield return StartCoroutine(CustomizationManager.Instance.UpdateCustomizations(File.ReadAllText(GameData.Instance.rutaArchivoPersonalizacion)));

@@ -316,12 +316,29 @@ public class ExercisesManager : MonoBehaviour
 
             if (File.Exists(GameData.Instance.rutaArchivoResultados))
             {
+                JArray jsonArray;
                 string contenido = File.ReadAllText(GameData.Instance.rutaArchivoResultados);
-                File.AppendAllText(GameData.Instance.rutaArchivoResultados, "\n"+jsonData+",");
+
+                if (!string.IsNullOrWhiteSpace(contenido))
+                {
+                    jsonArray = JArray.Parse(contenido);
+                }
+                else
+                {
+                    jsonArray = new JArray();
+                }
+
+                jsonArray.Add(JObject.Parse(jsonData));
+                File.WriteAllText(GameData.Instance.rutaArchivoResultados, jsonArray.ToString());
             }
             else
             {
-                File.WriteAllText(GameData.Instance.rutaArchivoResultados, jsonData+",");
+                JArray jsonArray = new JArray
+                {
+                    JObject.Parse(jsonData)
+                };
+
+                File.WriteAllText(GameData.Instance.rutaArchivoResultados, jsonArray.ToString());
             }
 
             Debug.Log("Datos de resultados locales creados correctamente");
@@ -340,13 +357,11 @@ public class ExercisesManager : MonoBehaviour
         string fileContent = File.ReadAllText(GameData.Instance.rutaArchivoResultados);
 
         // Dividir el contenido del archivo en cada conjunto de datos
-        string[] dataSets = fileContent.Split(new string[] { "}," }, System.StringSplitOptions.RemoveEmptyEntries);
+        JArray dataSets = JArray.Parse(fileContent);
 
-        foreach (string dataSet in dataSets)
+        foreach (JObject jsonObject in dataSets)
         {
-            JObject jsonObject = JObject.Parse(dataSet + "}");
-
-            if(id_ejercicio != "")
+            if (!string.IsNullOrEmpty(id_ejercicio))
                 jsonObject["id_ejercicio"] = id_ejercicio;
 
             WWWForm form = new WWWForm();
