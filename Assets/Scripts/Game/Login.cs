@@ -58,18 +58,28 @@ public class Login : MonoBehaviour
 
     public IEnumerator LocalLogin()
     {
+        bool active;
+        Exercise exercise = new Exercise();
+
         if(userInputField.text != "")
         {
-            if (File.Exists(GameData.Instance.rutaArchivoFisioterapia) && File.Exists(GameData.Instance.rutaArchivoPaciente))
+            if (File.Exists(GameData.Instance.rutaArchivoPaciente))
             {
-                Exercise exercise = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoFisioterapia));
-                GameData.Instance.jsonObjectExerciseDefault = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoPredeterminado));
                 GameData.Instance.jsonObjectUser = JsonConvert.DeserializeObject<Data>(File.ReadAllText(GameData.Instance.rutaArchivoPaciente));
 
                 if(userInputField.text == GameData.Instance.jsonObjectUser.user.cedula)
                 {
-                    bool active = (DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) >= DateTime.ParseExact(exercise.fecha_inicio, "dd/MM/yyyy", CultureInfo.InvariantCulture)
+                    if(File.Exists(GameData.Instance.rutaArchivoFisioterapia))
+                    {
+                        exercise = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoFisioterapia));
+
+                        active = (DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) >= DateTime.ParseExact(exercise.fecha_inicio, "dd/MM/yyyy", CultureInfo.InvariantCulture)
                         && DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(exercise.fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture)) ? true : false;
+                    }
+                    else
+                        active = false;
+                    
+                    GameData.Instance.jsonObjectExerciseDefault = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoPredeterminado));
 
                     if(active)
                     {
@@ -150,14 +160,14 @@ public class Login : MonoBehaviour
             {
                 GameData.Instance.jsonObjectUser = JsonConvert.DeserializeObject<Data>(responseText);
                 UpdateLocalUser(responseText);
-                
-                Exercise exerciseDefault = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoPredeterminado));
-                if(exerciseDefault.nombre == "")
-                    NotificationsManager.Instance.WarningNotifications("¡No tienes un ejercicio predeterminado! Por favor dile a tu fisioterapeuta que te cree uno.\nEste ejercicio te permite trabajar sin conexión a internet.");
-                
+            
                 if(File.Exists(GameData.Instance.rutaArchivoResultados))
                 {
                     Exercise exercise = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoFisioterapia));
+                    Exercise exerciseDefault = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoPredeterminado));
+
+                    if(exerciseDefault.nombre == "")
+                        NotificationsManager.Instance.WarningNotifications("¡No tienes un ejercicio predeterminado! Por favor dile a tu fisioterapeuta que te cree uno.\nEste ejercicio te permite trabajar sin conexión a internet.");
 
                     if(exerciseDefault.nombre == exercise.nombre)
                         yield return StartCoroutine(ExercisesManager.Instance.CreateDefaultExercise(exercise));
