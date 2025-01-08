@@ -205,6 +205,7 @@ public class RewardsManager : MonoBehaviour
         string[] info = Regex.Split(insignia, ","); // item(0), valor(1)
         int i = int.Parse(info[1]);
         int j = 0;
+        string msg = "";
 
         badgesTitle.text = badgesNames[i];
         sb.Append("Esta medalla se le otorga a aquellos que lograron completar <b>");        
@@ -213,38 +214,39 @@ public class RewardsManager : MonoBehaviour
         {
             j = 0;
             badgesSubTitle.text = "en Series";
+            msg = badgesPoints[0].badgesPoints[i]+"</b> series";
             badgesBigImage.sprite = seriesBadgesBigSprite[i];
-            sb.Append(badgesPoints[0].badgesPoints[i]+"</b> series");
         }
         else if(info[0] == "sesiones")
         {
             j = 1;
             badgesSubTitle.text = "en Sesiones";
+            msg = badgesPoints[1].badgesPoints[i]+"</b> sesiones";
             badgesBigImage.sprite = sessionsBadgesBigSprite[i];
-            sb.Append(badgesPoints[1].badgesPoints[i]+"</b> sesiones");
         }
         else if(info[0] == "dias")
         {
             j = 2;
             badgesSubTitle.text = "en Días";
+            msg = badgesPoints[2].badgesPoints[i]+"</b> días";
             badgesBigImage.sprite = daysBadgesBigSprite[i];
-            sb.Append(badgesPoints[2].badgesPoints[i]+"</b> días");
         }
         else if(info[0] == "semanas")
         {
             j = 3;
             badgesSubTitle.text = "en Semanas";
+            msg = badgesPoints[3].badgesPoints[i]+"</b> semanas";
             badgesBigImage.sprite = weeksBadgesBigSprite[i];
-            sb.Append(badgesPoints[3].badgesPoints[i]+"</b> semanas");
         }
 
+        sb.Append(msg);
         badgesDescription.text = sb.ToString();
         
         if(allBadgesArray[j].item[i] == 1) //si tienes la insignia muestras la info
             UI_System.Instance.SwitchScreens(infoBadgesMenu);
         else
         {
-            NotificationsManager.Instance.WarningNotifications("Aún no tienes la insignia <b>"+badgesTitle.text+" "+badgesSubTitle.text+"</b>");
+            NotificationsManager.Instance.WarningNotifications("Necesitas <b>"+msg+" para obtener la insignia <b>"+badgesTitle.text+" "+badgesSubTitle.text+"</b>");
             NotificationsManager.Instance.SetCloseFunction();
         }
     }

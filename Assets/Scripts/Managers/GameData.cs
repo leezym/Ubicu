@@ -19,6 +19,9 @@ public class GameData : MonoBehaviour
     public string rutaArchivoPersonalizacion => Path.Combine(Application.temporaryCachePath, "personalizacion.txt");
     public string rutaArchivoResultados => Path.Combine(Application.temporaryCachePath, "resultados.txt");
 
+    private float inactivityTimer = 0f;
+    private float inactivityThreshold = 300f; // 5 minutos en segundos
+
     [Header("BOOLEAN")]
     public bool m_playing = false;
     public bool playing
@@ -140,6 +143,20 @@ public class GameData : MonoBehaviour
     
     void Update()
     {
+        if(BluetoothPairing.Instance.bluetoothMenu.gameObject.GetComponent<CanvasGroup>().alpha == 0)
+            inactivityTimer += Time.deltaTime;
+
+        if (Input.anyKeyDown || Input.touchCount > 0)
+        {
+            ResetInactivityTimer();
+        }
+
+        if (inactivityTimer >= inactivityThreshold)
+        {
+            OnInactivityDetected();
+            ResetInactivityTimer();
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape))
             ExitApp();
         if(playing)
@@ -215,6 +232,19 @@ public class GameData : MonoBehaviour
         ExercisesManager.Instance.SaveExercise();
 
         PlayerPrefs.Save();
+    }
+
+    private void ResetInactivityTimer()
+    {
+        inactivityTimer = 0f;
+    }
+
+    private void OnInactivityDetected()
+    {
+        SaveLocalData();
+        BluetoothPairing.Instance.StopOutputTime();
+        NotificationsManager.Instance.WarningNotifications("Te has desconectado por inactividad.");
+        UI_System.Instance.SwitchScreens(BluetoothPairing.Instance.bluetoothMenu);
     }
 
     public void ExitApp()
