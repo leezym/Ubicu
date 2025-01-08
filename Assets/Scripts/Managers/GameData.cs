@@ -146,7 +146,7 @@ public class GameData : MonoBehaviour
         if(BluetoothPairing.Instance.bluetoothMenu.gameObject.GetComponent<CanvasGroup>().alpha == 0)
             inactivityTimer += Time.deltaTime;
 
-        if (Input.anyKeyDown || Input.touchCount > 0)
+        if (Input.anyKeyDown || Input.touchCount > 0 || BluetoothPairing.Instance.bluetoothMenu.gameObject.GetComponent<CanvasGroup>().alpha == 1)
         {
             ResetInactivityTimer();
         }
@@ -176,7 +176,7 @@ public class GameData : MonoBehaviour
             PlayerMovement.Instance.RestingPlayer();
         
         // seleccionar sesion disponible
-        if(ExercisesManager.Instance.sessionMenu.gameObject.GetComponent<CanvasGroup>().alpha != 0)
+        if(ExercisesManager.Instance.sessionMenu.gameObject.GetComponent<CanvasGroup>().alpha == 1)
         {
             for(int i = 0; i < exerciseHourArray.Length; i++)
             {
@@ -207,7 +207,7 @@ public class GameData : MonoBehaviour
         }
 
         // detectar cuando lanzar sonido de motivacion
-        if(ExercisesManager.Instance.exerciseMenu_Game.gameObject.GetComponent<CanvasGroup>().alpha != 0)
+        if(ExercisesManager.Instance.exerciseMenu_Game.gameObject.GetComponent<CanvasGroup>().alpha == 1)
         {
             SoundsManager.Instance.StopMotivationSound();
             SoundsManager.Instance.StopSignalSound();
