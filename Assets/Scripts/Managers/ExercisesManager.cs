@@ -46,6 +46,35 @@ public class ExercisesManager : MonoBehaviour
             Instance = this;
     }
 
+    public IEnumerator GetExerciseDate()
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("id_patient", GameData.Instance.jsonObjectUser.user._id);
+        form.AddField("token", GameData.Instance.jsonObjectUser.token);
+
+        UnityWebRequest www = UnityWebRequest.Post(GameData.URL+"allExerciseDateByPatient", form);
+
+        www.downloadHandler = new DownloadHandlerBuffer();
+
+        yield return www.SendWebRequest();
+
+        string responseText = www.downloadHandler.text;
+        if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.Log(www.error);
+            Debug.Log(form.data);
+        }
+        else
+        {
+            GameData.Instance.jsonObjectExerciseDate = JsonConvert.DeserializeObject<ExerciseDate>(responseText);
+
+            if(GameData.Instance.jsonObjectExerciseDate.current_exercise_date == "") // fecha actual
+                GameData.Instance.jsonObjectExerciseDate.current_exercise_date = DateTime.Today.ToString("dd/MM/yyyy");
+
+            SendExerciseDate();
+        }
+    }
+
     public IEnumerator CreateDefaultExercise(Exercise exercise)
     {
         WWWForm form = new WWWForm();
@@ -120,12 +149,10 @@ public class ExercisesManager : MonoBehaviour
                 }
             }
 
-            Debug.Log(GetJsonExercise(GameData.Instance.jsonObjectExerciseDefault));
-
             if(GameData.Instance.jsonObjectExerciseDefault.nombre == "")
                 NotificationsManager.Instance.WarningNotifications("¡No tienes un ejercicio predeterminado! Por favor dile a tu fisioterapeuta que te cree uno.\nEste ejercicio te permite trabajar sin conexión a internet.");
             
-            UpdateLocalExercise(GameData.Instance.rutaArchivoPredeterminado, GetJsonExercise(GameData.Instance.jsonObjectExerciseDefault));
+            UpdateLocalExercise(GameData.Instance.ObtenerRutaPredeterminado(GameData.Instance.jsonObjectUser.user.cedula), GetJsonExercise(GameData.Instance.jsonObjectExerciseDefault));
 
             CreateExercisesSesions();
         }
@@ -196,15 +223,6 @@ public class ExercisesManager : MonoBehaviour
             : GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].apnea == 2 ? 4f 
             : 3f; // segundos de descanso minimo postapnea antes de comenzar a tomar aire
 
-            // si la fecha del ejercicio actual es diferente a la ultima almacenada
-            if(PlayerPrefs.GetString("currentExerciseFinalDate") != "" && DateTime.ParseExact(PlayerPrefs.GetString("currentExerciseFinalDate"), "dd/MM/yyyy", CultureInfo.InvariantCulture) != DateTime.ParseExact(GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture)) // fecha fin ejercicio actual
-            {
-                RewardsManager.Instance.serieReward = 0;
-                GameData.Instance.jsonObjectRewards.session_reward = 0;
-                GameData.Instance.jsonObjectRewards.day_reward = 0;
-                PlayerPrefs.SetString("currentExerciseFinalDate", GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].fecha_fin);
-            }
-
             AddExcersiseData();
             for(int i = 0; i < sesiones; i++)
             {
@@ -214,7 +232,7 @@ public class ExercisesManager : MonoBehaviour
                 sessionTitlePrefab.GetComponent<TMP_Text>().text = "Sesión " + (GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].hora_inicio + (GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].frecuencia_horas * i)) + ":00";
             }
 
-            UpdateLocalExercise(GameData.Instance.rutaArchivoFisioterapia, GetJsonExercise(GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises]));
+            UpdateLocalExercise(GameData.Instance.ObtenerRutaFisioterapia(GameData.Instance.jsonObjectUser.user.cedula), GetJsonExercise(GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises]));
         }      
     }
 
@@ -226,7 +244,7 @@ public class ExercisesManager : MonoBehaviour
             add = 0;
         if((emptyExercise == false && uniqueExercise == true && currentDate == true) || (emptyExercise == false && uniqueExercise == false && currentDate == true))
             add = (12 / GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].frecuencia_horas) + 1;
-
+        
         return add;        
     }
 
@@ -240,9 +258,9 @@ public class ExercisesManager : MonoBehaviour
         
         GameData.Instance.exerciseHourArray = new int[sesiones];
 
-        if(DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) != DateTime.ParseExact(PlayerPrefs.GetString("currentExerciseDate"), "dd/MM/yyyy", CultureInfo.InvariantCulture) || PlayerPrefs.GetString("exerciseHourArray") == "")
+        if(DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) != DateTime.ParseExact(GameData.Instance.jsonObjectExerciseDate.current_exercise_date, "dd/MM/yyyy", CultureInfo.InvariantCulture) || GameData.Instance.jsonObjectExerciseDate.exercise_hour_array == "")
         {
-            PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString("dd/MM/yyyy"));
+            GameData.Instance.jsonObjectExerciseDate.current_exercise_date = DateTime.Today.ToString("dd/MM/yyyy");
             int hours = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].hora_inicio;
             
             for(int i = 0; i < sesiones; i++)
@@ -253,10 +271,10 @@ public class ExercisesManager : MonoBehaviour
         }
         else
         {
-            // actualizar de acuerdo a la DB local
-            GameData.Instance.exerciseHourArray = Array.ConvertAll(PlayerPrefs.GetString("exerciseHourArray").Split(","), int.Parse);
+            GameData.Instance.exerciseHourArray = Array.ConvertAll(GameData.Instance.jsonObjectExerciseDate.exercise_hour_array.Split(","), int.Parse);
         }
 
+        SendExerciseDate();
         extraMinuteToWaitForExercise = (GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].frecuencia_horas == 1 ? 58f /*30f*/ : 59f); // minutos
     }
 
@@ -267,9 +285,30 @@ public class ExercisesManager : MonoBehaviour
         Debug.Log("Datos de fisioterapia locales actualizados correctamente");
     }
 
-    public void SaveExercise()
+    public void UpdateLocalExerciseDate(string jsonData)
     {
-        PlayerPrefs.SetString("exerciseHourArray", string.Join(",", GameData.Instance.exerciseHourArray));
+        File.WriteAllText(GameData.Instance.ObtenerRutaFechaEjercicio(GameData.Instance.jsonObjectUser.user.cedula), jsonData);
+        
+        Debug.Log("Dato de fecha de ejercicio local actualizada correctamente");
+    }
+
+    public IEnumerator UpdateExerciseDate(string jsonData)
+    {
+        UnityWebRequest www = UnityWebRequest.Put(GameData.URL+"updateExerciseDate", jsonData);
+
+        www.SetRequestHeader("Content-Type", "application/json");
+        www.SetRequestHeader("x-access-token", GameData.Instance.jsonObjectUser.token);
+
+        yield return www.SendWebRequest();
+
+        if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            Debug.Log("Dato de fecha de ejercicio actualizada correctamente");
+        }
     }
     
     public IEnumerator SendResults()
@@ -280,7 +319,7 @@ public class ExercisesManager : MonoBehaviour
 
             form.AddField("token", GameData.Instance.jsonObjectUser.token);
             form.AddField("id_ejercicio", GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises]._id);
-            form.AddField("fecha", PlayerPrefs.GetString("currentExerciseDate"));
+            form.AddField("fecha", GameData.Instance.jsonObjectExerciseDate.current_exercise_date);
             form.AddField("hora", GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises]);
             form.AddField("datos", JsonConvert.SerializeObject(GameData.Instance.exerciseSeries));
 
@@ -301,6 +340,7 @@ public class ExercisesManager : MonoBehaviour
 
                 GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises] = 0; // si se finalizó se coloca 0
                 GameData.Instance.idListHourExercises = -1;
+                SendExerciseDate();
             }            
         }
         else
@@ -308,16 +348,16 @@ public class ExercisesManager : MonoBehaviour
             Dictionary<string, object> formData = new Dictionary<string, object>();
 
             formData.Add("id_ejercicio", GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises]._id);
-            formData.Add("fecha", PlayerPrefs.GetString("currentExerciseDate"));
+            formData.Add("fecha", GameData.Instance.jsonObjectExerciseDate.current_exercise_date);
             formData.Add("hora", GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises]);
             formData.Add("datos", JsonConvert.SerializeObject(GameData.Instance.exerciseSeries));
 
             string jsonData = JsonConvert.SerializeObject(formData);
 
-            if (File.Exists(GameData.Instance.rutaArchivoResultados))
+            if (File.Exists(GameData.Instance.ObtenerRutaResultados(GameData.Instance.jsonObjectUser.user.cedula)))
             {
                 JArray jsonArray;
-                string contenido = File.ReadAllText(GameData.Instance.rutaArchivoResultados);
+                string contenido = File.ReadAllText(GameData.Instance.ObtenerRutaResultados(GameData.Instance.jsonObjectUser.user.cedula));
 
                 if (!string.IsNullOrWhiteSpace(contenido))
                 {
@@ -329,7 +369,7 @@ public class ExercisesManager : MonoBehaviour
                 }
 
                 jsonArray.Add(JObject.Parse(jsonData));
-                File.WriteAllText(GameData.Instance.rutaArchivoResultados, jsonArray.ToString());
+                File.WriteAllText(GameData.Instance.ObtenerRutaResultados(GameData.Instance.jsonObjectUser.user.cedula), jsonArray.ToString());
             }
             else
             {
@@ -338,23 +378,42 @@ public class ExercisesManager : MonoBehaviour
                     JObject.Parse(jsonData)
                 };
 
-                File.WriteAllText(GameData.Instance.rutaArchivoResultados, jsonArray.ToString());
+                File.WriteAllText(GameData.Instance.ObtenerRutaResultados(GameData.Instance.jsonObjectUser.user.cedula), jsonArray.ToString());
             }
 
             Debug.Log("Datos de resultados locales creados correctamente");
             
             GameData.Instance.exerciseHourArray[GameData.Instance.idListHourExercises] = 0; // si se finalizó se coloca 0
             GameData.Instance.idListHourExercises = -1;
+            SendExerciseDate();
         }
 
         GameData.Instance.exerciseSeries.Clear(); //= new List<ExerciseData>();
-        Debug.Log("GameData.Instance.exerciseSeries.Count: "+GameData.Instance.exerciseSeries.Count);
+    }
+
+    public string GetJsonExerciseDate()
+    {
+        GameData.Instance.jsonObjectExerciseDate.exercise_hour_array = string.Join(",", GameData.Instance.exerciseHourArray);
+    
+        return JsonConvert.SerializeObject(GameData.Instance.jsonObjectExerciseDate);
+    }
+
+    public void SendExerciseDate()
+    {
+        string jsonData = GetJsonExerciseDate();
+
+        UpdateLocalExerciseDate(jsonData);
+
+        if(!Login.Instance.notInternet.isOn)
+        {            
+            StartCoroutine(UpdateExerciseDate(jsonData));
+        }
     }
 
     public IEnumerator CreateResults(string id_ejercicio = "")
     {        
         // Leer el archivo de texto completo
-        string fileContent = File.ReadAllText(GameData.Instance.rutaArchivoResultados);
+        string fileContent = File.ReadAllText(GameData.Instance.ObtenerRutaResultados(GameData.Instance.jsonObjectUser.user.cedula));
 
         // Dividir el contenido del archivo en cada conjunto de datos
         JArray dataSets = JArray.Parse(fileContent);
@@ -384,7 +443,7 @@ public class ExercisesManager : MonoBehaviour
             }
             else
             {
-                File.Delete(GameData.Instance.rutaArchivoResultados);
+                File.Delete(GameData.Instance.ObtenerRutaResultados(GameData.Instance.jsonObjectUser.user.cedula));
                 Debug.Log("Datos de resultados creados correctamente (locales)");
             }
         }

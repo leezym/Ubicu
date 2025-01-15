@@ -84,7 +84,6 @@ public class Obstacles : MonoBehaviour
         GameData.Instance.playing = false;
         repCounter = 0;
         GameData.Instance.exerciseSeries.Clear(); //= new List<ExerciseData>();
-        Debug.Log("GameData.Instance.exerciseSeries.Count: "+GameData.Instance.exerciseSeries.Count);
         PlayerMovement.Instance.seriesCount = 0;
         //BluetoothPairing.Instance.StopOutputTime();
     }

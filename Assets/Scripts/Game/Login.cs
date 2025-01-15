@@ -63,23 +63,25 @@ public class Login : MonoBehaviour
 
         if(userInputField.text != "")
         {
-            if (File.Exists(GameData.Instance.rutaArchivoPaciente))
+            if (File.Exists(GameData.Instance.ObtenerRutaPaciente(userInputField.text)))
             {
-                GameData.Instance.jsonObjectUser = JsonConvert.DeserializeObject<Data>(File.ReadAllText(GameData.Instance.rutaArchivoPaciente));
+                GameData.Instance.jsonObjectUser = JsonConvert.DeserializeObject<Data>(File.ReadAllText(GameData.Instance.ObtenerRutaPaciente(userInputField.text)));
 
                 if(userInputField.text == GameData.Instance.jsonObjectUser.user.cedula)
                 {
-                    if(File.Exists(GameData.Instance.rutaArchivoFisioterapia))
+                    if(File.Exists(GameData.Instance.ObtenerRutaFisioterapia(GameData.Instance.jsonObjectUser.user.cedula)))
                     {
-                        exercise = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoFisioterapia));
+                        exercise = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.ObtenerRutaFisioterapia(GameData.Instance.jsonObjectUser.user.cedula)));
 
                         active = (DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) >= DateTime.ParseExact(exercise.fecha_inicio, "dd/MM/yyyy", CultureInfo.InvariantCulture)
                         && DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(exercise.fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture)) ? true : false;
                     }
                     else
+                    {
                         active = false;
+                    }
                     
-                    GameData.Instance.jsonObjectExerciseDefault = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoPredeterminado));
+                    GameData.Instance.jsonObjectExerciseDefault = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.ObtenerRutaPredeterminado(GameData.Instance.jsonObjectUser.user.cedula)));
 
                     if(active)
                     {
@@ -161,10 +163,10 @@ public class Login : MonoBehaviour
                 GameData.Instance.jsonObjectUser = JsonConvert.DeserializeObject<Data>(responseText);
                 UpdateLocalUser(responseText);
             
-                if(File.Exists(GameData.Instance.rutaArchivoResultados))
+                if(File.Exists(GameData.Instance.ObtenerRutaResultados(GameData.Instance.jsonObjectUser.user.cedula)))
                 {
-                    Exercise exercise = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoFisioterapia));
-                    Exercise exerciseDefault = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.rutaArchivoPredeterminado));
+                    Exercise exercise = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.ObtenerRutaFisioterapia(GameData.Instance.jsonObjectUser.user.cedula)));
+                    Exercise exerciseDefault = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.ObtenerRutaPredeterminado(GameData.Instance.jsonObjectUser.user.cedula)));
 
                     if(exerciseDefault.nombre == "")
                         NotificationsManager.Instance.WarningNotifications("¡No tienes un ejercicio predeterminado! Por favor dile a tu fisioterapeuta que te cree uno.\nEste ejercicio te permite trabajar sin conexión a internet.");
@@ -174,10 +176,11 @@ public class Login : MonoBehaviour
                     else if(exerciseDefault.nombre != exercise.nombre)
                         yield return StartCoroutine(ExercisesManager.Instance.CreateResults());
 
-                    yield return StartCoroutine(RewardsManager.Instance.UpdateReward(File.ReadAllText(GameData.Instance.rutaArchivoRecompensa)));
-                    yield return StartCoroutine(CustomizationManager.Instance.UpdateCustomizations(File.ReadAllText(GameData.Instance.rutaArchivoPersonalizacion)));
+                    yield return StartCoroutine(RewardsManager.Instance.UpdateReward(File.ReadAllText(GameData.Instance.ObtenerRutaRecompensa(GameData.Instance.jsonObjectUser.user.cedula))));
+                    yield return StartCoroutine(CustomizationManager.Instance.UpdateCustomizations(File.ReadAllText(GameData.Instance.ObtenerRutaPersonalizacion(GameData.Instance.jsonObjectUser.user.cedula))));
                 }
 
+                yield return StartCoroutine(ExercisesManager.Instance.GetExerciseDate());
                 yield return StartCoroutine(ExercisesManager.Instance.GetExercises());
                 yield return StartCoroutine(RewardsManager.Instance.GetRewards());
                 yield return StartCoroutine(CustomizationManager.Instance.GetCustomizations());
@@ -198,7 +201,7 @@ public class Login : MonoBehaviour
 
     public void UpdateLocalUser(string jsonData)
     {
-        File.WriteAllText(GameData.Instance.rutaArchivoPaciente, jsonData);
+        File.WriteAllText(GameData.Instance.ObtenerRutaPaciente(GameData.Instance.jsonObjectUser.user.cedula), jsonData);
 
         Debug.Log("Datos del paciente locales actualizados correctamente");
     }
@@ -206,14 +209,17 @@ public class Login : MonoBehaviour
     void LoadLocalData(Exercise exercise)
     {
         string e = JsonConvert.SerializeObject(exercise);
-        ExercisesManager.Instance.UpdateLocalExercise(GameData.Instance.rutaArchivoFisioterapia, e);
-        GameData.Instance.jsonObjectExercises = JsonConvert.DeserializeObject<List<Exercise>>("["+File.ReadAllText(GameData.Instance.rutaArchivoFisioterapia)+"]");
+
+        GameData.Instance.jsonObjectExerciseDate = JsonConvert.DeserializeObject<ExerciseDate>(File.ReadAllText(GameData.Instance.ObtenerRutaFechaEjercicio(GameData.Instance.jsonObjectUser.user.cedula)));
+
+        ExercisesManager.Instance.UpdateLocalExercise(GameData.Instance.ObtenerRutaFisioterapia(GameData.Instance.jsonObjectUser.user.cedula), e);
+        GameData.Instance.jsonObjectExercises = JsonConvert.DeserializeObject<List<Exercise>>("["+File.ReadAllText(GameData.Instance.ObtenerRutaFisioterapia(GameData.Instance.jsonObjectUser.user.cedula))+"]");
         ExercisesManager.Instance.CreateExercisesSesions();
 
-        GameData.Instance.jsonObjectRewards = JsonConvert.DeserializeObject<Rewards>(File.ReadAllText(GameData.Instance.rutaArchivoRecompensa));
+        GameData.Instance.jsonObjectRewards = JsonConvert.DeserializeObject<Rewards>(File.ReadAllText(GameData.Instance.ObtenerRutaRecompensa(GameData.Instance.jsonObjectUser.user.cedula)));
         RewardsManager.Instance.GetAllBadges();
 
-        GameData.Instance.jsonObjectCustomizations = JsonConvert.DeserializeObject<Customizations>(File.ReadAllText(GameData.Instance.rutaArchivoPersonalizacion));
+        GameData.Instance.jsonObjectCustomizations = JsonConvert.DeserializeObject<Customizations>(File.ReadAllText(GameData.Instance.ObtenerRutaPersonalizacion(GameData.Instance.jsonObjectUser.user.cedula)));
         CustomizationManager.Instance.CreateCustomizations();
     }
 }

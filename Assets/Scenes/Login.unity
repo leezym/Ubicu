@@ -3035,6 +3035,12 @@ MonoBehaviour:
       direccion: 
       ciudad: 
       id_user: 
+  m_jsonObjectExerciseDate:
+    _id: 
+    current_exercise_final_date: 
+    current_exercise_date: 
+    exercise_hour_array: 
+    id_patient: 
   m_jsonObjectExerciseDefault:
     _id: 
     nombre: 
@@ -16130,7 +16136,7 @@ GameObject:
   - component: {fileID: 1055095070}
   - component: {fileID: 1055095069}
   m_Layer: 5
-  m_Name: BackButton
+  m_Name: ExitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33165,6 +33171,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 841411757}
+    - target: {fileID: 437951498210896313, guid: 8f091b1b3fc4f214da8bd8ab71e7dc9f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 437951498210896313, guid: 8f091b1b3fc4f214da8bd8ab71e7dc9f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 

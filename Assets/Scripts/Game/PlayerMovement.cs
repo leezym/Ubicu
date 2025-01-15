@@ -201,8 +201,6 @@ public class PlayerMovement : MonoBehaviour
     {        
         tempGraphFlow.Clear(); // = new List<float>();
         tempGraphTime.Clear(); // = new List<float>();
-        Debug.Log("tempGraphFlow.Count: "+tempGraphFlow.Count);
-        Debug.Log("tempGraphTime.Count: "+tempGraphTime.Count);
 
         foreach (Transform point in graphStructure.transform)
         {

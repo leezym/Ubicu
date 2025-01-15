@@ -87,7 +87,20 @@ public class RewardsManager : MonoBehaviour
         else
         {
             GameData.Instance.jsonObjectRewards = JsonConvert.DeserializeObject<Rewards>(responseText);
-            UpdateLocalReward(responseText);
+
+            if(GameData.Instance.jsonObjectExerciseDate.current_exercise_final_date == "") // fecha fin del ejercicio actual
+                GameData.Instance.jsonObjectExerciseDate.current_exercise_final_date = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].fecha_fin;
+            else if(GameData.Instance.idJsonObjectExercises >= 0 && DateTime.ParseExact(GameData.Instance.jsonObjectExerciseDate.current_exercise_final_date, "dd/MM/yyyy", CultureInfo.InvariantCulture) != DateTime.ParseExact(GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture)) // si hay ejercicios programados y la fecha final del ejercicio actual es diferente a la ultima almacenada
+            {
+                serieReward = 0;
+                GameData.Instance.jsonObjectRewards.session_reward = 0;
+                GameData.Instance.jsonObjectRewards.day_reward = 0;
+                GameData.Instance.jsonObjectExerciseDate.current_exercise_final_date = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].fecha_fin;
+            }
+
+            ExercisesManager.Instance.SendExerciseDate();
+
+            UpdateLocalReward(JsonConvert.SerializeObject(GameData.Instance.jsonObjectRewards));
             
             GetAllBadges();
         }
@@ -103,6 +116,7 @@ public class RewardsManager : MonoBehaviour
     public void SendReward()
     {
         string jsonData = GetJsonRewards();
+        Debug.Log(jsonData);
         
         UpdateLocalReward(jsonData);
         
@@ -114,7 +128,7 @@ public class RewardsManager : MonoBehaviour
 
     public void UpdateLocalReward(string jsonData)
     {
-        File.WriteAllText(GameData.Instance.rutaArchivoRecompensa, jsonData);
+        File.WriteAllText(GameData.Instance.ObtenerRutaRecompensa(GameData.Instance.jsonObjectUser.user.cedula), jsonData);
         
         Debug.Log("Datos de recompensas locales actualizados correctamente");
     }

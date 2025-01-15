@@ -12,12 +12,18 @@ public class GameData : MonoBehaviour
     public static string URL = "https://server.ubicu.co/";
     //public static string URL = "http://localhost:5000/";
 
-    public string rutaArchivoPaciente => Path.Combine(Application.temporaryCachePath, "paciente.txt");
-    public string rutaArchivoFisioterapia => Path.Combine(Application.temporaryCachePath, "fisioterapia.txt");
-    public string rutaArchivoPredeterminado => Path.Combine(Application.temporaryCachePath, "predeterminado.txt");
-    public string rutaArchivoRecompensa => Path.Combine(Application.temporaryCachePath, "recompensa.txt");
-    public string rutaArchivoPersonalizacion => Path.Combine(Application.temporaryCachePath, "personalizacion.txt");
-    public string rutaArchivoResultados => Path.Combine(Application.temporaryCachePath, "resultados.txt");
+    public string ObtenerRutaArchivo(string cc, string nombreArchivo)
+    {
+        return Path.Combine(Application.temporaryCachePath, $"{cc}_{nombreArchivo}.txt");
+    }
+
+    public string ObtenerRutaPaciente(string cc) => ObtenerRutaArchivo(cc, "patient");
+    public string ObtenerRutaFisioterapia(string cc) => ObtenerRutaArchivo(cc, "exercise");
+    public string ObtenerRutaPredeterminado(string cc) => ObtenerRutaArchivo(cc, "default");
+    public string ObtenerRutaRecompensa(string cc) => ObtenerRutaArchivo(cc, "reward");
+    public string ObtenerRutaPersonalizacion(string cc) => ObtenerRutaArchivo(cc, "customization");
+    public string ObtenerRutaResultados(string cc) => ObtenerRutaArchivo(cc, "results");
+    public string ObtenerRutaFechaEjercicio(string cc) => ObtenerRutaArchivo(cc, "exerciseDate");
 
     private float inactivityTimer = 0f;
     private float inactivityThreshold = 300f; // 5 minutos en segundos
@@ -73,6 +79,13 @@ public class GameData : MonoBehaviour
     {
         get { return m_jsonObjectUser; }
         set { m_jsonObjectUser = value; }
+    }
+
+    public ExerciseDate m_jsonObjectExerciseDate;
+    public ExerciseDate jsonObjectExerciseDate
+    {
+        get { return m_jsonObjectExerciseDate; }
+        set { m_jsonObjectExerciseDate = value; }
     }
 
     public Exercise m_jsonObjectExerciseDefault;
@@ -136,9 +149,6 @@ public class GameData : MonoBehaviour
         }
 
         idListHourExercises = -1;
-
-        if(PlayerPrefs.GetString("currentExerciseDate") == "") // fecha actual
-            PlayerPrefs.SetString("currentExerciseDate", DateTime.Today.ToString("dd/MM/yyyy"));
     }
     
     void Update()
@@ -222,16 +232,9 @@ public class GameData : MonoBehaviour
 
     public void UpdateLocalUser(string jsonData)
     {  
-        File.WriteAllText(rutaArchivoPaciente, jsonData);
+        File.WriteAllText(ObtenerRutaPaciente(jsonObjectUser.user.cedula), jsonData);
 
         Debug.Log("Datos de paciente locales actualizados correctamente");
-    } 
-
-    public void SaveLocalData()
-    {
-        ExercisesManager.Instance.SaveExercise();
-
-        PlayerPrefs.Save();
     }
 
     private void ResetInactivityTimer()
@@ -241,10 +244,9 @@ public class GameData : MonoBehaviour
 
     private void OnInactivityDetected()
     {
-        SaveLocalData();
         BluetoothPairing.Instance.StopOutputTime();
-        NotificationsManager.Instance.WarningNotifications("Te has desconectado por inactividad.");
-        UI_System.Instance.SwitchScreens(BluetoothPairing.Instance.bluetoothMenu);
+        NotificationsManager.Instance.WarningNotifications("Te has desconectado por inactividad. Se cerró sesión.");
+        NotificationsManager.Instance.SetCloseFunction(BluetoothPairing.Instance.bluetoothMenu);        
     }
 
     public void ExitApp()
@@ -253,7 +255,6 @@ public class GameData : MonoBehaviour
         NotificationsManager.Instance.QuestionNotifications("Quieres salir de la aplicación?");
         // si
         NotificationsManager.Instance.SetYesButton(()=>{
-            SaveLocalData();
             Application.Quit();
         });
     }

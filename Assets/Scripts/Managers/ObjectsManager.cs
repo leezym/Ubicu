@@ -100,6 +100,16 @@ public class Customizations
     public string id_patient;
 }
 
+[Serializable]
+public class ExerciseDate
+{
+    public string _id;
+    public string current_exercise_final_date;
+    public string current_exercise_date;
+    public string exercise_hour_array;
+    public string id_patient;
+}
+
 public class ObjectsManager : MonoBehaviour
 {
 

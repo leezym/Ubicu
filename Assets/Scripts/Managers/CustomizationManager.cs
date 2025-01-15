@@ -176,7 +176,7 @@ public class CustomizationManager : MonoBehaviour
 
     public void CreateCustomizations()
     {
-        SetIdCustomization(GameData.Instance.jsonObjectCustomizations.id_customization);
+        SetIdPlayerCustomization(GameData.Instance.jsonObjectCustomizations.id_customization);
         idItemFondosArray = Array.ConvertAll(GameData.Instance.jsonObjectCustomizations.id_item_fondos_array.Split(","), int.Parse);
         idItemFigurasArray = Array.ConvertAll(GameData.Instance.jsonObjectCustomizations.id_item_figuras_array.Split(","), int.Parse);
         SetIdFondosItem(idItemFondosArray[GameData.Instance.jsonObjectCustomizations.id_customization]);
@@ -208,7 +208,7 @@ public class CustomizationManager : MonoBehaviour
 
     public void UpdateLocalCustomizations(string jsonData)
     {
-        File.WriteAllText(GameData.Instance.rutaArchivoPersonalizacion, jsonData);
+        File.WriteAllText(GameData.Instance.ObtenerRutaPersonalizacion(GameData.Instance.jsonObjectUser.user.cedula), jsonData);
 
         Debug.Log("Datos de personalizaciones locales actualizados correctamente");
     }
@@ -302,7 +302,7 @@ public class CustomizationManager : MonoBehaviour
     public void SetIdFigurasItem() { SetIdFigurasItem(tempIdFigurasItem); }
     public void SetIdFigurasItem(int id)
     {
-        if(id >= 0) // verificar si esta en modo circulo o modo velocimetro //velocimetroSprites
+        if(id >= 0) // verificar si esta en modo circulo  o pulmones
         {
             playerGameObject[0].transform.Find("Circle").GetComponent<Image>().sprite = circuloSprites[id]; //circle 
             playerGameObject[1].transform.Find("Lung").GetComponent<Image>().sprite = circuloSprites[id]; //lung
@@ -323,20 +323,17 @@ public class CustomizationManager : MonoBehaviour
         GameData.Instance.jsonObjectCustomizations.id_customization = id;
 
         if(id == 0)
-            SetArrayCustomization("Abstracto", headerSpriteAbstracto, fondosItemSpritesAbstracto, figurasItemSpritesAbstracto, fondosSpritesAbstracto, circuloSpritesAbstracto, settingsSpritesAbstracto, colorTextAbstracto, circuloPreviewSpritesAbstracto, descriptionsFondosAbstracto, descriptionsFigurasAbstracto);
+            SetArrayCustomization("Abstracto", headerSpriteAbstracto, fondosItemSpritesAbstracto, figurasItemSpritesAbstracto, circuloPreviewSpritesAbstracto, descriptionsFondosAbstracto, descriptionsFigurasAbstracto);
         else if (id == 1)
-            SetArrayCustomization("Astral", headerSpriteAstral, fondosItemSpritesAstral, figurasItemSpritesAstral, fondosSpritesAstral, circuloSpritesAstral, settingsSpritesAstral, colorTextAstral, circuloPreviewSpritesAstral, descriptionsFondosAstral, descriptionsFigurasAstral);
+            SetArrayCustomization("Astral", headerSpriteAstral, fondosItemSpritesAstral, figurasItemSpritesAstral, circuloPreviewSpritesAstral, descriptionsFondosAstral, descriptionsFigurasAstral);
         else if (id == 2)
-            SetArrayCustomization("Naturaleza", headerSpriteNaturaleza, fondosItemSpritesNaturaleza, figurasItemSpritesNaturaleza, fondosSpritesNaturaleza, circuloSpritesNaturaleza, settingsSpritesNaturaleza, colorTextNaturaleza, circuloPreviewSpritesNaturaleza, descriptionsFondosNaturaleza, descriptionsFigurasNaturaleza);        
+            SetArrayCustomization("Naturaleza", headerSpriteNaturaleza, fondosItemSpritesNaturaleza, figurasItemSpritesNaturaleza, circuloPreviewSpritesNaturaleza, descriptionsFondosNaturaleza, descriptionsFigurasNaturaleza);        
         else if (id == 3)
-            SetArrayCustomization("Mar", headerSpriteMar, fondosItemSpritesMar, figurasItemSpritesMar, fondosSpritesMar, circuloSpritesMar, settingsSpritesMar, colorTextMar, circuloPreviewSpritesMar, descriptionsFondosMar, descriptionsFigurasMar);
+            SetArrayCustomization("Mar", headerSpriteMar, fondosItemSpritesMar, figurasItemSpritesMar, circuloPreviewSpritesMar, descriptionsFondosMar, descriptionsFigurasMar);
         else if (id == 4)
-            SetArrayCustomization("Anatomía", headerSpriteAnatomia, fondosItemSpritesAnatomia, figurasItemSpritesAnatomia, fondosSpritesAnatomia, circuloSpritesAnatomia, settingsSpritesAnatomia, colorTextAnatomia, circuloPreviewSpritesAnatomia, descriptionsFondosAnatomia, descriptionsFigurasAnatomia);
+            SetArrayCustomization("Anatomía", headerSpriteAnatomia, fondosItemSpritesAnatomia, figurasItemSpritesAnatomia, circuloPreviewSpritesAnatomia, descriptionsFondosAnatomia, descriptionsFigurasAnatomia);
 
         ValidateFullItems(id);
-
-        if (idItemFondosArray.Length > 0) SetIdFondosItem(idItemFondosArray[id]);
-        if (idItemFigurasArray.Length > 0) SetIdFigurasItem(idItemFigurasArray[id]);
 
         // colocar los precios
         for(int i = 0 ; i < priceTextItemFondosArray.Length; i++) // o priceTextItemFigurasArray
@@ -346,32 +343,9 @@ public class CustomizationManager : MonoBehaviour
         }        
     }
 
-    public void SetArrayCustomization(string subtitleHeaderText, Sprite headerSprite, Sprite[] fondosItemSprites, Sprite[] figurasItemSprites, Sprite[] fondosSprites, Sprite[] circuloSprites, Sprite[] settingsSprites, 
-                                    Color[] colorText, Sprite[] circuloPreviewSprites, string[] descriptionsFondos, string[] descriptionsFiguras)
+    public void SetArrayCustomization(string subtitleHeaderText, Sprite headerSprite, Sprite[] fondosItemSprites, Sprite[] figurasItemSprites,
+                                    Sprite[] circuloPreviewSprites, string[] descriptionsFondos, string[] descriptionsFiguras)
     {
-        if(subtitleHeaderText == "Anatomía")
-        {
-            playerGameObject[0].SetActive(false); //circle
-            playerGameObject[1].SetActive(true); //lung
-            PlayerMovement.Instance.minimunScale = PlayerMovement.LUNG_MINIMUM_SCALE;
-            PlayerMovement.Instance.maximunScale = PlayerMovement.LUNG_MAXIMUM_SCALE;
-            PlayerMovement.Instance.plusScale = PlayerMovement.LUNG_PLUS_SCALE;
-            PlayerMovement.Instance.player = playerGameObject[1].transform.Find("Lung").gameObject;
-        }
-        else
-        {
-            playerGameObject[0].SetActive(true); //circle
-            playerGameObject[1].SetActive(false); //lung
-            PlayerMovement.Instance.minimunScale = PlayerMovement.CIRCLE_MINIMUM_SCALE;
-            PlayerMovement.Instance.maximunScale = PlayerMovement.CIRCLE_MAXIMUM_SCALE;
-            PlayerMovement.Instance.plusScale = PlayerMovement.CIRCLE_PLUS_SCALE;
-            PlayerMovement.Instance.player = playerGameObject[0].transform.Find("Circle").gameObject;
-        }
-
-        this.fondosSprites = fondosSprites.Clone() as Sprite[];
-        this.circuloSprites = circuloSprites.Clone() as Sprite[];
-        this.settingsSprites = settingsSprites.Clone() as Sprite[];
-        this.colorText = colorText.Clone() as Color[];
         this.circuloPreviewSprites = circuloPreviewSprites.Clone() as Sprite[];
         this.descriptionsFondos = descriptionsFondos.Clone() as string[];
         this.descriptionsFiguras = descriptionsFiguras.Clone() as string[];
@@ -521,13 +495,13 @@ public class CustomizationManager : MonoBehaviour
             NotificationsManager.Instance.WarningNotifications("No tienes UbiCoins suficientes para completar el tema.\n¡Sigue haciendo tu fisioterapia!");
             NotificationsManager.Instance.SetCloseFunction(customizeMenu_Select);
             GameData.Instance.jsonObjectCustomizations.id_customization = tempIdCustomization;
-            SetIdCustomization(tempIdCustomization);
         }
         else if (idItemFondosArray[GameData.Instance.jsonObjectCustomizations.id_customization] >= 0 && idItemFigurasArray [GameData.Instance.jsonObjectCustomizations.id_customization] >= 0)
         {
             //notificacion de tema seleccionado
             NotificationsManager.Instance.WarningNotifications("¡Tema seleccionado!");
             NotificationsManager.Instance.SetCloseFunction(customizeMenu_Select);
+            SetIdPlayerCustomization(GameData.Instance.jsonObjectCustomizations.id_customization);
             SendCustomizations();
         }
         else
@@ -536,5 +510,49 @@ public class CustomizationManager : MonoBehaviour
             NotificationsManager.Instance.WarningNotifications("Por favor selecciona un fondo y una figura para usar el tema.");
             GameData.Instance.jsonObjectCustomizations.id_customization = tempIdCustomization;
         }
+    }
+
+    void SetIdPlayerCustomization(int id)
+    {
+        if(id == 0)
+            SetPlayerCustomization("Abstracto", fondosSpritesAbstracto, circuloSpritesAbstracto, settingsSpritesAbstracto, colorTextAbstracto);
+        else if (id == 1)
+            SetPlayerCustomization("Astral", fondosSpritesAstral, circuloSpritesAstral, settingsSpritesAstral, colorTextAstral);
+        else if (id == 2)
+            SetPlayerCustomization("Naturaleza", fondosSpritesNaturaleza, circuloSpritesNaturaleza, settingsSpritesNaturaleza, colorTextNaturaleza);
+        else if (id == 3)
+            SetPlayerCustomization("Mar", fondosSpritesMar, circuloSpritesMar, settingsSpritesMar, colorTextMar);
+        else if (id == 4)
+            SetPlayerCustomization("Anatomía", fondosSpritesAnatomia, circuloSpritesAnatomia, settingsSpritesAnatomia, colorTextAnatomia);
+
+        if (idItemFondosArray.Length > 0) SetIdFondosItem(idItemFondosArray[id]);
+        if (idItemFigurasArray.Length > 0) SetIdFigurasItem(idItemFigurasArray[id]);   
+    }
+
+    void SetPlayerCustomization(string subtitleHeaderText, Sprite[] fondosSprites, Sprite[] circuloSprites, Sprite[] settingsSprites, Color[] colorText)
+    {
+        if(subtitleHeaderText == "Anatomía")
+        {
+            playerGameObject[0].SetActive(false); //circle
+            playerGameObject[1].SetActive(true); //lung
+            PlayerMovement.Instance.minimunScale = PlayerMovement.LUNG_MINIMUM_SCALE;
+            PlayerMovement.Instance.maximunScale = PlayerMovement.LUNG_MAXIMUM_SCALE;
+            PlayerMovement.Instance.plusScale = PlayerMovement.LUNG_PLUS_SCALE;
+            PlayerMovement.Instance.player = playerGameObject[1].transform.Find("Lung").gameObject;
+        }
+        else
+        {
+            playerGameObject[0].SetActive(true); //circle
+            playerGameObject[1].SetActive(false); //lung
+            PlayerMovement.Instance.minimunScale = PlayerMovement.CIRCLE_MINIMUM_SCALE;
+            PlayerMovement.Instance.maximunScale = PlayerMovement.CIRCLE_MAXIMUM_SCALE;
+            PlayerMovement.Instance.plusScale = PlayerMovement.CIRCLE_PLUS_SCALE;
+            PlayerMovement.Instance.player = playerGameObject[0].transform.Find("Circle").gameObject;
+        }
+
+        this.fondosSprites = fondosSprites.Clone() as Sprite[];
+        this.circuloSprites = circuloSprites.Clone() as Sprite[];
+        this.settingsSprites = settingsSprites.Clone() as Sprite[];
+        this.colorText = colorText.Clone() as Color[];
     }
 }
