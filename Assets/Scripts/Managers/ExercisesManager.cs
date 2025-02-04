@@ -68,9 +68,9 @@ public class ExercisesManager : MonoBehaviour
         {
             GameData.Instance.jsonObjectExerciseDate = JsonConvert.DeserializeObject<ExerciseDate>(responseText);
 
-            if(GameData.Instance.jsonObjectExerciseDate.current_exercise_date == "") // fecha actual
+            if(string.IsNullOrEmpty(GameData.Instance.jsonObjectExerciseDate.current_exercise_date)) // fecha actual
                 GameData.Instance.jsonObjectExerciseDate.current_exercise_date = DateTime.Today.ToString("dd/MM/yyyy");
-
+                
             SendExerciseDate();
         }
     }
@@ -91,7 +91,7 @@ public class ExercisesManager : MonoBehaviour
         form.AddField("flujo", exercise.flujo);
         form.AddField("hora_inicio", exercise.hora_inicio);
         form.AddField("fecha_inicio", exercise.fecha_inicio);
-        form.AddField("fecha_fin", DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture).AddDays(-1).ToString("dd/MM/yyyy"));
+        form.AddField("fecha_fin", DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"));
         form.AddField("id_patient", GameData.Instance.jsonObjectUser.user._id);
 
         UnityWebRequest www = UnityWebRequest.Post(GameData.URL+"createEjercicio", form);
@@ -149,7 +149,7 @@ public class ExercisesManager : MonoBehaviour
                 }
             }
 
-            if(GameData.Instance.jsonObjectExerciseDefault.nombre == "")
+            if(string.IsNullOrEmpty(GameData.Instance.jsonObjectExerciseDefault.nombre))
                 NotificationsManager.Instance.WarningNotifications("¡No tienes un ejercicio predeterminado! Por favor dile a tu fisioterapeuta que te cree uno.\nEste ejercicio te permite trabajar sin conexión a internet.");
             
             UpdateLocalExercise(GameData.Instance.ObtenerRutaPredeterminado(GameData.Instance.jsonObjectUser.user.cedula), GetJsonExercise(GameData.Instance.jsonObjectExerciseDefault));
@@ -258,7 +258,7 @@ public class ExercisesManager : MonoBehaviour
         
         GameData.Instance.exerciseHourArray = new int[sesiones];
 
-        if(DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) != DateTime.ParseExact(GameData.Instance.jsonObjectExerciseDate.current_exercise_date, "dd/MM/yyyy", CultureInfo.InvariantCulture) || GameData.Instance.jsonObjectExerciseDate.exercise_hour_array == "")
+        if(DateTime.ParseExact(DateTime.Today.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture) != DateTime.ParseExact(GameData.Instance.jsonObjectExerciseDate.current_exercise_date, "dd/MM/yyyy", CultureInfo.InvariantCulture) || string.IsNullOrEmpty(GameData.Instance.jsonObjectExerciseDate.exercise_hour_array))
         {
             GameData.Instance.jsonObjectExerciseDate.current_exercise_date = DateTime.Today.ToString("dd/MM/yyyy");
             int hours = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].hora_inicio;

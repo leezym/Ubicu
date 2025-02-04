@@ -88,14 +88,17 @@ public class RewardsManager : MonoBehaviour
         {
             GameData.Instance.jsonObjectRewards = JsonConvert.DeserializeObject<Rewards>(responseText);
 
-            if(GameData.Instance.jsonObjectExerciseDate.current_exercise_final_date == "") // fecha fin del ejercicio actual
-                GameData.Instance.jsonObjectExerciseDate.current_exercise_final_date = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].fecha_fin;
-            else if(GameData.Instance.idJsonObjectExercises >= 0 && DateTime.ParseExact(GameData.Instance.jsonObjectExerciseDate.current_exercise_final_date, "dd/MM/yyyy", CultureInfo.InvariantCulture) != DateTime.ParseExact(GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture)) // si hay ejercicios programados y la fecha final del ejercicio actual es diferente a la ultima almacenada
+            if(GameData.Instance.idJsonObjectExercises >= 0)
             {
-                serieReward = 0;
-                GameData.Instance.jsonObjectRewards.session_reward = 0;
-                GameData.Instance.jsonObjectRewards.day_reward = 0;
-                GameData.Instance.jsonObjectExerciseDate.current_exercise_final_date = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].fecha_fin;
+                if(string.IsNullOrEmpty(GameData.Instance.jsonObjectExerciseDate.current_exercise_final_date)) // fecha fin del ejercicio actual
+                    GameData.Instance.jsonObjectExerciseDate.current_exercise_final_date = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].fecha_fin;
+                else if(DateTime.ParseExact(GameData.Instance.jsonObjectExerciseDate.current_exercise_final_date, "dd/MM/yyyy", CultureInfo.InvariantCulture) != DateTime.ParseExact(GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture)) // si hay ejercicios programados y la fecha final del ejercicio actual es diferente a la ultima almacenada
+                {
+                    serieReward = 0;
+                    GameData.Instance.jsonObjectRewards.session_reward = 0;
+                    GameData.Instance.jsonObjectRewards.day_reward = 0;
+                    GameData.Instance.jsonObjectExerciseDate.current_exercise_final_date = GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].fecha_fin;
+                }
             }
 
             ExercisesManager.Instance.SendExerciseDate();

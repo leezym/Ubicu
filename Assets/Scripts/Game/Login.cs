@@ -61,7 +61,7 @@ public class Login : MonoBehaviour
         bool active;
         Exercise exercise = new Exercise();
 
-        if(userInputField.text != "")
+        if(!string.IsNullOrEmpty(userInputField.text))
         {
             if (File.Exists(GameData.Instance.ObtenerRutaPaciente(userInputField.text)))
             {
@@ -92,7 +92,7 @@ public class Login : MonoBehaviour
                     }
                     else if(!active)
                     {
-                        if(GameData.Instance.jsonObjectExerciseDefault.nombre == "")
+                        if(string.IsNullOrEmpty(GameData.Instance.jsonObjectExerciseDefault.nombre))
                         {
                             NotificationsManager.Instance.WarningNotifications("¡No tienes un ejercicio predeterminado! Por favor dile a tu fisioterapeuta que te cree uno.\nEste ejercicio te permite trabajar sin conexión a internet.");
                         }
@@ -133,7 +133,7 @@ public class Login : MonoBehaviour
 
         WWWForm form = new WWWForm();
         
-        if(userInputField.text != "" && passInputField.text != "")
+        if(!string.IsNullOrEmpty(userInputField.text) && !string.IsNullOrEmpty(passInputField.text))
         {
             form.AddField("cedula", userInputField.text);
             form.AddField("password", passInputField.text);
@@ -150,7 +150,7 @@ public class Login : MonoBehaviour
                 Debug.Log(www.error);
                 Debug.Log(form.data);
 
-                if(responseText != "")
+                if(!string.IsNullOrEmpty(responseText))
                     NotificationsManager.Instance.WarningNotifications(responseText.Replace('"', ' '));
                 else
                     NotificationsManager.Instance.WarningNotifications("No tienes conexión a internet");
@@ -168,7 +168,7 @@ public class Login : MonoBehaviour
                     Exercise exercise = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.ObtenerRutaFisioterapia(GameData.Instance.jsonObjectUser.user.cedula)));
                     Exercise exerciseDefault = JsonConvert.DeserializeObject<Exercise>(File.ReadAllText(GameData.Instance.ObtenerRutaPredeterminado(GameData.Instance.jsonObjectUser.user.cedula)));
 
-                    if(exerciseDefault.nombre == "")
+                    if(string.IsNullOrEmpty(exerciseDefault.nombre))
                         NotificationsManager.Instance.WarningNotifications("¡No tienes un ejercicio predeterminado! Por favor dile a tu fisioterapeuta que te cree uno.\nEste ejercicio te permite trabajar sin conexión a internet.");
 
                     if(exerciseDefault.nombre == exercise.nombre)
@@ -176,6 +176,7 @@ public class Login : MonoBehaviour
                     else if(exerciseDefault.nombre != exercise.nombre)
                         yield return StartCoroutine(ExercisesManager.Instance.CreateResults());
 
+                    yield return StartCoroutine(ExercisesManager.Instance.UpdateExerciseDate(File.ReadAllText(GameData.Instance.ObtenerRutaFechaEjercicio(GameData.Instance.jsonObjectUser.user.cedula))));
                     yield return StartCoroutine(RewardsManager.Instance.UpdateReward(File.ReadAllText(GameData.Instance.ObtenerRutaRecompensa(GameData.Instance.jsonObjectUser.user.cedula))));
                     yield return StartCoroutine(CustomizationManager.Instance.UpdateCustomizations(File.ReadAllText(GameData.Instance.ObtenerRutaPersonalizacion(GameData.Instance.jsonObjectUser.user.cedula))));
                 }
