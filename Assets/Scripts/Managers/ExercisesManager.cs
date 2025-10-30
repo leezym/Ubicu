@@ -36,7 +36,7 @@ public class ExercisesManager : MonoBehaviour
     [Header("IN GAME")]
     public Transform sessionTitlePrefab;
     public int sesiones;
-    public float extraMinuteToWaitForExercise = 59f;
+    public int extraMinuteToWaitForExercise = 59;
 
     private void Awake()
     {
