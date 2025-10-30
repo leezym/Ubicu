@@ -188,30 +188,43 @@ public class GameData : MonoBehaviour
         // seleccionar sesion disponible
         if (ExercisesManager.Instance.sessionMenu.gameObject.GetComponent<CanvasGroup>().alpha == 1)
         {
-            for (int i = 0; i < exerciseHourArray.Length; i++)
-            {
-                int horaActual = int.Parse(DateTime.Now.Hour.ToString(CultureInfo.InvariantCulture));
-                int minutoActual = int.Parse(DateTime.Now.Minute.ToString(CultureInfo.InvariantCulture));
+            if (exerciseHourArray == null || exerciseHourArray.Length == 0) return;
 
-                // detectar cual ejercicio se debe activar
-                if (horaActual == exerciseHourArray[i] && minutoActual <= ExercisesManager.Instance.extraMinuteToWaitForExercise)
+            int extraMinute = ExercisesManager.Instance.extraMinuteToWaitForExercise;
+            int currentTotalMinutes = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
+
+            for(int i = 0; i < exerciseHourArray.Length; i++)
+            {
+                int exerciseHour = exerciseHourArray[i];
+                
+                // Skip invalid hours
+                if (exerciseHour < 0 || exerciseHour > 23) continue;
+
+                int exerciseTotalMinutes = exerciseHour * 60;
+                int activationEndMinutes = exerciseTotalMinutes + extraMinute;
+
+                Button button = ExercisesManager.Instance.sessionPrefab[i].GetComponent<Button>();
+                Image image = ExercisesManager.Instance.sessionPrefab[i].GetComponent<Image>();
+
+                if (currentTotalMinutes >= exerciseTotalMinutes && currentTotalMinutes <= activationEndMinutes)
                 {
-                    ExercisesManager.Instance.sessionPrefab[i].GetComponent<Button>().interactable = true;
-                    ExercisesManager.Instance.sessionPrefab[i].GetComponent<Image>().sprite = ExercisesManager.Instance.currentSessionSprite;
-                    // almacenar el id del ejercicio activado
+                    button.interactable = true;
+                    image.sprite = ExercisesManager.Instance.currentSessionSprite;
+
                     idListHourExercises = i;
                 }
-
-                if ((exerciseHourArray[i] < horaActual) || (horaActual == exerciseHourArray[i] && minutoActual > ExercisesManager.Instance.extraMinuteToWaitForExercise))
+                else if (currentTotalMinutes > activationEndMinutes)
                 {
-                    ExercisesManager.Instance.sessionPrefab[i].GetComponent<Button>().interactable = false;
-
-                    // pregunta si ya finalizó los ejercicios pasados
-                    if (exerciseHourArray[i] == 0)
-                        ExercisesManager.Instance.sessionPrefab[i].GetComponent<Image>().sprite = ExercisesManager.Instance.finishedSessionSprite;
-                    // pregunta si esta disponible los ejercicios pasados y coloca que no se finalizó
+                    button.interactable = false;
+                    if (exerciseHour == 0)
+                        image.sprite = ExercisesManager.Instance.finishedSessionSprite;
                     else
-                        ExercisesManager.Instance.sessionPrefab[i].GetComponent<Image>().sprite = ExercisesManager.Instance.notFinishedSessionSprite;
+                        image.sprite = ExercisesManager.Instance.notFinishedSessionSprite;
+                }
+                else
+                {
+                    button.interactable = false;
+                    image.sprite = ExercisesManager.Instance.unavailableSessionSprite;
                 }
             }
         }

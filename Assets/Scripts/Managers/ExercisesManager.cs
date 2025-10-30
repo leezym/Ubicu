@@ -36,7 +36,7 @@ public class ExercisesManager : MonoBehaviour
     [Header("IN GAME")]
     public Transform sessionTitlePrefab;
     public int sesiones;
-    public float extraMinuteToWaitForExercise;
+    public float extraMinuteToWaitForExercise = 59f;
 
     private void Awake()
     {
@@ -271,7 +271,6 @@ public class ExercisesManager : MonoBehaviour
         }
 
         SendExerciseDate();
-        extraMinuteToWaitForExercise = (GameData.Instance.jsonObjectExercises[GameData.Instance.idJsonObjectExercises].frecuencia_horas == 1 ? 58f /*30f*/ : 59f); // minutos
     }
 
     public void UpdateLocalExercise(string path, string jsonData)
