@@ -150,10 +150,10 @@ public class GameData : MonoBehaviour
 
         idListHourExercises = -1;
     }
-    
+
     void Update()
     {
-        if(BluetoothPairing.Instance.bluetoothMenu.gameObject.GetComponent<CanvasGroup>().alpha == 0)
+        if (BluetoothPairing.Instance.bluetoothMenu.gameObject.GetComponent<CanvasGroup>().alpha == 0)
             inactivityTimer += Time.deltaTime;
 
         if (Input.anyKeyDown || Input.touchCount > 0 || BluetoothPairing.Instance.bluetoothMenu.gameObject.GetComponent<CanvasGroup>().alpha == 1)
@@ -169,12 +169,12 @@ public class GameData : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
             ExitApp();
-        if(playing)
+        if (playing)
         {
             //bool de apnea
-            if(apnea && !PlayerMovement.Instance.apneaBool)
+            if (apnea && !PlayerMovement.Instance.apneaBool)
                 PlayerMovement.Instance.apneaBool = true;
-                        
+
             // contador de inactividad
             Obstacles.Instance.DetectInactivity();
 
@@ -182,61 +182,54 @@ public class GameData : MonoBehaviour
             StartCoroutine(Obstacles.Instance.ObstaclesCounter());
         }
 
-        if(resting)
+        if (resting)
             PlayerMovement.Instance.RestingPlayer();
-        
+
         // seleccionar sesion disponible
-        if(ExercisesManager.Instance.sessionMenu.gameObject.GetComponent<CanvasGroup>().alpha == 1)
+        if (ExercisesManager.Instance.sessionMenu.gameObject.GetComponent<CanvasGroup>().alpha == 1)
         {
-            for(int i = 0; i < exerciseHourArray.Length; i++)
+            for (int i = 0; i < exerciseHourArray.Length; i++)
             {
                 int horaActual = int.Parse(DateTime.Now.Hour.ToString(CultureInfo.InvariantCulture));
                 int minutoActual = int.Parse(DateTime.Now.Minute.ToString(CultureInfo.InvariantCulture));
-                
+
                 // detectar cual ejercicio se debe activar
-                if(horaActual == exerciseHourArray[i] && minutoActual <= ExercisesManager.Instance.extraMinuteToWaitForExercise)
+                if (horaActual == exerciseHourArray[i] && minutoActual <= ExercisesManager.Instance.extraMinuteToWaitForExercise)
                 {
                     ExercisesManager.Instance.sessionPrefab[i].GetComponent<Button>().interactable = true;
                     ExercisesManager.Instance.sessionPrefab[i].GetComponent<Image>().sprite = ExercisesManager.Instance.currentSessionSprite;
                     // almacenar el id del ejercicio activado
                     idListHourExercises = i;
                 }
-                
+
                 if ((exerciseHourArray[i] < horaActual) || (horaActual == exerciseHourArray[i] && minutoActual > ExercisesManager.Instance.extraMinuteToWaitForExercise))
                 {
                     ExercisesManager.Instance.sessionPrefab[i].GetComponent<Button>().interactable = false;
-                    
+
                     // pregunta si ya finalizó los ejercicios pasados
                     if (exerciseHourArray[i] == 0)
                         ExercisesManager.Instance.sessionPrefab[i].GetComponent<Image>().sprite = ExercisesManager.Instance.finishedSessionSprite;
                     // pregunta si esta disponible los ejercicios pasados y coloca que no se finalizó
                     else
                         ExercisesManager.Instance.sessionPrefab[i].GetComponent<Image>().sprite = ExercisesManager.Instance.notFinishedSessionSprite;
-                }         
+                }
             }
         }
 
         // detectar cuando lanzar sonido de motivacion
-        if(ExercisesManager.Instance.exerciseMenu_Game.gameObject.GetComponent<CanvasGroup>().alpha == 1)
+        if (ExercisesManager.Instance.exerciseMenu_Game.gameObject.GetComponent<CanvasGroup>().alpha == 1)
         {
             SoundsManager.Instance.StopMotivationSound();
             SoundsManager.Instance.StopSignalSound();
 
-            if(inspiration && !PlayerMovement.Instance.apneaBool)
+            if (inspiration && !PlayerMovement.Instance.apneaBool)
                 StartCoroutine(SoundsManager.Instance.PlayMotivationSound());
-            
-            if(!inspiration && PlayerMovement.Instance.apneaBool)
+
+            if (!inspiration && PlayerMovement.Instance.apneaBool)
                 SoundsManager.Instance.AddSound();
         }
     }
-
-    public void UpdateLocalUser(string jsonData)
-    {  
-        File.WriteAllText(ObtenerRutaPaciente(jsonObjectUser.user.cedula), jsonData);
-
-        Debug.Log("Datos de paciente locales actualizados correctamente");
-    }
-
+    
     private void ResetInactivityTimer()
     {
         inactivityTimer = 0f;

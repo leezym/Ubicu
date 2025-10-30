@@ -162,8 +162,8 @@ public class CustomizationManager : MonoBehaviour
 
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.Log(www.error);
-            Debug.Log(form.data);
+            Debug.Log("GetCustomizations: "+www.error);
+            Debug.Log("GetCustomizations: "+form.data);
         }
         else
         {
@@ -224,7 +224,7 @@ public class CustomizationManager : MonoBehaviour
 
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.Log(www.error);
+            Debug.Log("UpdateCustomizations: "+www.error);
         }
         else
         {

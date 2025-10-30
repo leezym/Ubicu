@@ -147,11 +147,14 @@ public class Login : MonoBehaviour
             string responseText = www.downloadHandler.text;
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
-                Debug.Log(www.error);
-                Debug.Log(form.data);
+                Debug.Log("OnLogin: "+www.error);
+                Debug.Log("OnLogin: "+form.data);
 
-                if(!string.IsNullOrEmpty(responseText))
-                    NotificationsManager.Instance.WarningNotifications(responseText.Replace('"', ' '));
+                if (!string.IsNullOrEmpty(responseText))
+                {
+                   string cleanMsg = ParseMsgFromJson(responseText);
+                   NotificationsManager.Instance.WarningNotifications(cleanMsg);
+                }
                 else
                     NotificationsManager.Instance.WarningNotifications("No tienes conexión a internet");
 
@@ -214,7 +217,7 @@ public class Login : MonoBehaviour
         GameData.Instance.jsonObjectExerciseDate = JsonConvert.DeserializeObject<ExerciseDate>(File.ReadAllText(GameData.Instance.ObtenerRutaFechaEjercicio(GameData.Instance.jsonObjectUser.user.cedula)));
 
         ExercisesManager.Instance.UpdateLocalExercise(GameData.Instance.ObtenerRutaFisioterapia(GameData.Instance.jsonObjectUser.user.cedula), e);
-        GameData.Instance.jsonObjectExercises = JsonConvert.DeserializeObject<List<Exercise>>("["+File.ReadAllText(GameData.Instance.ObtenerRutaFisioterapia(GameData.Instance.jsonObjectUser.user.cedula))+"]");
+        GameData.Instance.jsonObjectExercises = JsonConvert.DeserializeObject<List<Exercise>>("[" + File.ReadAllText(GameData.Instance.ObtenerRutaFisioterapia(GameData.Instance.jsonObjectUser.user.cedula)) + "]");
         ExercisesManager.Instance.CreateExercisesSesions();
 
         GameData.Instance.jsonObjectRewards = JsonConvert.DeserializeObject<Rewards>(File.ReadAllText(GameData.Instance.ObtenerRutaRecompensa(GameData.Instance.jsonObjectUser.user.cedula)));
@@ -222,5 +225,34 @@ public class Login : MonoBehaviour
 
         GameData.Instance.jsonObjectCustomizations = JsonConvert.DeserializeObject<Customizations>(File.ReadAllText(GameData.Instance.ObtenerRutaPersonalizacion(GameData.Instance.jsonObjectUser.user.cedula)));
         CustomizationManager.Instance.CreateCustomizations();
+    }
+    
+    private string ParseMsgFromJson(string json)
+    {
+        string msg = json;
+
+        try
+        {
+            int startIndex = json.IndexOf("\"msg\"");
+
+            if (startIndex >= 0)
+            {
+                startIndex = json.IndexOf(":", startIndex) + 1;
+                int endIndex = json.IndexOf("}", startIndex);
+
+                if (endIndex < 0) endIndex = json.Length;
+
+                msg = json.Substring(startIndex, endIndex - startIndex)
+                        .Trim()
+                        .Trim('"')
+                        .Trim();
+            }
+        }
+        catch
+        {
+            msg = "Error desconocido";
+        }
+
+        return msg;
     }
 }

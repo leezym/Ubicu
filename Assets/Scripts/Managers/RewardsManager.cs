@@ -81,8 +81,8 @@ public class RewardsManager : MonoBehaviour
 
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.Log(www.error);
-            Debug.Log(form.data);
+            Debug.Log("GetRewards: "+www.error);
+            Debug.Log("GetRewards: "+form.data);
         }
         else
         {
