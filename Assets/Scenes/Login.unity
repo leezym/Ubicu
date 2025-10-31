@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 6545674}
   - component: {fileID: 6545673}
   m_Layer: 5
-  m_Name: CustomizeMenu_Items
+  m_Name: 11. CustomizeMenu_Items
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -349,7 +349,7 @@ GameObject:
   - component: {fileID: 20110028}
   - component: {fileID: 20110027}
   m_Layer: 5
-  m_Name: CustomizeMenu_Select
+  m_Name: 10. CustomizeMenu_Select
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5127,7 +5127,6 @@ MonoBehaviour:
   - {fileID: 2000838328}
   sessionTitlePrefab: {fileID: 0}
   sesiones: 0
-  extraMinuteToWaitForExercise: 0
 --- !u!1 &286268551
 GameObject:
   m_ObjectHideFlags: 0
@@ -5547,7 +5546,7 @@ GameObject:
   - component: {fileID: 309271662}
   - component: {fileID: 309271661}
   m_Layer: 5
-  m_Name: BluetoothMenu
+  m_Name: 1. BluetoothMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6243,7 +6242,7 @@ GameObject:
   - component: {fileID: 403161338}
   - component: {fileID: 403161337}
   m_Layer: 5
-  m_Name: LoginMenu
+  m_Name: 3. LoginMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6582,7 +6581,7 @@ GameObject:
   - component: {fileID: 426854494}
   - component: {fileID: 426854493}
   m_Layer: 5
-  m_Name: CustomizeMenu_Info_Fondos
+  m_Name: 12. CustomizeMenu_Info_Fondos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9326,7 +9325,7 @@ GameObject:
   - component: {fileID: 618448818}
   - component: {fileID: 618448817}
   m_Layer: 5
-  m_Name: ExerciseMenu_Game
+  m_Name: 8. ExerciseMenu_Game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9725,7 +9724,7 @@ GameObject:
   - component: {fileID: 643810924}
   - component: {fileID: 643810923}
   m_Layer: 5
-  m_Name: SessionMenu
+  m_Name: 4. SessionMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11688,7 +11687,7 @@ GameObject:
   - component: {fileID: 811829587}
   - component: {fileID: 811829586}
   m_Layer: 5
-  m_Name: CustomizeMenu_Info_Figuras
+  m_Name: 12. CustomizeMenu_Info_Figuras
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13637,7 +13636,7 @@ GameObject:
   - component: {fileID: 938250202}
   - component: {fileID: 938250201}
   m_Layer: 5
-  m_Name: GlossaryMenu
+  m_Name: 5. GlossaryMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15561,7 +15560,7 @@ GameObject:
   - component: {fileID: 1043462108}
   - component: {fileID: 1043462107}
   m_Layer: 5
-  m_Name: SerieGraph
+  m_Name: 9. SerieGraph
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29733,7 +29732,7 @@ GameObject:
   - component: {fileID: 1918543608}
   - component: {fileID: 1918543607}
   m_Layer: 5
-  m_Name: ExerciseMenu_Video
+  m_Name: 6. ExerciseMenu_Video
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32154,7 +32153,7 @@ GameObject:
   - component: {fileID: 2024373956}
   - component: {fileID: 2024373955}
   m_Layer: 5
-  m_Name: ExerciseMenu_Info
+  m_Name: 7. ExerciseMenu_Info
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32770,7 +32769,7 @@ GameObject:
   - component: {fileID: 2087268703}
   - component: {fileID: 2087268702}
   m_Layer: 5
-  m_Name: Loading
+  m_Name: 2. Loading
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33987,7 +33986,7 @@ GameObject:
   - component: {fileID: 636473425603101225}
   - component: {fileID: 636473425603101238}
   m_Layer: 5
-  m_Name: CustomizeMenu_Info_Insignias
+  m_Name: 12. CustomizeMenu_Info_Insignias
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37331,7 +37330,7 @@ GameObject:
   - component: {fileID: 5277140862175605147}
   - component: {fileID: 5277140862175605146}
   m_Layer: 5
-  m_Name: CustomizeMenu_Insignias
+  m_Name: 11. CustomizeMenu_Insignias
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

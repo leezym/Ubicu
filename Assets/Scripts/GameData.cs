@@ -27,6 +27,7 @@ public class GameData : MonoBehaviour
 
     private float inactivityTimer = 0f;
     private float inactivityThreshold = 300f; // 5 minutos en segundos
+    private int extraMinuteToWaitForExercise = 59;
 
     [Header("BOOLEAN")]
     public bool m_playing = false;
@@ -190,7 +191,6 @@ public class GameData : MonoBehaviour
         {
             if (exerciseHourArray == null || exerciseHourArray.Length == 0) return;
 
-            int extraMinute = ExercisesManager.Instance.extraMinuteToWaitForExercise;
             int currentTotalMinutes = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
 
             for(int i = 0; i < exerciseHourArray.Length; i++)
@@ -201,11 +201,11 @@ public class GameData : MonoBehaviour
                 if (exerciseHour < 0 || exerciseHour > 23) continue;
 
                 int exerciseTotalMinutes = exerciseHour * 60;
-                int activationEndMinutes = exerciseTotalMinutes + extraMinute;
+                int activationEndMinutes = exerciseTotalMinutes + extraMinuteToWaitForExercise;
 
                 Button button = ExercisesManager.Instance.sessionPrefab[i].GetComponent<Button>();
                 Image image = ExercisesManager.Instance.sessionPrefab[i].GetComponent<Image>();
-
+            
                 if (currentTotalMinutes >= exerciseTotalMinutes && currentTotalMinutes <= activationEndMinutes)
                 {
                     button.interactable = true;
