@@ -284,10 +284,13 @@ public class RewardsManager : MonoBehaviour
     public void GetAllBadges()
     {
         string[] temp;
-        temp = Array.ConvertAll(GameData.Instance.jsonObjectRewards.all_badges_array.Split(";"), x => x.ToString());
-        for(int i = 0; i < allBadgesArray.Length; i++)
+
+        temp = GameData.Instance.SafeSplitToString(GameData.Instance.jsonObjectRewards.all_badges_array, ';'); //Array.ConvertAll(GameData.Instance.jsonObjectRewards.all_badges_array.Split(";"), x => x.ToString());
+
+        int length = Mathf.Min(temp.Length, allBadgesArray.Length);
+        for(int i = 0; i < length; i++)
         {
-            allBadgesArray[i].item = Array.ConvertAll(temp[i].Split(","), int.Parse);
+            allBadgesArray[i].item =  GameData.Instance.SafeSplitToInt(temp[i], ',');//Array.ConvertAll(temp[i].Split(","), int.Parse);
         }
     }
     public void SetAllBadges()
@@ -302,6 +305,6 @@ public class RewardsManager : MonoBehaviour
     void Update()
     {
         foreach(TMP_Text t in textReward)
-            t.text = GameData.Instance.jsonObjectRewards.total_reward.ToString();
+            t.text = "0";//GameData.Instance.jsonObjectRewards.total_reward.ToString();
     }
 }

@@ -266,7 +266,7 @@ public class ExercisesManager : MonoBehaviour
         }
         else
         {
-            GameData.Instance.exerciseHourArray = Array.ConvertAll(GameData.Instance.jsonObjectExerciseDate.exercise_hour_array.Split(","), int.Parse);
+            GameData.Instance.exerciseHourArray = GameData.Instance.SafeSplitToInt(GameData.Instance.jsonObjectExerciseDate.exercise_hour_array, ','); //Array.ConvertAll(GameData.Instance.jsonObjectExerciseDate.exercise_hour_array.Split(","), int.Parse);
         }
 
         SendExerciseDate();

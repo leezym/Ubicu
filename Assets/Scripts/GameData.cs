@@ -269,4 +269,31 @@ public class GameData : MonoBehaviour
     {
         ExitApp();
     }
+
+    public string[] SafeSplitToString(string value, char separator)
+    {
+        return string.IsNullOrEmpty(value)
+            ? Array.Empty<string>()
+            : value.Split(separator);
+    }
+
+    public int[] SafeSplitToInt(string value, char separator)
+    {
+        if (string.IsNullOrEmpty(value))
+            return Array.Empty<int>();
+
+        string[] parts = value.Split(separator);
+
+        List<int> result = new List<int>(parts.Length);
+
+        foreach (string part in parts)
+        {
+            if (int.TryParse(part.Trim(), out int number))
+                result.Add(number);
+        }
+
+        return result.ToArray();
+    }
+
+
 }

@@ -177,8 +177,8 @@ public class CustomizationManager : MonoBehaviour
     public void CreateCustomizations()
     {
         SetIdPlayerCustomization(GameData.Instance.jsonObjectCustomizations.id_customization);
-        idItemFondosArray = Array.ConvertAll(GameData.Instance.jsonObjectCustomizations.id_item_fondos_array.Split(","), int.Parse);
-        idItemFigurasArray = Array.ConvertAll(GameData.Instance.jsonObjectCustomizations.id_item_figuras_array.Split(","), int.Parse);
+        idItemFondosArray = GameData.Instance.SafeSplitToInt(GameData.Instance.jsonObjectCustomizations.id_item_fondos_array, ','); //Array.ConvertAll(GameData.Instance.jsonObjectCustomizations.id_item_fondos_array.Split(","), int.Parse);
+        idItemFigurasArray = GameData.Instance.SafeSplitToInt(GameData.Instance.jsonObjectCustomizations.id_item_figuras_array, ','); //Array.ConvertAll(GameData.Instance.jsonObjectCustomizations.id_item_figuras_array.Split(","), int.Parse);
         SetIdFondosItem(idItemFondosArray[GameData.Instance.jsonObjectCustomizations.id_customization]);
         SetIdFigurasItem(idItemFigurasArray[GameData.Instance.jsonObjectCustomizations.id_customization]);
         GetAllFondosItems();
@@ -391,10 +391,12 @@ public class CustomizationManager : MonoBehaviour
     public void GetAllFondosItems()
     {
         string[] temp;
-        temp = Array.ConvertAll(GameData.Instance.jsonObjectCustomizations.all_fondos_items_array.Split(";"), x => x.ToString());
-        for(int i = 0; i < allFondosItemsArray.Length; i++)
+        temp = GameData.Instance.SafeSplitToString(GameData.Instance.jsonObjectCustomizations.all_fondos_items_array, ';'); //Array.ConvertAll(GameData.Instance.jsonObjectCustomizations.all_fondos_items_array.Split(";"), x => x.ToString());
+
+        int length = Mathf.Min(temp.Length, allFondosItemsArray.Length);
+        for(int i = 0; i < length; i++)
         {
-            allFondosItemsArray[i].item = Array.ConvertAll(temp[i].Split(","), int.Parse);
+            allFondosItemsArray[i].item = GameData.Instance.SafeSplitToInt(temp[i], ','); //Array.ConvertAll(temp[i].Split(","), int.Parse);
         }
     }
     public void SetAllFondosItems()
@@ -409,10 +411,12 @@ public class CustomizationManager : MonoBehaviour
     public void GetAllFigurasItems()
     {
         string[] temp;
-        temp = Array.ConvertAll(GameData.Instance.jsonObjectCustomizations.all_figuras_items_array.Split(";"), x => x.ToString());
-        for(int i = 0; i < allFigurasItemsArray.Length; i++)
+        temp = GameData.Instance.SafeSplitToString(GameData.Instance.jsonObjectCustomizations.all_figuras_items_array, ';'); //Array.ConvertAll(GameData.Instance.jsonObjectCustomizations.all_figuras_items_array.Split(";"), x => x.ToString());
+
+        int length = Mathf.Min(temp.Length, allFigurasItemsArray.Length);
+        for(int i = 0; i < length; i++)
         {
-            allFigurasItemsArray[i].item = Array.ConvertAll(temp[i].Split(","), int.Parse);
+            allFigurasItemsArray[i].item = GameData.Instance.SafeSplitToInt(temp[i], ','); //Array.ConvertAll(temp[i].Split(","), int.Parse);
         }
     }
     public void SetAllFigurasItems()
