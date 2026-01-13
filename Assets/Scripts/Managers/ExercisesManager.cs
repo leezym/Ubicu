@@ -200,8 +200,6 @@ public class ExercisesManager : MonoBehaviour
         // la cantidad de sesiones es de acuerdo al campo cada cuantas horas, es decir 12h/ejercicio.frecuencia_horas + 1
         sesiones = AddExercise(emptyExercise, uniqueExercise, currentDate);
 
-        Debug.Log(sesiones);
-
         if (sesiones == 0)
         {
             sessionPrefab[0].SetActive(true);

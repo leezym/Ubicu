@@ -119,7 +119,6 @@ public class RewardsManager : MonoBehaviour
     public void SendReward()
     {
         string jsonData = GetJsonRewards();
-        Debug.Log(jsonData);
         
         UpdateLocalReward(jsonData);
         
@@ -147,7 +146,7 @@ public class RewardsManager : MonoBehaviour
 
         if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.Log(www.error);
+            Debug.Log("UpdateReward:"+www.error);
         }
         else
         {
